@@ -3,6 +3,10 @@ from selenium.common.exceptions import (TimeoutException, ElementClickIntercepte
                                         StaleElementReferenceException)
 import time
 
+"""
+Common actions for interacting with web elements
+"""
+
 
 class CommonActions:
 
@@ -13,6 +17,12 @@ class CommonActions:
         self.logger = page.logger
 
     def get_element_with_text(self, locator, text):
+        """
+        Get the first element matching the locator with exact text
+        :param locator: Locator tuple
+        :param text: Exact text to match
+        :return: WebElement or None
+        """
         elements = self.page.find_all(locator)
         for el in elements:
             if text == el.text.strip():
@@ -21,6 +31,12 @@ class CommonActions:
         return None
 
     def get_element_containing_text(self, locator, text):
+        """
+        Get the first element matching the locator that contains the text
+        :param locator: Locator tuple
+        :param text: Text to search for
+        :return: WebElement or None
+        """
         elements = self.page.find_all(locator)
         for el in elements:
             if text in el.text.strip():
@@ -29,6 +45,12 @@ class CommonActions:
         return None
 
     def click_element_with_text(self, locator, text):
+        """
+        Click the first element matching the locator with exact text
+        :param locator: Locator tuple
+        :param text: Exact text to match
+        :return: True if clicked, False otherwise
+        """
         element = self.get_element_with_text(locator, text)
         if not element:
             return False
@@ -41,6 +63,12 @@ class CommonActions:
             return False
 
     def click_element_containing_text(self, locator: tuple, text: str):
+        """
+        Click the first element matching the locator that contains the text
+        :param locator: Locator tuple
+        :param text: Text to search for
+        :return: True if clicked, False otherwise
+        """
         element = self.get_element_containing_text(locator, text)
         if not element:
             return False
@@ -48,6 +76,13 @@ class CommonActions:
         return True
 
     def find_in_list(self, elements: list, text: str, partial: bool = False):
+        """
+        Find an element in a list by text
+        :param elements: List of WebElements
+        :param text: Text to search for
+        :param partial: Whether to match partially
+        :return: WebElement or None
+        """
         for el in elements:
             if partial:
                 if el.text.strip() in text:
@@ -57,6 +92,12 @@ class CommonActions:
         return None
 
     def wait_for_text(self, locator, text):
+        """
+        Wait for an element to have exact text
+        :param locator: Locator tuple
+        :param text: Exact text to wait for
+        :return: True if text matches, False if timeout
+        """
         try:
             self.page.wait.until(
                 lambda d: self.page._wait_for_visible(
@@ -69,6 +110,12 @@ class CommonActions:
             return False
 
     def wait_for_text_contains(self, locator: tuple, text: str):
+        """
+        Wait for an element to contain text
+        :param locator: Locator tuple
+        :param text: Text to wait for
+        :return: True if text is contained, False if timeout
+        """
         try:
             self.page.wait.until(
                 lambda d: text in self.page.find(
@@ -82,13 +129,24 @@ class CommonActions:
 
     def wait_for_url_contains(self, partial_url: str):
         """
-        TODO: Implement URL wait logic when navigation behaviours are added.
+        Wait for the current URL to contain a substring
+        :param partial_url: Substring to wait for in the URL
+        :return: True if URL contains substring, False if timeout
         """
+        # TODO: Implement URL wait logic when navigation behaviours are added.
+
         raise NotImplementedError(
             "wait_for_url_contains is not implemented yet."
             "This will be added when navigation actions are introduced.")
 
     def retry_click(self, locator: tuple, retries: int = 3, delay: float = 0.5):
+        """
+        Retry clicking an element multiple times to handle flaky clicks
+        :param locator: Locator tuple
+        :param retries: Number of retry attempts
+        :param delay: Delay between attempts in seconds
+        :return: True if clicked, False otherwise
+        """
         for attempt in range(0, retries):
             try:
                 clicked = self.page.click(locator)

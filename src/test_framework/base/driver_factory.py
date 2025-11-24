@@ -1,5 +1,9 @@
 from selenium import webdriver
 
+'''
+Base class for driver factory
+'''
+
 
 class WebDriverFactory():
     def __init__(self, config):
@@ -8,6 +12,10 @@ class WebDriverFactory():
         self.config = config
 
     def create_driver(self):
+        """
+        Create and return a WebDriver instance based on the configuration
+        :return: WebDriver instance
+        """
         self.options = webdriver.ChromeOptions()
         if self.config["headless"]:
             self.options.add_argument("--headless-new")
@@ -27,5 +35,8 @@ class WebDriverFactory():
         return self.driver
 
     def quit_driver(self):
+        """
+        Quit the WebDriver instance
+        """
         if self.driver:
             self.driver.quit()

@@ -1,9 +1,12 @@
 import sys
 from .create import create, init
-from .helpers import ok, warn, error, info 
+from .helpers import warn, info
 
 
 def main():
+    """
+    Main CLI entry point
+    """
     args = sys.argv[1:]
 
     if len(args) < 1:
@@ -19,17 +22,15 @@ def main():
 
     command, type_, name = args[0], args[1], args[2]
 
-    if command not in ["create","init"]:
-        warn(f"Unknown command {command}\n####Available Commands####\ncreate\ninit")
+    if command not in ["create", "init"]:
+        warn(
+            f"Unknown command {command}\n####Available Commands####\ncreate\ninit")
         return
 
-    if type_ not in ["actions","page", "feature", "steps"]:
+    if type_ not in ["actions", "page", "feature", "steps"]:
         warn(f"Unknown type {type}")
         info("Usage: argotest create <page|actions|feature|steps> <Name>")
         return
 
     info(f"Creating {name}")
     create(name, type_)
-
-
-

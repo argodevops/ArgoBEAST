@@ -5,6 +5,10 @@ import yaml
 import os
 import logging
 
+"""
+ConfigLoader is responsible for loading and merging configuration files
+"""
+
 
 class ConfigLoader():
     def __init__(self):
@@ -14,6 +18,11 @@ class ConfigLoader():
         self.logger = logging.getLogger(__name__)
 
     def load(self, user_path: str = None) -> dict:
+        """
+        Load and merge default and user configuration files
+        :param user_path: Path to user configuration file
+        :return: Merged configuration dictionary
+        """
         self.default_config = self._load_internal_defaults()
         if user_path:
             if os.path.exists(user_path):
@@ -28,6 +37,11 @@ class ConfigLoader():
         return self._deep_merge(self.default_config, self.user_config)
 
     def _load_yaml(self, path) -> dict:
+        """
+        Load a YAML file from the given path
+        :param path: Path to YAML file
+        :return: Parsed YAML as dictionary
+        """
         try:
             yaml_file = yaml.safe_load(open(path))
             return yaml_file or {}
@@ -36,6 +50,10 @@ class ConfigLoader():
             return {}
 
     def _load_internal_defaults(self) -> dict:
+        """
+        Load the default configuration from the package resources
+        :return: Default configuration dictionary
+        """
         source = resources.files(
             "test_framework.config").joinpath("defaults.yml")
         with resources.as_file(source) as f:
@@ -43,6 +61,12 @@ class ConfigLoader():
         return data or {}
 
     def _deep_merge(self, base: dict, override: dict) -> dict:
+        """
+        Deep merge two dictionaries
+        :param base: Base dictionary
+        :param override: Override dictionary
+        :return: Merged dictionary
+        """
         new_base = deepcopy(base)
         config = always_merger.merge(new_base, override)
         return config
