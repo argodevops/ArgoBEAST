@@ -1,13 +1,47 @@
 [project]
+name = "argobeast"
 version = "1.0.0"
+description = "A Python-based test automation framework for Behave with a clean Page Object architecture and CLI scaffolding."
+readme = "README.md"
+requires-python = ">=3.9"
 authors = [
-    {name = "Paul Shears", email = "paul.s@argodevops.co.uk"}
+    { name = "Paul Shears", email = "paul.s@argodevops.co.uk" }
 ]
-name = "ArgoBEAST"
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+
+# Your dependencies for the framework itself (not test requirements)
+dependencies = [
+    "selenium>=4.0",
+    "PyYAML>=6.0",
+    "deepmerge>=1.0",
+    "python-dotenv>=1.0",
+    "behave>=1.2",
+]
+
+# Entry point for CLI
 [project.scripts]
 argobeast = "test_framework.cli.main:main"
+
+# Setuptools settings
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}  # IMPORTANT for src/ layout
+
+# Include non-Python files inside the package
 [tool.setuptools.package-data]
 "test_framework" = ["**/*.yml"]
+
+# Automatically include all packages under src/
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# Include options dependencies for Sphinx documentation
+[project.optional-dependencies]
+docs = [
+    "sphinx",
+    "sphinx-autodoc-typehints",
+    "argo_sphinx_theme",
+    "myst_parser" 
+]

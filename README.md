@@ -118,6 +118,47 @@ You can configure your test target by editing config/driver.yml
 
 More information can be found about this in [Getting Started](docs/source/getting_started.md)
 
+# Project Directory Tree
+
+```
+.
+├── MANIFEST.in
+├── README.md
+├── __init__.py
+├── docs
+│   └── source
+│       ├── _static
+│       ├── _templates
+│       ├── conf.py
+│       ├── getting_started.md
+│       └── index.rst
+├── pyproject.toml
+├── requirements_tfw.txt
+└── src
+    └── test_framework
+        ├── base
+        │   ├── __init__.py
+        │   ├── base_page.py
+        │   ├── base_step_context.py
+        │   └── driver_factory.py
+        ├── behave_integration
+        │   ├── __init__.py
+        │   └── environment.py
+        ├── cli
+        │   ├── __init__.py
+        │   ├── create.py
+        │   ├── helpers.py
+        │   ├── main.py
+        │   └── templates.py
+        ├── common_actions
+        │   ├── __init__.py
+        │   └── common_actions.py
+        └── config
+            ├── __init__.py
+            ├── defaults.yml
+            └── loader.py
+```
+
 # Roadmap
 
 ArgoBEAST is still under development. Below is the current roadmap.
