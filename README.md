@@ -59,7 +59,7 @@ This will give you the option to generate example files which can be used as a t
 - features/steps/login_steps.py
 - pages/login_page.py
 
-For more information on how to use these files and create your own tests see [Getting Started](docs/source/getting_started.md)
+For more information on how to use these files and create your own tests see [Getting Started](docs/source/getting_started.rst)
 
 Other files generated are:
 
@@ -99,7 +99,7 @@ my-tests/
 - ConfigLoader
   - merges baked defaults with user config
 
-More information on how to use these pages can be found in [Getting Started](docs/source/getting_started.md)
+More information on how to use these pages can be found in [Getting Started](docs/source/getting_started.rst)
 
 ## Other CLI Commands
 
@@ -116,7 +116,7 @@ argobeast create feature <name of feature> # A page can have multiple features, 
 
 You can configure your test target by editing config/driver.yml
 
-More information can be found about this in [Getting Started](docs/source/getting_started.md)
+More information can be found about this in [Getting Started](docs/source/getting_started.rst)
 
 # Project Directory Tree
 
@@ -164,6 +164,8 @@ More information can be found about this in [Getting Started](docs/source/gettin
 ArgoBEAST is still under development. Below is the current roadmap.
 
 - Playwright support
+
+- Extend for Appium support
 
 - Component libraries for Streamlit widgets
 
