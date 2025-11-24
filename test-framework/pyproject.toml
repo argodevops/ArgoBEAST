@@ -1,0 +1,13 @@
+[project]
+version = "1.0.0"
+authors = [
+    {name = "Paul Shears", email = "paul.s@argodevops.co.uk"}
+]
+name = "ArgoBEAST"
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+[project.scripts]
+argobeast = "test_framework.cli.main:main"
+[tool.setuptools.package-data]
+"test_framework" = ["**/*.yml"]

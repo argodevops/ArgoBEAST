@@ -1,0 +1,26 @@
+# Webdriver Config
+
+browser: chrome
+headless: true
+window_size: "1920,1080"
+
+# Webdriver Constants
+
+implicit_wait: 5
+explicit_wait: 10
+page_load_timeout: 30
+
+# Application Settings
+
+base_url: "http://localhost:8501"
+default_route: "/"
+
+# Framework Behaviour
+
+screenshot_on_failure: true
+output_directory: "test_output"
+retry_failed_steps: false
+
+# Logging Level (accepts INFO, ERROR, WARNING, DEBUG)
+
+log_level: "INFO"

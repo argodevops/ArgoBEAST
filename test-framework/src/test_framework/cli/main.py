@@ -1,0 +1,35 @@
+import sys
+from .create import create, init
+from .helpers import ok, warn, error, info 
+
+
+def main():
+    args = sys.argv[1:]
+
+    if len(args) < 1:
+        info(f"Usage: argotest create <page|actions|feature> <Name> \n To initiate a new project try argotest init")
+        return
+    if len(args) < 3:
+        if args[0] == "init":
+            init()
+            return
+        else:
+            info(f"Usage: argotest create <page|actions|feature> <Name> \n To initiate a new project try argotest init")
+            return
+
+    command, type_, name = args[0], args[1], args[2]
+
+    if command not in ["create","init"]:
+        warn(f"Unknown command {command}\n####Available Commands####\ncreate\ninit")
+        return
+
+    if type_ not in ["actions","page", "feature", "steps"]:
+        warn(f"Unknown type {type}")
+        info("Usage: argotest create <page|actions|feature|steps> <Name>")
+        return
+
+    info(f"Creating {name}")
+    create(name, type_)
+
+
+

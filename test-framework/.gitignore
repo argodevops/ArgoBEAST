@@ -1,0 +1,7 @@
+venv
+screenshots
+.vscode
+src/test_framework.egg-info
+src/*.egg-info
+dist
+build
