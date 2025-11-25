@@ -49,7 +49,7 @@ Behave offers annotations to describe what type of instruction the step is. For 
 This follows the usual format of a feature (we'll cover feature files later on). 
 
 
-.. code-block:: feature
+.. code-block:: Gherkin
 
    Scenario: login to application
 
@@ -169,19 +169,19 @@ To initialise a new Steps file, you can use the ArgoBEAST CLI:
 
 This generates the basic scaffolding for a new steps file.
 
-Although it's perfectly acceptible to have multiple steps files per page, the recommendation is that each page has one steps file.
+Although it's perfectly acceptable to have multiple steps files per page, the recommendation is that each page has one steps file.
 
 You are not limited to how many times you can use the Given, When, Then directives. 
 
-Furthermore, Behave offers other options such as ``@step`` this will work in any posistion. 
+Furthermore, Behave offers other options such as ``@step`` this will work in any position. 
 
 More information can be found in the Behave documentation 
 https://behave.readthedocs.io/en/latest/. 
 
-The class will assume the existence of the respective PageClass, and ActionsClass and import them automatically.
+The template will assume the existence of the respective PageClass, and ActionsClass and import them automatically.
 
 | *NOTE: If you have not initialised the page and actions, the imports will fail*
-| *NOTE: argobeast CLI assumes the name you enter is the same for Page and Actions - If you want to use something different, you will need to amend the imports*
+| *NOTE: The generated steps file will include imports for the matching Page and Actions classes. If you change file or class names, update these imports manually.*
 
 Example
 -------
@@ -212,6 +212,6 @@ Below is a simple Steps page for our login screen. Notice how the ``@then`` has 
 TL;DR
 =====
 
-Steps are logical descriptions of what work needs to be carried out. 
+Steps are logical descriptions of what work needs to be carried out.
 They don't do the work themselves, nor do they instruct the workers to how to do the work. 
 They simply make logical decisions about how and when that work should be completed. 
