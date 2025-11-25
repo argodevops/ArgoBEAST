@@ -1,4 +1,4 @@
-PAGE_TEMPLATE= """
+PAGE_TEMPLATE = """
 from test_framework.base.base_page import BasePage
 from selenium.webdriver.common.by import By
 
@@ -21,7 +21,7 @@ class {Name}Actions(CommonActions):
         super().__init__(page)
 """
 
-FEATURE_TEMPLATE="""
+FEATURE_TEMPLATE = """
 Feature: {Name}
 
   Scenario: Example {Name} scenario
@@ -30,7 +30,7 @@ Feature: {Name}
     Then I should see an expected result
 """
 
-STEPS_TEMPLATE="""
+STEPS_TEMPLATE = """
 from behave import given, when, then
 from test_framework.base.base_step_context import BaseStepContext
 from actions.{name}_actions import {Name}Actions
@@ -58,7 +58,7 @@ def step_assert_result(context):
     pass
 """
 
-CONFIG_TEMPLATE="""
+CONFIG_TEMPLATE = """
 # Webdriver Config
 
 browser: chrome
@@ -87,12 +87,12 @@ retry_failed_steps: false
 log_level: "INFO"
 """
 
-REQUIREMENTS_TEMPLATE="""
+REQUIREMENTS_TEMPLATE = """
 selenium
 behave
 """
 
-ENVIRONMENT_TEMPLATE ="""
+ENVIRONMENT_TEMPLATE = """
 # Automatically delegate hooks to the test framework.
 from test_framework.behave_integration.environment import *
 # You do not need to touch this file.

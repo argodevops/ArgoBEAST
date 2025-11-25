@@ -6,7 +6,7 @@ Pages
    :local:
    :depth: 2
 
-What Are Pages?
+❓What Are Pages?
 ===============
 Pages are low level wrappers for locators and basic UI interactions. 
 They should not contain any complex logic about how the functionality works - they simply "paint the picture" by providing interactions for the actions page to utilise. 
@@ -17,7 +17,55 @@ Pages should be dumb. They describe what elements exist and how to interact with
 
 Actions should be smart. They orchestrate multi-step flows and business logic.
 
-Page Responsibilities
+.. dropdown:: 🌍 Real-world Analogy (Click to expand)
+   
+   Imagine a warehouse.
+
+   A factory worker spends all day stacking boxes.
+   At the start of the shift, the manager tells him how many boxes to stack and how high each stack should be.
+
+   If the manager says “I need 5 stacks of 5 boxes,” the worker simply builds:
+
+   - 5 stacks
+
+   - Each 5 boxes high
+
+   He doesn't decide why this needs doing or when, he just performs the physical action repeatedly and reliably.
+
+   Now imagine a second factory worker whose job is to label the boxes.
+   The manager tells her what each label should say, and she gets on with it.
+   Again, she doesn't decide if the labels are correct, important, or part of a bigger workflow.
+
+   The two factory workers never communicate with each other.
+   They just perform their individual tasks in isolation.
+
+   The manager is the one orchestrating everything - 
+   assigning tasks, deciding the order, and ensuring the workflow makes sense.
+
+   🧠 How This Maps to ArgoBEAST
+
+   To put the analogy into the context of ArgoBEAST:
+
+   - Pages = The factory workers
+   They perform small, precise, repeatable tasks like clicking a button, typing into a field, or reading text.
+   They don’t know anything about the bigger workflow.
+
+   - Actions = The manager
+   This is where the logic lives — deciding what should happen and in what order.
+   Actions tell Pages which tasks to perform and when.
+
+   - Steps = The instructions given to the manager
+   Steps are written in plain English (Given/When/Then).
+   They describe what should happen from the tester's perspective.
+   Steps call Actions, and Actions call Pages.
+
+   - Features = The high-level test script
+   This is the overall scenario or test case written in Gherkin, describing the behaviour you want to validate.
+
+   | ``Feature  →  Steps  →  Actions  →  Pages  →  WebDriver``
+   | ``(What)      (Describe) (Decide)    (Do)      (Execute)``
+
+📜 Page Responsibilities
 =====================
 What it should do
 ----------------
@@ -37,56 +85,6 @@ What it should not do
 - Contain conditional logic based on test scenarios
 - Handle test data or scenario-specific values
 - Decide which user role, state, backend condition, or branch to follow
-
-🌍 Real-world Analogy
-=====================
-
-Imagine a warehouse.
-
-A factory worker spends all day stacking boxes.
-At the start of the shift, the manager tells him how many boxes to stack and how high each stack should be.
-
-If the manager says “I need 5 stacks of 5 boxes,” the worker simply builds:
-
-- 5 stacks
-
-- Each 5 boxes high
-
-He doesn't decide why this needs doing or when, he just performs the physical action repeatedly and reliably.
-
-Now imagine a second factory worker whose job is to label the boxes.
-The manager tells her what each label should say, and she gets on with it.
-Again, she doesn't decide if the labels are correct, important, or part of a bigger workflow.
-
-The two factory workers never communicate with each other.
-They just perform their individual tasks in isolation.
-
-The manager is the one orchestrating everything - 
-assigning tasks, deciding the order, and ensuring the workflow makes sense.
-
-
-🧠 How This Maps to ArgoBEAST
-=============================
-To put the analogy into the context of ArgoBEAST:
-
-- Pages = The factory workers
-They perform small, precise, repeatable tasks like clicking a button, typing into a field, or reading text.
-They don’t know anything about the bigger workflow.
-
-- Actions = The manager
-This is where the logic lives — deciding what should happen and in what order.
-Actions tell Pages which tasks to perform and when.
-
-- Steps = The instructions given to the manager
-Steps are written in plain English (Given/When/Then).
-They describe what should happen from the tester's perspective.
-Steps call Actions, and Actions call Pages.
-
-- Features = The high-level test script
-This is the overall scenario or test case written in Gherkin, describing the behaviour you want to validate.
-
-| ``Feature  →  Steps  →  Actions  →  Pages  →  WebDriver``
-| ``(What)      (Describe)  (Decide)    (Do)      (Execute)``
 
 
 🎨 Creating a Page
@@ -143,7 +141,7 @@ Exactly the kind of “dumb” behaviour Pages should have.
 ❓ Why not add a ``populate_login_form()`` method here?
 ------------------------------------------------------
 
-Great question — everyone asks this at some point.
+Great question! everyone asks this at some point.
 
 You *could* write something like:
 
@@ -154,7 +152,7 @@ You *could* write something like:
         self.enter_password(password)
 
 But this is **no longer a single UI action** — it’s a **mini workflow**.
-Even though it’s small, it represents a *sequence* of steps, which is the responsibility of the **Actions** layer.
+Even though it's small, it represents a *sequence* of steps, which is the responsibility of the **Actions** layer.
 
 Why?
 
@@ -188,6 +186,17 @@ And this separation becomes incredibly important as your application grows.
 
 This structure keeps your tests readable, predictable, and easy to maintain no matter how large the application becomes.
 
+
+TL;DR
+======
+
+A page class lists all of the elements on the page and small methods describing how you would interact with each. 
+
+Some elements have more than one UI interaction that can be performed, for instance, click + type
+
+If both UI Interactions are required then there should be one method written for each. 
+
+
 Working With BasePage
 =====================
 Each page uses the BasePage. This is where ArgoBEAST really benefits the user. 
@@ -196,3 +205,9 @@ BasePage contains methods for most of the common actions a user might perform on
 
 These are the methods that should be used, individual pages should not be responsible for any new WebDriver logic. 
 
+.. dropdown:: Available Base Page UI Interactions (Click to Expand)
+
+   .. automodule:: test_framework.base.base_page
+      :members:
+      :undoc-members:
+      :show-inheritance:
