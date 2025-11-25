@@ -34,6 +34,7 @@ STEPS_TEMPLATE = """
 from behave import given, when, then
 from test_framework.base.base_step_context import BaseStepContext
 from actions.{name}_actions import {Name}Actions
+from pages.{name}_page import {Name}Page
 
 # Behave automatically injects `context`
 # BaseStepContext gives you .get_page() and .get_actions()
@@ -41,7 +42,7 @@ from actions.{name}_actions import {Name}Actions
 @given("I am on the {{name}} page")
 def step_go_to_page(context):
     ctx = BaseStepContext(context)
-    context.page = ctx.get_page({Name}Actions.PageClass)
+    context.page = ctx.get_page({Name}Page)
 
 @when("I perform an example action on the {{name}} page")
 def step_example_action(context):

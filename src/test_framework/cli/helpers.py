@@ -5,6 +5,16 @@ YELLOW = "\033[93m"
 RED = "\033[91m"
 PURPLE = "\033[95m"
 RESET = "\033[0m"
+ARGO_BEAST = """
+           ___                  _____ _____  ___   _____ _____
+          / _ \                | ___ \  ___|/ _ \ /  ___|_   _|
+         / /_\ \_ __ __ _  ___ | |_/ / |__ / /_\ \\ `--.  | |
+         |  _  | '__/ _` |/ _ \| ___ \  __||  _  | `--. \ | |
+         | | | | | | (_| | (_) | |_/ / |___| | | |/\__/ / | |
+         \_| |_/_|  \__, |\___/\____/\____/\_| |_/\____/  \_/
+                     __/ |
+                    |___/
+          """
 
 
 def ensure_dir(dir):
@@ -13,22 +23,26 @@ def ensure_dir(dir):
     os.mkdir(dir)
     return
 
-def ok(log:str):
+
+def ok(log: str):
     string = f"{GREEN}[OK]{RESET} {log}"
     print(string)
     return
 
-def warn(log:str):
+
+def warn(log: str):
     string = f"{YELLOW}[WARN]{RESET} {log}"
     print(string)
     return
 
-def info(log:str):
+
+def info(log: str):
     string = f"{PURPLE}[INFO]{RESET} {log}"
     print(string)
     return
 
-def error(log:str):
+
+def error(log: str):
     string = f"{RED}[ERROR]{RESET} {log}"
     print(string)
     return

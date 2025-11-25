@@ -1,6 +1,6 @@
 import sys
 from .create import create, init
-from .helpers import warn, info
+from .helpers import warn, info, ARGO_BEAST
 
 
 def main():
@@ -14,19 +14,11 @@ def main():
         return
     if len(args) < 3:
         if args[0] == "init":
+            print(ARGO_BEAST)
             init()
             return
         elif args[0] == "hello":
-            print("""
-                  ___                  _____ _____  ___   _____ _____
-                 / _ \                | ___ \  ___|/ _ \ /  ___|_   _|
-                / /_\ \_ __ __ _  ___ | |_/ / |__ / /_\ \\ `--.  | |
-                |  _  | '__/ _` |/ _ \| ___ \  __||  _  | `--. \ | |
-                | | | | | | (_| | (_) | |_/ / |___| | | |/\__/ / | |
-                \_| |_/_|  \__, |\___/\____/\____/\_| |_/\____/  \_/
-                            __/ |
-                           |___/
-                 """)
+            print(ARGO_BEAST)
             print("                   ### Welcome to ArgoBEAST! ###"
                   "\n___________________________________________________________________"
                   "\nA Python-based test automation framework for web applications, "
