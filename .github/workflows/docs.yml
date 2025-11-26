@@ -44,3 +44,5 @@ jobs:
           cd public-docs
           git add .
           git commit -m "Update docs from private repo"
+
+          git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main
