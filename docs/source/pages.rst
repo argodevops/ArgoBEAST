@@ -113,9 +113,9 @@ Notice how each method performs **one** UI action and nothing more.
     class LoginPage(BasePage):
         def __init__(self, driver, config):
             super().__init__(driver, config)
-            self.USERNAME = ("id", "username-input")
-            self.PASSWORD = ("id", "password-input")
-            self.SUBMIT   = ("id", "submit-btn")
+        USERNAME = ("id", "username-input")
+        PASSWORD = ("id", "password-input")
+        SUBMIT   = ("id", "submit-btn")
 
         def enter_username(self, value):
             return self.type_text(self.USERNAME, value)

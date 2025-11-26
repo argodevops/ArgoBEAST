@@ -119,6 +119,7 @@ What they should do
 - Break scenarios down into clear directives (Given, When, Then)
 - Branching logic decisions to inform which Actions are invoked (*if user=="Admin" then navigate to admin_view else navigate to worker_view*)
 - Decide values of variables that are passed to actions.
+- Assert results (Steps are the only place you should do this, actions package the results of the Page UI Interactions and send them back to steps to decipher)
 
 What they should not do
 ---------------------  
