@@ -31,6 +31,7 @@ jobs:
           sphinx-build -M html docs/source docs/build
 
       - name: Deploy to Public Repo
+
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -43,6 +44,5 @@ jobs:
 
           cd public-docs
           git add .
-          git commit -m "Update docs from private repo"
-
+          git diff --cached --quiet || git commit -m "Update docs from private repo"
           git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main
