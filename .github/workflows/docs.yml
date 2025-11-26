@@ -52,5 +52,5 @@ jobs:
           git add .
           if ! git diff --cached --quiet; then
             git commit -m "Update docs from private repo"
-            git push https://${{ secrets.ArgoBEAST }}@github.com/me/repo-Documentation.git main
+            git push https://${{ secrets.ArgoBEAST }}@github.com/pauls-argo/ArgoBEAST-Documentation.git main
           fi
