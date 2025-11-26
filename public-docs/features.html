@@ -1,0 +1,626 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Features &#8212; ArgoBEAST 1.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=f9c1cefe"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'features';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Locators" href="locators.html" />
+    <link rel="prev" title="Steps" href="steps.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="ArgoBEAST 1.0.0 documentation - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="ArgoBEAST 1.0.0 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages.html">Pages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="steps.html">Steps</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="locators.html">Locators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheat_sheet.html">ArgoBEAST Cheat Sheet</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/features.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Features</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-feature-files">❓What Are Feature Files?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-file-locations">📍 Feature File Locations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features-responsibilities">🗺️ Features Responsibilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-they-should-do">What they should do</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-they-should-not-do">What they should not do</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-new-features-file">🎨 Creating a New Features file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-scenarios">📝 Writing Scenarios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linking-steps-to-features">🔗 Linking Steps to Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tl-dr">TL;DR</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="features">
+<h1>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h1>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#what-are-feature-files" id="id1">❓What Are Feature Files?</a></p></li>
+<li><p><a class="reference internal" href="#feature-file-locations" id="id2">📍 Feature File Locations</a></p></li>
+<li><p><a class="reference internal" href="#features-responsibilities" id="id3">🗺️ Features Responsibilities</a></p>
+<ul>
+<li><p><a class="reference internal" href="#what-they-should-do" id="id4">What they should do</a></p></li>
+<li><p><a class="reference internal" href="#what-they-should-not-do" id="id5">What they should not do</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#creating-a-new-features-file" id="id6">🎨 Creating a New Features file</a></p></li>
+<li><p><a class="reference internal" href="#writing-scenarios" id="id7">📝 Writing Scenarios</a></p></li>
+<li><p><a class="reference internal" href="#linking-steps-to-features" id="id8">🔗 Linking Steps to Features</a></p></li>
+<li><p><a class="reference internal" href="#tl-dr" id="id9">TL;DR</a></p></li>
+</ul>
+</nav>
+<section id="what-are-feature-files">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">❓What Are Feature Files?</a><a class="headerlink" href="#what-are-feature-files" title="Link to this heading">#</a></h2>
+<p>A feature file contains one or more scenarios that instruct Behave which steps to run and in what order.
+Features are written in plain, human-readable language which is one of the things that makes Behave so powerful.</p>
+<p>A standard feature file will begin with a description of what the feature is supposed to achieve.
+Feature files are often written using the user story style:</p>
+<p>As a… -&gt; I want… -&gt; So that</p>
+<p><em>NOTE: It’s entirely up to the user to write feature descriptions that are clear.
+Although the following example is good practice, writing a description in a different way won’t prevent the test from running.</em></p>
+<p>Features are then broken down into scenarios where we can once again use the format</p>
+<p>Given -&gt; When -&gt; Then</p>
+<p>A scenario may pass variables (such as username and password) to steps.
+These values can come from literals, environment variables, or secrets handled inside your step logic.</p>
+<p>Feature files are the only place where you define multiple input sets using a Scenario Outline. (we’ll talk more about this further down the page)</p>
+<p>Using an outline can allow the test or, at a more atomic level, test steps to run several times using a variety of values.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">🌍 Real-world Analogy: (Click to expand)</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Imagine a Warehouse (again)</p>
+<p class="sd-card-text">In our warehouse analogy, the <strong>Feature file</strong> is the <em>blueprint</em> that
+defines what the entire operation is trying to achieve.</p>
+<ul class="simple">
+<li><p class="sd-card-text"><strong>Pages</strong> are the workers who perform small, repeatable tasks.</p></li>
+<li><p class="sd-card-text"><strong>Actions</strong> are the floor manager who organises those tasks.</p></li>
+<li><p class="sd-card-text"><strong>Steps</strong> are the CEO who decides which workflow to run and under what conditions.</p></li>
+<li><p class="sd-card-text"><strong>But the Feature file?</strong>
+It’s the <strong>master plan</strong> the CEO reads from.</p></li>
+</ul>
+<p class="sd-card-text">A Feature describes:</p>
+<ul class="simple">
+<li><p class="sd-card-text">the goal of the test</p></li>
+<li><p class="sd-card-text">why it matters</p></li>
+<li><p class="sd-card-text">the scenarios (chapters) that outline the sequence of actions</p></li>
+<li><p class="sd-card-text">any data sets to test (via Scenario Outlines)</p></li>
+</ul>
+<p class="sd-card-text">The Feature doesn’t touch any machinery or make decisions.
+It simply tells the CEO:</p>
+<ul class="simple">
+<li><p class="sd-card-text"><em>What</em> journey to follow</p></li>
+<li><p class="sd-card-text"><em>In what order</em></p></li>
+<li><p class="sd-card-text"><em>With what data</em></p></li>
+</ul>
+<p class="sd-card-text">In short:</p>
+<p class="sd-card-text"><strong>Feature → Steps → Actions → Pages → WebDriver</strong>
+<strong>Story → Decide → Organise → Do → Execute</strong></p>
+</div>
+</details></section>
+<section id="feature-file-locations">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">📍 Feature File Locations</a><a class="headerlink" href="#feature-file-locations" title="Link to this heading">#</a></h2>
+<p>Feature files are always stored in the <code class="docutils literal notranslate"><span class="pre">features/</span></code> directory and have the file extension <code class="docutils literal notranslate"><span class="pre">.feature</span></code>.</p>
+<p>This is where Behave will look when running any scenarios.</p>
+<p>To keep it clean, ArgoBEAST automatically creates the <code class="docutils literal notranslate"><span class="pre">features/</span></code> directory and a sub directory <code class="docutils literal notranslate"><span class="pre">steps</span></code></p>
+<p>Since the <code class="docutils literal notranslate"><span class="pre">Steps</span></code> you use in your scenarios will directly reflect the annotation given to a <code class="docutils literal notranslate"><span class="pre">Step</span></code>, it’s important you know where to look.</p>
+</section>
+<section id="features-responsibilities">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">🗺️ Features Responsibilities</a><a class="headerlink" href="#features-responsibilities" title="Link to this heading">#</a></h2>
+<section id="what-they-should-do">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">What they should do</a><a class="headerlink" href="#what-they-should-do" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Clearly describe what you are trying to test</p></li>
+<li><p>Declare the values of variables</p></li>
+<li><p>Declare multiple input sets using <code class="docutils literal notranslate"><span class="pre">Scenario</span> <span class="pre">Outline</span></code></p></li>
+<li><p>Invoke <code class="docutils literal notranslate"><span class="pre">Steps</span></code> in the correct order to achieve the test</p></li>
+</ul>
+</section>
+<section id="what-they-should-not-do">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">What they should not do</a><a class="headerlink" href="#what-they-should-not-do" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>There is no “code” in a feature file (Though comments are allowed and certainly recommended)</p></li>
+<li><p>Features will not interact with anything beyond <code class="docutils literal notranslate"><span class="pre">Steps</span></code> (i.e. you cannot call a PageAction from a feature)</p></li>
+<li><p>Do Not call driver methods</p></li>
+<li><p>Do Not call locators</p></li>
+<li><p>Do Not call BasePage methods</p></li>
+</ul>
+</section>
+</section>
+<section id="creating-a-new-features-file">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">🎨 Creating a New Features file</a><a class="headerlink" href="#creating-a-new-features-file" title="Link to this heading">#</a></h2>
+<p>To initialise a new Features file, you can use the ArgoBEAST CLI:</p>
+<p><code class="docutils literal notranslate"><span class="pre">argobeast</span> <span class="pre">create</span> <span class="pre">feature</span> <span class="pre">&lt;name&gt;</span></code></p>
+<p>This generates the basic scaffolding for a new feature file.</p>
+<p>Since <code class="docutils literal notranslate"><span class="pre">Features</span></code> aren’t inherently linked to one <code class="docutils literal notranslate"><span class="pre">Page</span></code> the name of the feature file should summarise what it’s trying to achieve.</p>
+<p>for example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>login_feature.feature
+</pre></div>
+</div>
+<p>Don’t worry about including <cite>_feature</cite> ArgoBEAST will deal with that part for you.</p>
+<p>An example of a feature file that continues our theme of logging in is below.</p>
+<div class="highlight-Gherkin notranslate"><div class="highlight"><pre><span></span><span class="k">Feature:</span><span class="nf"> As a user, I want to log in to the application</span>
+
+<span class="k">Scenario:</span><span class="nf"> Successfully log in as a user</span>
+<span class="k">   Given </span><span class="nf">I am on the login page</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">I log in using correct_username and correct_password</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I should see the home page welcome message</span>
+
+<span class="k">Scenario:</span><span class="nf"> Unsuccessfully attempt to log in as a user</span>
+<span class="k">   Given </span><span class="nf">I am on the login page</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">I login using wrong_username and wrong_password</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I should see the unable to login message</span>
+</pre></div>
+</div>
+<p>If we want to take this further, we can create the scenarios as an outline and use multiple input values declared in a table.</p>
+<div class="highlight-Gherkin notranslate"><div class="highlight"><pre><span></span><span class="k">Scenario Outline:</span><span class="nf"> Successfully log in as a user</span>
+<span class="k">   Given </span><span class="nf">I am on the login page</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">I log in using </span><span class="nv">&lt;username&gt;</span><span class="nf"> and </span><span class="nv">&lt;password&gt;</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">I should see the home page welcome message</span>
+
+<span class="nf"> </span><span class="k">Examples:</span><span class="nf"> Users</span>
+<span class="k">   |</span><span class="nv"> username</span><span class="k">   |</span><span class="nv"> password</span><span class="k">     |</span>
+<span class="k">   |</span><span class="s"> argobeast</span><span class="k">  |</span><span class="s"> sup3rs3cr3t!</span><span class="k"> |</span>
+<span class="k">   |</span><span class="s"> argoadmin</span><span class="k">  |</span><span class="s"> password123!</span><span class="k"> |</span>
+</pre></div>
+</div>
+<p>The above example will run the same scenario twice inserting the values from the table.</p>
+</section>
+<section id="writing-scenarios">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">📝 Writing Scenarios</a><a class="headerlink" href="#writing-scenarios" title="Link to this heading">#</a></h2>
+<p>First - let’s establish the difference between a <code class="docutils literal notranslate"><span class="pre">Feature</span></code> and a <code class="docutils literal notranslate"><span class="pre">Scenario</span></code></p>
+<p><strong>Features</strong> - Describe what we’re trying to test and provide a “home” for the scenarios that will get us there.
+<strong>Scenarios</strong> - Decide the order <code class="docutils literal notranslate"><span class="pre">Steps</span></code> should be run to test the <code class="docutils literal notranslate"><span class="pre">Feature</span></code> Description from all angles.</p>
+<p>When writing a <code class="docutils literal notranslate"><span class="pre">Feature</span></code> file, you should ensure you test both <cite>happy</cite> and <cite>unhappy</cite> paths.</p>
+<p>The following examples are taken directly from the official Behave documentation which it’s recommended to bookmark and refer to regularly:
+<a class="reference external" href="https://behave.readthedocs.io/en/latest/">https://behave.readthedocs.io/en/latest/</a></p>
+<div class="highlight-Gherkin notranslate"><div class="highlight"><pre><span></span><span class="k">Feature:</span><span class="nf"> Fight or flight</span>
+<span class="nf">In order to increase the ninja survival rate,</span>
+<span class="nf">As a ninja commander</span>
+<span class="nf">I want my ninjas to decide whether to take on an</span>
+<span class="nf">opponent based on their skill levels</span>
+
+<span class="k">Scenario:</span><span class="nf"> Weaker opponent</span>
+<span class="k">   Given </span><span class="nf">the ninja has a third level black-belt</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">attacked by a samurai</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">the ninja should engage the opponent</span>
+
+<span class="k">Scenario:</span><span class="nf"> Stronger opponent</span>
+<span class="k">   Given </span><span class="nf">the ninja has a third level black-belt</span>
+<span class="nf">   </span><span class="k">When </span><span class="nf">attacked by Chuck Norris</span>
+<span class="nf">   </span><span class="k">Then </span><span class="nf">the ninja should run for his life</span>
+</pre></div>
+</div>
+</section>
+<section id="linking-steps-to-features">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">🔗 Linking Steps to Features</a><a class="headerlink" href="#linking-steps-to-features" title="Link to this heading">#</a></h2>
+<p>It’s important to remember that what you write in your <code class="docutils literal notranslate"><span class="pre">Scenarios</span></code> needs to match how it’s written in the step you’re trying to invoke.</p>
+<p>If you write:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Given</span> <span class="pre">I</span> <span class="pre">am</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">login</span> <span class="pre">page</span></code></p>
+<p>Then a step <strong>MUST</strong> exist that has the tag:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&#64;given(&quot;I</span> <span class="pre">am</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">login</span> <span class="pre">page&quot;)</span></code></p>
+<p>Another important thing to note is that no two steps can have the same description. However, to assist with readability, it is possible to assign multiple tags to one step.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&#64;then(&quot;I</span> <span class="pre">click</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">burger</span> <span class="pre">menu&quot;)</span></code>
+<code class="docutils literal notranslate"><span class="pre">&#64;then(&quot;I</span> <span class="pre">open</span> <span class="pre">the</span> <span class="pre">burger</span> <span class="pre">menu&quot;)</span></code></p>
+<p>This is perfectly acceptable and sometimes makes the scenario read better. Watch out though, if you are using paramaters the signatures must match on both.</p>
+</section>
+<section id="tl-dr">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">TL;DR</a><a class="headerlink" href="#tl-dr" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Features</span></code> are a list of instructions that invoke steps.
+They do not <strong>DO</strong> anything, they simply declare what steps should be invoked, in what order and with what arguments.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="steps.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Steps</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="locators.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Locators</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-feature-files">❓What Are Feature Files?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-file-locations">📍 Feature File Locations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features-responsibilities">🗺️ Features Responsibilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-they-should-do">What they should do</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-they-should-not-do">What they should not do</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-new-features-file">🎨 Creating a New Features file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-scenarios">📝 Writing Scenarios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linking-steps-to-features">🔗 Linking Steps to Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tl-dr">TL;DR</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Paul S
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Paul S.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
