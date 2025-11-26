@@ -173,4 +173,4 @@ ArgoBEAST is still under development. Below is the current roadmap.
 
 - Docker integration
 
-- Reporting improvements
+- Reporting improvements (Including allure)

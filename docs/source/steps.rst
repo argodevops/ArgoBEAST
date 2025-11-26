@@ -32,11 +32,11 @@ Behave offers annotations to describe what type of instruction the step is. For 
        ctx = BaseStepContext(context)
        context.page = ctx.get_page(LoginPage)
 
-   @when("I login using {username} and {password}")
+   @when("I log in using {username} and {password}")
    def step_example_action(context,username, password):
       ctx = BaseStepContext(context)
       actions = ctx.get_actions(LoginActions)
-      actions.login(username, password)
+      actions.log_in(username, password)
    
    # home_steps.py
    @then("I should see the home page welcome message")
@@ -202,11 +202,11 @@ Below is a simple Steps page for our login screen. Notice how the ``@then`` has 
        ctx = BaseStepContext(context)
        context.page = ctx.get_page(LoginPage)
 
-   @when("I login using {username} and {password}")
+   @when("I log in using {username} and {password}")
    def step_example_action(context,username, password):
       ctx = BaseStepContext(context)
       actions = ctx.get_actions(LoginActions)
-      actions.login(username, password)
+      actions.log_in(username, password)
 
 
 TL;DR

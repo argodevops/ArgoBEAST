@@ -132,7 +132,7 @@ Below is a simple ActionClass for a login screen. Notice how there is no "if adm
       def __init__(self, page):
          super().__init__(page)
       
-      def login(self,username,password):
+      def log_in(self,username,password):
          self.page.enter_username(username)
          self.page.enter_password(password)
          self.page.click_submit()  
