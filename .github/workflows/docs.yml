@@ -44,6 +44,9 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+          # Clean workspace clone
+          rm -rf public-docs
+
           git clone --depth 1 --branch main https://${{ secrets.ArgoBEAST }}@github.com/pauls-argo/ArgoBEAST-Documentation.git public-docs
 
           rsync -av --delete docs/build/html/ public-docs/
@@ -53,4 +56,6 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "Update docs from private repo"
             git push https://${{ secrets.ArgoBEAST }}@github.com/pauls-argo/ArgoBEAST-Documentation.git main
+          else
+            echo "No changes to commit"
           fi
