@@ -30,6 +30,11 @@ jobs:
         run: |
           sphinx-build -M html docs/source docs/build
 
+      - name: Inspect Sphinx output
+        run: |
+          echo "Built files in docs/build/html:"
+          ls -R docs/build/html || echo "No output found!"
+
       - name: Force git to use PAT for all GitHub URLs
         run: |
           git config --global url."https://${{ secrets.ArgoBEAST }}@github.com/".insteadOf "https://github.com/"

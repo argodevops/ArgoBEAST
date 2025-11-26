@@ -10,8 +10,8 @@ Steps
    :local:
    :depth: 2
 
- ❓What Are Steps?
-====================
+❓What Are Steps?
+===================
 Steps are the detailed instructions that invoke actions, they are the only place where we should find conditional logic such as *If admin... else*.
 
 They follow the format:
@@ -115,14 +115,14 @@ This follows the usual format of a feature (we'll cover feature files later on).
 👣 Steps Responsibilities
 ===========================
 What they should do
------------------
+-------------------
 - Break scenarios down into clear directives (Given, When, Then)
 - Branching logic decisions to inform which Actions are invoked (*if user=="Admin" then navigate to admin_view else navigate to worker_view*)
 - Decide values of variables that are passed to actions.
 - Assert results (Steps are the only place you should do this, actions package the results of the Page UI Interactions and send them back to steps to decipher)
 
 What they should not do
----------------------  
+-----------------------  
 - Make any assumptions about how the actions are carried out
 - Interact with the WebDriver in any way
    - Do Not call driver methods
@@ -130,7 +130,7 @@ What they should not do
    - Do Not call BasePage methods
 
 🎒 What Is BaseStepContext?
-==========================
+============================
 
 ``BaseStepContext`` acts like a **magic backpack** for your test steps.
 
@@ -190,6 +190,7 @@ Example
 Below is a simple Steps page for our login screen. Notice how the ``@then`` has been omitted since this lives in ``home_steps.py``. 
 
 .. code-block:: python
+
    from behave import given, when, then
    from test_framework.base.base_step_context import BaseStepContext
    from actions.login_actions import LoginActions
