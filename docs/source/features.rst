@@ -31,7 +31,7 @@ Feature files are the only place where you define multiple input sets using a Sc
 Using an outline can allow the test or, at a more atomic level, test steps to run several times using a variety of values.
 
 .. dropdown:: 🌍 Real-world Analogy: (Click to expand)
-   
+
    Imagine a Warehouse (again)
 
    In our warehouse analogy, the **Feature file** is the *blueprint* that
@@ -103,6 +103,7 @@ Since ``Features`` aren't inherently linked to one ``Page`` the name of the feat
 for example:
 
 .. code-block:: text
+
    login_feature.feature
 
 Don't worry about including `_feature` ArgoBEAST will deal with that part for you.
@@ -110,6 +111,7 @@ Don't worry about including `_feature` ArgoBEAST will deal with that part for yo
 An example of a feature file that continues our theme of logging in is below.
 
 .. code-block:: Gherkin
+
    Feature: As a user, I want to log in to the application
 
    Scenario: Successfully log in as a user 
@@ -125,6 +127,7 @@ An example of a feature file that continues our theme of logging in is below.
 If we want to take this further, we can create the scenarios as an outline and use multiple input values declared in a table. 
 
 .. code-block:: Gherkin
+   
    Scenario Outline: Successfully log in as a user 
       Given I am on the login page
       When I log in using <username> and <password>
