@@ -35,7 +35,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git clone --depth 1 --branch main https://${{ secrets.ArgoBEAST }}@github.com/pauls-argo/ArgoBEAST-Documentation.git public-docs
+          git clone --depth 1 --branch main https://${{ secrets.PERSONAL_TOKEN }}@github.com/pauls-argo/ArgoBEAST-Documentation.git public-docs
 
           rsync -av --delete docs/build/html/ public-docs/
 
