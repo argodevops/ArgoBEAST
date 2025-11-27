@@ -30,16 +30,6 @@ jobs:
         run: |
           sphinx-build -M html docs/source docs/build
 
-      - name: Debug PAT presence
-        env:
-          DOCS_PAT: ${{ secrets.ARGO_BEAST_DOCS }}
-        run: |
-          if [ -z "$DOCS_PAT" ]; then
-            echo "❌ PAT is EMPTY or NOT LOADED"
-            exit 1
-          else
-            echo "✅ PAT is LOADED (length: ${#DOCS_PAT})"
-          fi
       - name: Force git to use PAT for all GitHub URLs
         run: |
           git config --global url."https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/".insteadOf "https://github.com/"
@@ -52,10 +42,15 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
       
           rm -rf public-docs
+          mkdir -p public-docs
+          ls -a
       
           git clone --depth 1 --branch main \
             https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git \
             public-docs
+
+          echo "Cloned repo contents:"
+          ls -a public-docs
       
           rsync -av --delete docs/build/html/ public-docs/
       
