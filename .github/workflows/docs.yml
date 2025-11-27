@@ -30,9 +30,13 @@ jobs:
         run: |
           sphinx-build -M html docs/source docs/build
 
-      - name: Temp step check secret
+      - name: Debug PAT presence
         run: |
-          echo ${{secrets.ArgoBEAST}}
+          if [ -z "${{ secrets.ArgoBEAST }}" ]; then
+            echo "❌ PAT is EMPTY or NOT LOADED"
+          else
+            echo "✅ PAT is LOADED (length: ${#{{ secrets.ArgoBEAST }}})"
+          fi
 
       - name: Force git to use PAT for all GitHub URLs
         run: |
