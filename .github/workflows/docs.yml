@@ -31,13 +31,15 @@ jobs:
           sphinx-build -M html docs/source docs/build
 
       - name: Debug PAT presence
+        env:
+          DOCS_PAT: ${{ secrets.ARGO_BEAST_DOCS }}
         run: |
-          if [ -z "${{ secrets.ARGO_BEAST_DOCS }}" ]; then
+          if [ -z "$DOCS_PAT" ]; then
             echo "❌ PAT is EMPTY or NOT LOADED"
+            exit 1
           else
-            echo "✅ PAT is LOADED (length: ${#{{ secrets.ARGO_BEAST_DOCS }}})"
+            echo "✅ PAT is LOADED (length: ${#DOCS_PAT})"
           fi
-
       - name: Force git to use PAT for all GitHub URLs
         run: |
           git config --global url."https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/".insteadOf "https://github.com/"
@@ -60,6 +62,7 @@ jobs:
             echo "Attempting to commit changes"
             git commit -m "Update docs from private repo"
             git push https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main
+            echo "Changes commited"
           else
             echo "No changes to commit"
           fi
