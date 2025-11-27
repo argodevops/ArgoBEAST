@@ -51,7 +51,7 @@ jobs:
           rsync -av --delete --exclude='.git/' docs/build/html/ public-docs/
       
           cd public-docs
-      
+          touch .nojekyll
           git add -A
           if ! git diff --cached --quiet; then
             git commit -m "Update docs (run $GITHUB_RUN_NUMBER)"
