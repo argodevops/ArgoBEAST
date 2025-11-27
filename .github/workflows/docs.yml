@@ -35,12 +35,12 @@ jobs:
           if [ -z "${{ secrets.ArgoBEAST }}" ]; then
             echo "❌ PAT is EMPTY or NOT LOADED"
           else
-            echo "✅ PAT is LOADED (length: ${#{{ secrets.ArgoBEAST }}})"
+            echo "✅ PAT is LOADED (length: ${#{{ secrets.ARGO_BEAST_DOCS }}})"
           fi
 
       - name: Force git to use PAT for all GitHub URLs
         run: |
-          git config --global url."https://${{ secrets.ArgoBEAST }}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/".insteadOf "https://github.com/"
 
       - name: Deploy to Public Docs Repo
         run: |
@@ -50,7 +50,7 @@ jobs:
           # Clean workspace clone
           rm -rf public-docs
 
-          git clone --depth 1 --branch main https://${{ secrets.ArgoBEAST }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git public-docs
+          git clone --depth 1 --branch main https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git public-docs
 
           rsync -av --delete docs/build/html/ public-docs/
 
@@ -59,7 +59,7 @@ jobs:
           if ! git diff --cached --quiet; then
             echo "Attempting to commit changes"
             git commit -m "Update docs from private repo"
-            git push https://${{ secrets.ArgoBEAST }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main
+            git push https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main
           else
             echo "No changes to commit"
           fi
