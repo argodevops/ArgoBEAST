@@ -65,7 +65,12 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "Update docs (run $GITHUB_RUN_NUMBER)"
           fi
-      
+          echo "PWD is:"
+          pwd
+          echo "Listing current directory:"
+          ls -a
+          echo "Git remotes:"
+          git remote -v || echo "NOT A GIT REPO"
           # ALWAYS push explicitly with PAT
           git push https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main
 
