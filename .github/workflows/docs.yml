@@ -46,23 +46,27 @@ jobs:
 
       - name: Deploy to Public Docs Repo
         run: |
+          set -e
+      
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Clean workspace clone
+      
           rm -rf public-docs
-
-          git clone --depth 1 --branch main https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git public-docs
-
+      
+          git clone --depth 1 --branch main \
+            https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git \
+            public-docs
+      
           rsync -av --delete docs/build/html/ public-docs/
-
+      
           cd public-docs
           git add .
-          if ! git diff --cached --quiet; then
-            echo "Attempting to commit changes"
-            git commit -m "Update docs from private repo"
-            git push https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main
-            echo "Changes commited"
+      
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Update docs from private repo (run $GITHUB_RUN_NUMBER)"
+            git push \
+              https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git \
+              main
           else
-            echo "No changes to commit"
+            echo "No changes to commit."
           fi
