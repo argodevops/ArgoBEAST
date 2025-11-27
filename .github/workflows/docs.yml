@@ -32,7 +32,7 @@ jobs:
 
       - name: Debug PAT presence
         run: |
-          if [ -z "${{ secrets.ArgoBEAST }}" ]; then
+          if [ -z "${{ secrets.ARGO_BEAST_DOCS }}" ]; then
             echo "❌ PAT is EMPTY or NOT LOADED"
           else
             echo "✅ PAT is LOADED (length: ${#{{ secrets.ARGO_BEAST_DOCS }}})"
