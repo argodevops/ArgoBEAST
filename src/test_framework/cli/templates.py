@@ -32,29 +32,25 @@ Feature: {Name}
 
 STEPS_TEMPLATE = """
 from behave import given, when, then
-from test_framework.base.base_step_context import BaseStepContext
 from actions.{name}_actions import {Name}Actions
-from pages.{name}_page import {Name}Page
 
 # Behave automatically injects `context`
 # BaseStepContext gives you .get_page() and .get_actions()
 
 @given("I am on the {{name}} page")
 def step_go_to_page(context):
-    ctx = BaseStepContext(context)
-    context.page = ctx.get_page({Name}Page)
+    actions = context.app.get_actions({Name}Actions)
+    pass
 
 @when("I perform an example action on the {{name}} page")
 def step_example_action(context):
-    ctx = BaseStepContext(context)
-    actions = ctx.get_actions({Name}Actions)
+    actions = context.app.get_actions({Name}Actions)
     # Example: actions.login("user", "pass")
     pass
 
 @then("I should see an example result")
 def step_assert_result(context):
-    ctx = BaseStepContext(context)
-    actions = ctx.get_actions({Name}Actions)
+    actions = context.app.get_actions({Name}Actions)
     # Example: assert actions.page.is_visible(actions.page.SUCCESS_MESSAGE)
     pass
 """
@@ -89,8 +85,8 @@ log_level: "INFO"
 """
 
 REQUIREMENTS_TEMPLATE = """
-selenium
-behave
+selenium==4.23.1
+behave==1.2.6
 """
 
 ENVIRONMENT_TEMPLATE = """

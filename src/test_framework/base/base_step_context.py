@@ -6,10 +6,9 @@ Base class for step context
 
 class BaseStepContext():
 
-    def __init__(self, context):
-        self.context = context
-        self.driver = context.driver
-        self.config = context.config
+    def __init__(self, driver, config):
+        self.driver = driver
+        self.config = config
 
     def get_page(self, PageClass):
         """

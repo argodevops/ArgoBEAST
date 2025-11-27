@@ -1,48 +1,66 @@
 from selenium import webdriver
-from selenium.webdriver.remote.webdriver import WebDriver
 
 
-class WebDriverFactory():
+class WebDriverFactory:
+    """
+    A stateless driver factory.
+
+    - Does NOT store `self.driver`
+    - Does NOT hold WebDriver instances after creation
+    - Returns a fresh driver object each time
+    - Leaves all driver lifecycle management to environment.py
+    """
+
     def __init__(self, config):
-        self.driver: WebDriver | None = None
-        self.options = None
         self.config = config
 
     def create_driver(self):
         """
-        Create and return a WebDriver instance based on the configuration
-        :return: WebDriver instance
+        Create and return a new WebDriver instance based on config.
         """
+        options = webdriver.ChromeOptions()
 
-        self.options = webdriver.ChromeOptions()
+        # Headless mode
+        if self.config.get("headless", False):
+            options.add_argument("--headless=new")
 
-        if self.config["headless"]:
-            self.options.add_argument("--headless=new")
+        # Window size
+        if "window_size" in self.config:
+            width, height = self.config["window_size"].split(",")
+            options.add_argument(f"--window-size={width},{height}")
 
-        # width and height
-        width, height = self.config["window_size"].split(",")
-        self.options.add_argument(f"--window-size={width},{height}")
-
-        # Shared args for Docker / Gitpod
-        self.options.add_argument("--no-sandbox")
-        self.options.add_argument("--disable-dev-shm-usage")
-
-        if "remote_url" in self.config and self.config["remote_url"]:
-            # Running inside Docker / Gitpod
-            self.driver = webdriver.Remote(
-                command_executor=self.config["remote_url"],
-                options=self.options
+        # Remote mode (Docker/Selenium Grid)
+        remote_url = self.config.get("remote_url", "")
+        if remote_url:
+            driver = webdriver.Remote(
+                command_executor=remote_url,
+                options=options
             )
         else:
             # Local laptop mode
-            self.driver = webdriver.Chrome(options=self.options)
+            driver = webdriver.Chrome(options=options)
 
-        self.driver.implicitly_wait(self.config["implicit_wait"])
-        self.driver.set_page_load_timeout(self.config['page_load_timeout'])
-        self.driver.get(self.config["base_url"])
+        # Timeouts + ready state
+        driver.implicitly_wait(self.config.get("implicit_wait", 5))
+        driver.set_page_load_timeout(self.config.get("page_load_timeout", 30))
 
-        return self.driver
+        # Navigate to base URL
+        base_url = self.config.get("base_url")
+        if base_url:
+            driver.get(base_url)
 
-    def quit_driver(self):
-        if self.driver:
-            self.driver.quit()
+        return driver
+
+    def quit_driver(self, driver):
+        """
+        Optional helper for people who manage drivers outside Behave.
+        Does nothing if the driver is already None or raises during quit.
+        """
+        if not driver:
+            return
+
+        try:
+            driver.quit()
+        except Exception:
+            # Ignore "session already closed" errors
+            pass

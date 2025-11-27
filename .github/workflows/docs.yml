@@ -25,6 +25,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install sphinx-book-theme myst_parser sphinx_design
+          pip install .
 
       - name: Build Sphinx documentation
         run: |
@@ -37,25 +38,24 @@ jobs:
       - name: Deploy to Public Docs Repo
         run: |
           set -e
-      
+
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      
+
           rm -rf public-docs
-      
+
           git clone --depth 1 --branch main \
             https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git \
             public-docs
-      
+
           # Copy docs *without deleting the repo’s .git folder*
           rsync -av --delete --exclude='.git/' docs/build/html/ public-docs/
-      
+
           cd public-docs
           touch .nojekyll
           git add -A
           if ! git diff --cached --quiet; then
             git commit -m "Update docs (run $GITHUB_RUN_NUMBER)"
           fi
-      
-          git push https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main
 
+          git push https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main
