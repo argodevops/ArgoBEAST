@@ -41,27 +41,31 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
       
+          # Safety: remove any stale clone
           rm -rf public-docs
-          mkdir -p public-docs
-          ls -a
       
+          # Clone target repo using PAT
           git clone --depth 1 --branch main \
             https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git \
             public-docs
-
-          echo "Cloned repo contents:"
-          ls -a public-docs
       
+          # Sync the built HTML
           rsync -av --delete docs/build/html/ public-docs/
       
           cd public-docs
-          git add .
       
-          if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Update docs from private repo (run $GITHUB_RUN_NUMBER)"
-            git push \
-              https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git \
-              main
-          else
-            echo "No changes to commit."
+          # Debug: show remotes so we can SEE what git is pushing to
+          echo "### REMOTES ###"
+          git remote -v
+      
+          # Stage changes (add new, updated, deleted)
+          git add -A
+      
+          # Commit only if needed
+          if ! git diff --cached --quiet; then
+            git commit -m "Update docs (run $GITHUB_RUN_NUMBER)"
           fi
+      
+          # ALWAYS push explicitly with PAT
+          git push https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main
+
