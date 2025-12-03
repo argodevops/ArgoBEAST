@@ -167,3 +167,7 @@ class CommonActions:
                 time.sleep(delay)
 
         return False
+
+    def upload_file(self, locator, filepath):
+        self.page.set_value(locator=locator, keys=filepath)
+        return True

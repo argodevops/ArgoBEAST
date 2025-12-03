@@ -1,4 +1,4 @@
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, InvalidArgumentException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
@@ -75,7 +75,7 @@ class BasePage():
         :return: List of WebElements or empty list"""
         try:
             self._wait_for_presence(locator)
-            elements = self.driver.find_elements(locator)
+            elements = self.driver.find_elements(*locator)
             return elements
         except TimeoutException:
             self.logger.warning("No elements found")
@@ -172,3 +172,24 @@ class BasePage():
         if not os.path.exists("./screenshots"):
             os.makedirs("./screenshots")
         self.driver.save_screenshot(f"./screenshots/{name}.png")
+
+    def set_value(self, locator, keys):
+        element = self.find(locator=locator)
+
+        # Ensure element is visible before sending keys.
+        self.logger.info("Making input visible.")
+        self.driver.execute_script("arguments[0].style.clip='auto';"
+                                   "arguments[0].style.clipPath='none';"
+                                   "arguments[0].style.width='auto';"
+                                   "arguments[0].style.height='auto';"
+                                   "arguments[0].style.visibility='visible';"
+                                   "arguments[0].style.display='block';"
+                                   "arguments[0].style.opacity='1';", element)
+        try:
+            element.send_keys(keys)
+            self.logger.info(f"{keys} sent to {locator}")
+            return True
+        except InvalidArgumentException:
+            self.logger.error(
+                f"Could not send keys {keys} to locator {locator}")
+            return False
