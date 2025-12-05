@@ -21,4 +21,5 @@ documentation for details.
    steps
    features
    locators
+   advanced_features
    cheat_sheet
