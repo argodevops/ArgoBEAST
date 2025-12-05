@@ -1,5 +1,8 @@
-from .helpers import ensure_dir, ok, warn, error
-from .templates import PAGE_TEMPLATE, STEPS_TEMPLATE, ACTIONS_TEMPLATE, FEATURE_TEMPLATE, CONFIG_TEMPLATE, REQUIREMENTS_TEMPLATE, ENVIRONMENT_TEMPLATE
+from .helpers import ensure_dir, ok, warn, error, info
+from .templates import (PAGE_TEMPLATE, STEPS_TEMPLATE,
+                        ACTIONS_TEMPLATE, FEATURE_TEMPLATE,
+                        CONFIG_TEMPLATE, REQUIREMENTS_TEMPLATE,
+                        ENVIRONMENT_TEMPLATE, COMMON_FEATURE_EXAMPLE)
 import os
 import sys
 import subprocess
@@ -7,6 +10,13 @@ import subprocess
 """
 CLI functions for creating test framework components
 """
+
+
+def create_common_features():
+    directory = "features/_common"
+    with open(f"{directory}/login.feature", "w") as f:
+        f.write(COMMON_FEATURE_EXAMPLE)
+    return
 
 
 def create(name, type):
@@ -70,7 +80,8 @@ def init():
     """
     Initialize a new test framework structure
     """
-    directories = ["pages", "actions", "features", "features/steps", "config"]
+    directories = ["pages", "actions", "features",
+                   "features/steps", "config", "features/_common"]
     examples = ["page", "actions", "feature", "steps"]
     accepted_response = ["y", "yes", "n", "no"]
 
@@ -92,10 +103,14 @@ def init():
     with open("features/environment.py", "w") as f:
         f.write(ENVIRONMENT_TEMPLATE)
 
+    with open("features/_common/.gitadd", "w") as f:
+        f.write("# Keep this folder")
+
     with open("requirements.txt", "w") as f:
         f.write(REQUIREMENTS_TEMPLATE)
 
     if include_examples in ["y", "yes"]:
+        create_common_features()
         for e in examples:
             create("login", e)
 
@@ -113,10 +128,11 @@ def init():
 
 
 def build_docs():
-    subprocess.check_call([
-        "sphinx-build",
-        "-M",
-        "html",
-        "docs/source",
-        "docs/build",
-    ])
+    # subprocess.check_call([
+    #     "sphinx-build",
+    #     "-M",
+    #     "html",
+    #     "docs/source",
+    #     "docs/build",
+    # ])
+    info("This is a work in progress, ArgoBEAST is still under development")

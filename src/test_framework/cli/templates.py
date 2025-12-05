@@ -94,3 +94,31 @@ ENVIRONMENT_TEMPLATE = """
 from test_framework.behave_integration.environment import *
 # You do not need to touch this file.
 """
+
+COMMON_FEATURE_EXAMPLE = """
+# ==============================================================================
+#  This file contains reusable scenarios (Hooks).
+#  These scenarios do NOT run as standalone tests.
+#
+#  HOW TO USE:
+#  1. Define a scenario here and tag it with a unique ID (e.g. @login_admin).
+#  2. To run it BEFORE a test, tag your test with @setup:login_admin
+#  3. To run it AFTER a test, tag your test with @teardown:login_admin
+# ==============================================================================
+
+Feature: Authentication Hooks
+
+  @login_admin
+  Scenario: Login as Administrator
+    Given I navigate to the login page
+    When I enter "admin" into the username field
+    And I enter "password123" into the password field
+    And I click the login button
+    Then I should be on the dashboard
+
+  @login_guest
+  Scenario: Login as Guest User
+    Given I navigate to the login page
+    When I click the "Continue as Guest" link
+    Then I should be on the home page
+"""
