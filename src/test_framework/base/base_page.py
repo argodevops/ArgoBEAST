@@ -133,8 +133,7 @@ class BasePage():
         :return: True if visible, False if timeout
         """
         try:
-            self._wait_for_visible(locator)
-            return True
+            return self._wait_for_visible(locator)
         except TimeoutException:
             return False
 
@@ -145,8 +144,7 @@ class BasePage():
         :return: True if visible, False if timeout
         """
         try:
-            self._wait_for_invisible(locator)
-            return True
+            return self._wait_for_invisible(locator)
         except TimeoutException:
             return False
 
