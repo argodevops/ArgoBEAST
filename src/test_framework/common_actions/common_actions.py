@@ -214,55 +214,94 @@ class CommonActions:
                 raise ValueError(
                     f"Field '{field}' not found in map for {page_name}.")
 
-    def verify_row_exists(self, table_locator, expected_data):
+    def verify_row_exists(self, table_locator, expected_data: dict):
         """
-        GOAL: Assert that at least one row matches the criteria.
-
-        ARGS: 
-        - expected_data: A dict subset, e.g., {'Name': 'Bob'}
-
-        IMPLEMENTATION STRATEGY:
-        1. Call self.page.get_table_data(table_locator).
-        2. Loop through the returned list.
-        3. Perform a "Subset Check":
-        - Does row['Name'] == 'Bob'?
-        - If expected_data has multiple keys (Name=Bob, Role=Admin), ALL must match.
-        4. If a match is found, return True/Pass.
-        5. If loop finishes without match, Raise AssertionError with a helpful message showing what was actually found.
+        Asserts that at least one row matches ALL keys/values in expected_data.
         """
-        pass
+        table_data = self.page.get_table_data(table_locator)
 
-    def verify_row_does_not_exist(self, table_locator, expected_data):
-        """
-        GOAL: Assert that NO row matches the criteria.
+        found = False
+        for row in table_data:
+            # We assume it matches until we find a mismatch
+            match = True
+            for key, expected_value in expected_data.items():
+                actual_value = row.get(key)
 
-        IMPLEMENTATION STRATEGY:
-        1. Reuse the logic from `verify_row_exists`.
-        2. If it returns True (found), Raise AssertionError immediately.
-        3. If it finishes without finding it, Pass.
-        """
-        pass
+                if actual_value != expected_value:
+                    match = False
+                    break
+            if match:
+                found = True
+                break
 
-    def verify_table_contains_count(self, table_locator, expected_data, count):
-        """
-        GOAL: Assert that exactly X rows match the criteria.
+        if not found:
+            raise AssertionError(
+                f"Could not find row matching {expected_data}.\n"
+                f"Actual Table Data: {table_data}"
+            )
+        return found
 
-        IMPLEMENTATION STRATEGY:
-        1. Get data.
-        2. Initialize a counter = 0.
-        3. Loop through rows and perform the subset check.
-        4. If match, increment counter.
-        5. Finally, assert counter == expected_count.
+    def verify_row_does_not_exist(self, table_locator, expected_data: dict):
         """
-        pass
+        Asserts that NO row matches the criteria.
+        """
+        table_data = self.page.get_table_data(table_locator)
+
+        for row in table_data:
+            match = True
+            for key, expected_value in expected_data.items():
+                if row.get(key) != expected_value:
+                    match = False
+                    break
+            if match:
+                # If we found a match, that's a FAILURE
+                raise AssertionError(
+                    f"Found unexpected row: {row} matching filter criteria: {expected_data}")
+        return True
+
+    def verify_table_contains_count(self, table_locator, count: int, filter_data=None):
+        """
+        Asserts that exactly X rows match the filter criteria.
+
+        :param table_locator: Locator for the table
+        :param count: Expected number of rows (int or str convertible to int)
+        :param filter_data: Optional dict of filter criteria
+        If filter_data is None, checks total row count.
+        """
+        table_data = self.page.get_table_data(table_locator)
+
+        # Scenario A: Just check total rows
+        if filter_data is None:
+            actual_count = len(table_data)
+
+        # Scenario B: Count specific rows
+        else:
+            actual_count = 0
+            for row in table_data:
+                match = True
+                for key, val in filter_data.items():
+                    if row.get(key) != val:
+                        match = False
+                        break
+                if match:
+                    actual_count += 1
+
+        if actual_count != int(count):
+            raise AssertionError(
+                f"Expected count: {count}, but found: {actual_count}. Filter: {filter_data}"
+            )
+        return True
 
     def verify_column_headers(self, table_locator, expected_headers):
-        """
-        GOAL: Ensure the table structure is correct (e.g. columns haven't disappeared).
+        actual_headers = self.page.get_table_headers(table_locator)
 
-        IMPLEMENTATION STRATEGY:
-        1. Call self.page.get_table_headers(table_locator).
-        2. Assert that every item in `expected_headers` is present in the actual list.
-        3. (Optional) Assert order matches if strict ordering is required.
-        """
-        pass
+        missing = []
+        for h in expected_headers:
+            if h not in actual_headers:
+                missing.append(h)
+
+        if missing:
+            raise AssertionError(
+                f"Missing columns: {missing}. Actual headers: {actual_headers}"
+            )
+        return True
