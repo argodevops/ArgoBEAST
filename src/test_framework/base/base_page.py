@@ -133,8 +133,18 @@ class BasePage():
         :return: True if visible, False if timeout
         """
         try:
-            self._wait_for_visible(locator)
-            return True
+            return self._wait_for_visible(locator)
+        except TimeoutException:
+            return False
+
+    def is_not_visible(self, locator):
+        """
+        Check if element is visible
+        :param locator: Locator tuple
+        :return: True if visible, False if timeout
+        """
+        try:
+            return self._wait_for_invisible(locator)
         except TimeoutException:
             return False
 
@@ -301,42 +311,48 @@ class BasePage():
             raise ValueError(
                 f"Unknown input_type '{input_type}' for locator {locator}")
 
-    def get_table_data(self, locator):
-        """
-        The Powerhouse Function.
-
-        GOAL: Parse an HTML table into a list of dictionaries.
-
-        IMPLEMENTATION STRATEGY:
-        1. Find the table element using the locator.
-        2. Extract Headers:
-        - Try finding <thead>//th first.
-        - Fallback to the first <tr>//th if <thead> is missing.
-        - Store these as a list of strings: ['Name', 'Age', 'Role'].
-        3. Extract Rows:
-        - Find all <tr> elements in <tbody> (or all <tr> excluding the header row).
-        4. Loop and Zip:
-        - Iterate through each row.
-        - Find all <td> cells within that row.
-        - Use python's `zip()` to combine headers and cell text into a dictionary.
-        - Handle edge case: If a row has fewer cells than headers, fill with None/Empty string.
-
-        RETURN: 
-        [
-        {'Name': 'Alice', 'Age': '25'}, 
-        {'Name': 'Bob',   'Age': '30'}
-        ]
-        """
-        pass
-
     def get_table_headers(self, locator):
         """
-        GOAL: specific check for column existence without parsing the whole body.
-
-        IMPLEMENTATION STRATEGY:
-        1. Similar logic to step 2 above.
-        2. Return just the list of strings.
-
-        USE CASE: "Then the table should have a 'Status' column"
+        Returns the headers from a table
         """
-        pass
+        table = self._wait_for_visible(locator)
+        headers = []
+        header_elements = table.find_elements(By.XPATH, ".//thead//th")
+
+        if not header_elements:
+            # Fallback: look for <th> inside the first <tr>
+            header_elements = table.find_elements(By.XPATH, ".//tr[1]//th")
+
+        headers = [h.text.strip() for h in header_elements]
+        return headers
+
+    def get_table_data(self, locator):
+        """
+        Parses an HTML table into a list of dictionaries.
+
+        Example Return:
+        [
+            {"Name": "Alice", "Role": "Admin", "Status": "Active"},
+            {"Name": "Bob",   "Role": "User",  "Status": "Inactive"}
+        ]
+        """
+        table = self._wait_for_visible(locator)
+        headers = self.get_table_headers(locator)
+        rows = table.find_elements(By.XPATH, ".//tbody//tr")
+        if not rows:
+            # Fallback for tables without explicit tbody
+            rows = table.find_elements(By.XPATH, ".//tr[td]")
+        table_data = []
+
+        for row in rows:
+            cells = row.find_elements(By.TAG_NAME, "td")
+            # Safety Check: Ensure cell count matches header count
+            # Use zip to map Header -> Cell Value
+            row_data = {}
+            for i, header in enumerate(headers):
+                if i < len(cells):
+                    row_data[header] = cells[i].text.strip()
+                else:
+                    row_data[header] = None  # Handle missing cells gracefully
+            table_data.append(row_data)
+        return table_data
