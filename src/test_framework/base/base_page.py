@@ -1,6 +1,9 @@
 from selenium.common.exceptions import TimeoutException, InvalidArgumentException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as ec
 import logging
 import os
@@ -193,3 +196,147 @@ class BasePage():
             self.logger.error(
                 f"Could not send keys {keys} to locator {locator}")
             return False
+
+    def populate_dropdown(self, locator, value):
+        """Selects a value from a standard <select> dropdown."""
+        # Use wait_for_visible to ensure it's ready for interaction
+        element = self._wait_for_visible(locator)
+        if not element:
+            raise ValueError(f"Dropdown not found: {locator}")
+
+        self.logger.info(f"Selecting '{value}' in dropdown {locator}")
+        try:
+            Select(element).select_by_visible_text(value)
+        except:
+            Select(element).select_by_value(value)
+
+    def populate_combobox(self, locator, value):
+        """Types and enters a value into a combobox/autocomplete."""
+        element = self._wait_for_visible(locator)
+        if not element:
+            raise ValueError(f"Combobox not found: {locator}")
+
+        self.logger.info(f"Setting combobox {locator} to '{value}'")
+        element.send_keys(Keys.CONTROL + "a")
+        element.send_keys(Keys.DELETE)
+        element.send_keys(value)
+        element.send_keys(Keys.ENTER)
+
+    def populate_checkbox(self, locator, value):
+        """Toggles a checkbox based on boolean-like string value."""
+        element = self._wait_for_clickable(locator)
+        if not element:
+            raise ValueError(f"Checkbox not found: {locator}")
+
+        should_be_checked = str(value).lower() in ['true', 'yes', 'on', '1']
+
+        if element.is_selected() != should_be_checked:
+            self.logger.info(
+                f"Toggling checkbox {locator} to {should_be_checked}")
+            element.click()
+
+    def populate_radio_group(self, locator, value):
+        """Selects a radio button within a group by Label or Value."""
+        # Find container (visible)
+        container = self._wait_for_visible(locator)
+        if not container:
+            raise ValueError(f"Radio Group container not found: {locator}")
+
+        target_element = None
+
+        # Strategy A: Text Match
+        try:
+            target_element = container.find_element(
+                By.XPATH,
+                f".//label[contains(normalize-space(), '{value}')]"
+            )
+        except:
+            pass
+
+        # Strategy B: Value Match
+        if not target_element:
+            try:
+                target_element = container.find_element(
+                    By.XPATH,
+                    f".//input[@type='radio'][@value='{value}']"
+                )
+            except:
+                pass
+
+        if target_element:
+            self.logger.info(
+                f"Clicking radio option '{value}' in group {locator}")
+            target_element.click()
+        else:
+            raise ValueError(
+                f"Radio option '{value}' not found in group {locator}")
+
+    # --- THE DISPATCHER ---
+
+    def populate_form_field(self, locator, value, input_type="text"):
+        """
+        Routes the population request to the specific atomic method.
+        """
+        if input_type == "text":
+            # FIX: Added 'value' argument
+            self.type_text(locator, value)
+
+        elif input_type == "select":
+            self.populate_dropdown(locator, value)
+
+        elif input_type == "combobox":
+            self.populate_combobox(locator, value)
+
+        elif input_type == "checkbox":
+            self.populate_checkbox(locator, value)
+
+        elif input_type == "radio":
+            # Simple click on specific locator
+            self.click(locator)
+
+        elif input_type == "radio_group":
+            self.populate_radio_group(locator, value)
+
+        else:
+            raise ValueError(
+                f"Unknown input_type '{input_type}' for locator {locator}")
+
+    def get_table_data(self, locator):
+        """
+        The Powerhouse Function.
+
+        GOAL: Parse an HTML table into a list of dictionaries.
+
+        IMPLEMENTATION STRATEGY:
+        1. Find the table element using the locator.
+        2. Extract Headers:
+        - Try finding <thead>//th first.
+        - Fallback to the first <tr>//th if <thead> is missing.
+        - Store these as a list of strings: ['Name', 'Age', 'Role'].
+        3. Extract Rows:
+        - Find all <tr> elements in <tbody> (or all <tr> excluding the header row).
+        4. Loop and Zip:
+        - Iterate through each row.
+        - Find all <td> cells within that row.
+        - Use python's `zip()` to combine headers and cell text into a dictionary.
+        - Handle edge case: If a row has fewer cells than headers, fill with None/Empty string.
+
+        RETURN: 
+        [
+        {'Name': 'Alice', 'Age': '25'}, 
+        {'Name': 'Bob',   'Age': '30'}
+        ]
+        """
+        pass
+
+    def get_table_headers(self, locator):
+        """
+        GOAL: specific check for column existence without parsing the whole body.
+
+        IMPLEMENTATION STRATEGY:
+        1. Similar logic to step 2 above.
+        2. Return just the list of strings.
+
+        USE CASE: "Then the table should have a 'Status' column"
+        """
+        pass

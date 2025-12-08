@@ -171,3 +171,98 @@ class CommonActions:
     def upload_file(self, locator, filepath):
         self.page.set_value(locator=locator, keys=filepath)
         return True
+
+    def populate_generic_form(self, form_map, data_input):
+        """
+        Iterates through data and populates the form using the provided map.
+        Supports both explicit types: ((By.ID, 'x'), 'select')
+        And implicit defaults: (By.ID, 'x') -> defaults to 'text'
+        """
+
+       # 1. auto-convert Behave Table if detected
+        if hasattr(data_input, 'rows'):
+            form_data = [row.as_dict() for row in data_input]
+        else:
+            form_data = data_input
+
+        # 2. The Engine Loop
+        for row in form_data:
+            field = row['field']
+            value = row['value']
+
+            if field in form_map:
+                definition = form_map[field]
+
+                # --- SAFEGUARD: Check for Tuple structure ---
+                # We check if the first item is ITSELF a tuple (a locator)
+                # If yes: It's the full config -> ((By.ID, '1'), 'text')
+                # If no:  It's just a locator  -> (By.ID, '1')
+
+                if isinstance(definition, tuple) and len(definition) > 0 and isinstance(definition[0], tuple):
+                    locator = definition[0]
+                    input_type = definition[1].lower()
+                else:
+                    locator = definition
+                    input_type = "text"  # Default fallback
+
+                self.page.populate_form_field(locator, value, input_type)
+
+            else:
+                # Safe access to page name (handle if self.page isn't set)
+                page_name = getattr(self.page, '__class__', {}).get(
+                    '__name__', 'UnknownPage') if hasattr(self, 'page') else 'CurrentPage'
+                raise ValueError(
+                    f"Field '{field}' not found in map for {page_name}.")
+
+    def verify_row_exists(self, table_locator, expected_data):
+        """
+        GOAL: Assert that at least one row matches the criteria.
+
+        ARGS: 
+        - expected_data: A dict subset, e.g., {'Name': 'Bob'}
+
+        IMPLEMENTATION STRATEGY:
+        1. Call self.page.get_table_data(table_locator).
+        2. Loop through the returned list.
+        3. Perform a "Subset Check":
+        - Does row['Name'] == 'Bob'?
+        - If expected_data has multiple keys (Name=Bob, Role=Admin), ALL must match.
+        4. If a match is found, return True/Pass.
+        5. If loop finishes without match, Raise AssertionError with a helpful message showing what was actually found.
+        """
+        pass
+
+    def verify_row_does_not_exist(self, table_locator, expected_data):
+        """
+        GOAL: Assert that NO row matches the criteria.
+
+        IMPLEMENTATION STRATEGY:
+        1. Reuse the logic from `verify_row_exists`.
+        2. If it returns True (found), Raise AssertionError immediately.
+        3. If it finishes without finding it, Pass.
+        """
+        pass
+
+    def verify_table_contains_count(self, table_locator, expected_data, count):
+        """
+        GOAL: Assert that exactly X rows match the criteria.
+
+        IMPLEMENTATION STRATEGY:
+        1. Get data.
+        2. Initialize a counter = 0.
+        3. Loop through rows and perform the subset check.
+        4. If match, increment counter.
+        5. Finally, assert counter == expected_count.
+        """
+        pass
+
+    def verify_column_headers(self, table_locator, expected_headers):
+        """
+        GOAL: Ensure the table structure is correct (e.g. columns haven't disappeared).
+
+        IMPLEMENTATION STRATEGY:
+        1. Call self.page.get_table_headers(table_locator).
+        2. Assert that every item in `expected_headers` is present in the actual list.
+        3. (Optional) Assert order matches if strict ordering is required.
+        """
+        pass
