@@ -2,7 +2,7 @@ PAGE_TEMPLATE = """
 from test_framework.base.base_page import BasePage
 from selenium.webdriver.common.by import By
 
-class {Name}Page(BasePage):
+class {ClassName}Page(BasePage):
     def __init__(self, driver, config):
         super().__init__(driver, config)
 
@@ -12,10 +12,10 @@ class {Name}Page(BasePage):
 
 ACTIONS_TEMPLATE = """
 from test_framework.common_actions.common_actions import CommonActions
-from pages.{name}_page import {Name}Page
+from pages.{name}_page import {ClassName}Page
 
-class {Name}Actions(CommonActions):
-    PageClass = {Name}Page
+class {ClassName}Actions(CommonActions):
+    PageClass = {ClassName}Page
 
     def __init__(self, page):
         super().__init__(page)
@@ -32,25 +32,25 @@ Feature: {Name}
 
 STEPS_TEMPLATE = """
 from behave import given, when, then
-from actions.{name}_actions import {Name}Actions
+from actions.{name}_actions import {ClassName}Actions
 
 # Behave automatically injects `context`
 # BaseStepContext gives you .get_page() and .get_actions()
 
 @given("I am on the {{name}} page")
 def step_go_to_page(context):
-    actions = context.app.get_actions({Name}Actions)
+    actions = context.app.get_actions({ClassName}Actions)
     pass
 
 @when("I perform an example action on the {{name}} page")
 def step_example_action(context):
-    actions = context.app.get_actions({Name}Actions)
+    actions = context.app.get_actions({ClassName}Actions)
     # Example: actions.login("user", "pass")
     pass
 
 @then("I should see an example result")
 def step_assert_result(context):
-    actions = context.app.get_actions({Name}Actions)
+    actions = context.app.get_actions({ClassName}Actions)
     # Example: assert actions.page.is_visible(actions.page.SUCCESS_MESSAGE)
     pass
 """
