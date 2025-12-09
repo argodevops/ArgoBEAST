@@ -20,7 +20,9 @@ ARGO_BEAST = """
 def ensure_dir(dir):
     if os.path.exists(dir):
         return
-    os.mkdir(dir)
+    create_dirs = dir.split("/")
+    for i in range(len(create_dirs)):
+        os.mkdir(f"{create_dirs[0]}/{create_dirs[i] if i > 0 else ''}")
     return
 
 

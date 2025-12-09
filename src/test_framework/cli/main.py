@@ -1,5 +1,5 @@
 import sys
-from .create import create, init, build_docs
+from .create import create, create_all, init, build_docs
 from .helpers import warn, info, ARGO_BEAST
 
 
@@ -40,10 +40,13 @@ def main():
             f"Unknown command {command}\n####Available Commands####\ncreate\ninit")
         return
 
-    if type_ not in ["actions", "page", "feature", "steps"]:
+    if type_ not in ["actions", "page", "feature", "steps", "all"]:
         warn(f"Unknown type {type}")
         info("Usage: argotest create <page|actions|feature|steps> <Name>")
         return
 
     info(f"Creating {name}")
-    create(name, type_)
+    if type_ == "all":
+        create_all(name)
+    else:
+        create(name, type_)
