@@ -142,7 +142,6 @@ def before_scenario(context, scenario):
     current_file = scenario.feature.filename.replace('\\', '/')
 
     if HOOKS_PATH in current_file:
-        # 1. Use Behave's native context.config to get CLI paths
         user_targets = [p.replace('\\', '/') for p in context.config.paths]
 
         is_explicit_target = False

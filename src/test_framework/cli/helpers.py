@@ -48,3 +48,12 @@ def error(log: str):
     string = f"{RED}[ERROR]{RESET} {log}"
     print(string)
     return
+
+
+def get_class_name(name):
+    capitals = [n.capitalize() for n in name.split(" ")]
+    class_name = ""
+    for c in capitals:
+        class_name += c
+
+    return class_name

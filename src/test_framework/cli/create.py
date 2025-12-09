@@ -1,4 +1,4 @@
-from .helpers import ensure_dir, ok, warn, error, info
+from .helpers import ensure_dir, ok, warn, error, info, get_class_name
 from .templates import (PAGE_TEMPLATE, STEPS_TEMPLATE,
                         ACTIONS_TEMPLATE, FEATURE_TEMPLATE,
                         CONFIG_TEMPLATE, REQUIREMENTS_TEMPLATE,
@@ -29,8 +29,9 @@ def create(name, type):
     if type == "feature":
         file_ext = "feature"
     snake = name.lower().replace(" ", "_")
-    Name = snake.capitalize()
-    name = snake
+    class_name = get_class_name(name)
+    capital_name = snake.capitalize()
+    snake_name = snake
 
     if type == "actions":
         directory = type
@@ -48,13 +49,17 @@ def create(name, type):
     ensure_dir(directory)
     with open(f"{path}", "w") as f:
         if type == "page":
-            f.write(PAGE_TEMPLATE.format(Name=Name, name=name))
+            f.write(PAGE_TEMPLATE.format(
+                Name=capital_name, name=snake_name, ClassName=class_name))
         elif type == "actions":
-            f.write(ACTIONS_TEMPLATE.format(Name=Name, name=name))
+            f.write(ACTIONS_TEMPLATE.format(
+                Name=capital_name, name=snake_name, ClassName=class_name))
         elif type == "steps":
-            f.write(STEPS_TEMPLATE.format(Name=Name, name=name))
+            f.write(STEPS_TEMPLATE.format(
+                Name=capital_name, name=snake_name, ClassName=class_name))
         elif type == "feature":
-            f.write(FEATURE_TEMPLATE.format(Name=Name, name=name))
+            f.write(FEATURE_TEMPLATE.format(
+                Name=capital_name, name=snake_name, ClassName=class_name))
         else:
             error(f"Unknown type {type}")
             return
