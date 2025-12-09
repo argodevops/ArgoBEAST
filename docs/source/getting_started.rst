@@ -82,6 +82,13 @@ This will produce the following file structure.
    
 Behave discovers environment.py automatically, this contains logic for before, during and after tests. You should not touch this file. 
 
+Creating a Brand New Page Collection
+====================================
+
+Many times, especially for a new testing suite, you'll need to create the Steps, Actions, and Page files for a new section of the system under test. 
+Rather than creating each page individually, you can simply use the ArgoBEAST CLI to create all 3 files. 
+
+``argobeast create all <name>``
 
 Configuration
 =============

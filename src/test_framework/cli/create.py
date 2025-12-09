@@ -45,7 +45,7 @@ def create(name, type):
         warn(f"{type} '{snake}' already exists")
         return
 
-    ensure_dir(f"{directory}")
+    ensure_dir(directory)
     with open(f"{path}", "w") as f:
         if type == "page":
             f.write(PAGE_TEMPLATE.format(Name=Name, name=name))
@@ -60,6 +60,13 @@ def create(name, type):
             return
 
     ok(f"created {type} {snake}")
+
+
+def create_all(name):
+    all = ["page", "actions", "steps"]
+
+    for i in all:
+        create(name, i)
 
 
 def pip_install(requirements_path: str):
