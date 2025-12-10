@@ -163,9 +163,9 @@ More information can be found about this in [Getting Started](docs/source/gettin
 
 ArgoBEAST is still under development. Below is the current roadmap.
 
-- Extend for Appium support
-
 - Support for Edge and Firefox
+
+- Extend for Appium support
 
 - Docker integration
 

@@ -1,4 +1,7 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.edge.service import Service as EdgeService
 
 
 class WebDriverFactory:
@@ -13,12 +16,19 @@ class WebDriverFactory:
 
     def __init__(self, config):
         self.config = config
+        self.browser = config.get("browser")
 
     def create_driver(self):
         """
         Create and return a new WebDriver instance based on config.
         """
-        options = webdriver.ChromeOptions()
+
+        if self.browser == "edge":
+            options = webdriver.EdgeOptions()
+        elif self.browser == "firefox":
+            options = webdriver.FirefoxOptions()
+        else:
+            options = webdriver.ChromeOptions()
 
         # Headless mode
         if self.config.get("headless", False):
@@ -30,7 +40,19 @@ class WebDriverFactory:
             options.add_argument(f"--window-size={width},{height}")
 
         # Remote mode (Docker/Selenium Grid)
+        driver_path = self.config.get("driver_path")
         remote_url = self.config.get("remote_url", "")
+        service = None
+
+        if driver_path:
+            # If we have a path, we wrap it in a Service object
+            if self.browser == "edge":
+                service = EdgeService(executable_path=driver_path)
+            elif self.browser == "firefox":
+                service = FirefoxService(executable_path=driver_path)
+            else:
+                service = ChromeService(executable_path=driver_path)
+
         if remote_url:
             driver = webdriver.Remote(
                 command_executor=remote_url,
@@ -38,8 +60,12 @@ class WebDriverFactory:
             )
         else:
             # Local laptop mode
-            driver = webdriver.Chrome(options=options)
-
+            if self.browser == "edge":
+                driver = webdriver.Edge(options=options, service=service)
+            elif self.browser == "firefox":
+                driver = webdriver.Firefox(options=options)
+            else:
+                driver = webdriver.Chrome(options=options)
         # Timeouts + ready state
         driver.implicitly_wait(self.config.get("implicit_wait", 5))
         driver.set_page_load_timeout(self.config.get("page_load_timeout", 30))
