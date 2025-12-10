@@ -8,7 +8,7 @@ Actions
 
 .. contents::
    :local:
-   :depth: 2
+   :depth: 1
 
  ❓What Are Actions?
 ====================
