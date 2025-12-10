@@ -7,11 +7,19 @@ from test_framework.config.loader import ConfigLoader
 from test_framework.cli.helpers import ensure_dir
 from dotenv import load_dotenv
 import os
+import shutil
 import datetime
+import subprocess
 
 USER_CONFIG_PATH = "config/driver.yml"
 HOOKS_PATH = "features/_common"
 load_dotenv()
+
+
+class DummyStreamOpener:
+    def __init__(self, path):
+        self.name = path
+        self.stream = None
 
 
 def override_config_with_env_vars(config_data):
@@ -133,6 +141,25 @@ def before_all(context):
     user_config = os.getenv("TEST_CONFIG") or USER_CONFIG_PATH
     config_data = loader.load(user_config)
     final_config = override_config_with_env_vars(config_data)
+
+    if final_config.get("allure_reporting"):
+
+        try:
+            from allure_behave.formatter import AllureFormatter
+        except ImportError:
+            raise ImportError(
+                "You have requested Allure reporting but 'allure-behave is not installed. run `pip install allure-behave`")
+
+        allure_dir = "allure-results"
+
+        if os.path.exists(allure_dir):
+            shutil.rmtree(allure_dir)
+        ensure_dir(allure_dir)
+
+        stream_opener = DummyStreamOpener(allure_dir)
+        allure_formatter = AllureFormatter(stream_opener, context.config)
+        context._runner.formatters.append(allure_formatter)
+
     context.beast_config = final_config
     context.factory = WebDriverFactory(context.beast_config)
     context.beast_hooks = _parse_hooks()
@@ -193,4 +220,41 @@ def after_scenario(context, scenario):
 
 
 def after_all(context):
-    pass
+    # --- ALLURE REPORT GENERATION ---
+    # Only run if reporting was enabled in the first place
+    if context.beast_config.get("allure_reporting"):
+
+        # Get directory paths
+        allure_dir = context.beast_config.get("allure_dir", "allure-results")
+        report_dir = "allure-report"
+
+        # Check if the user wants this auto-generation (default to True if not specified)
+        # You can add 'auto_generate_report: false' to config to disable this
+        if context.beast_config.get("auto_generate_report", True):
+            try:
+                # 1. Run the generation command
+                # 'allure generate <results> --clean -o <report>'
+                subprocess.run(
+                    ["allure", "generate", allure_dir,
+                        "--clean", "-o", report_dir],
+                    check=True,
+                    stdout=subprocess.DEVNULL,  # Keep the console clean
+                    stderr=subprocess.DEVNULL
+                )
+
+                print(f"\n✨ Allure HTML report generated in './{report_dir}'")
+
+                # 2. (Optional) Create a ZIP archive for easy download
+                shutil.make_archive("allure-report", 'zip', report_dir)
+                print(f"📦 Report zipped to './allure-report.zip' (Easy download)")
+
+            except FileNotFoundError:
+                # This catches the case where 'allure' is not in the system PATH
+                print(f"\nℹ️  'allure' CLI not found. Skipping HTML generation.")
+                print(
+                    f"""   (You can still view results by installing Allure and running 'allure serve sdsa'
+                    alternatively, generate a local HTML report with 'allure generate allure-results --clean -o allure-report')""")
+
+            except Exception as e:
+                # Catches other errors (permissions, corrupted data, etc.)
+                print(f"\n⚠️  Could not generate Allure report: {e}")

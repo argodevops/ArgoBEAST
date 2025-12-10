@@ -21,5 +21,6 @@ documentation for details.
    steps
    features
    locators
+   allure_reporting
    advanced_features
    cheat_sheet

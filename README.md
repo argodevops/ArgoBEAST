@@ -163,14 +163,10 @@ More information can be found about this in [Getting Started](docs/source/gettin
 
 ArgoBEAST is still under development. Below is the current roadmap.
 
-- Playwright support
-
 - Extend for Appium support
 
-- Component libraries for Streamlit widgets
-
-- Parallel test execution
+- Support for Edge and Firefox
 
 - Docker integration
 
-- Reporting improvements (Including allure)
+- Dockerfiles for running with no browser (Selenium Grid - already included)
