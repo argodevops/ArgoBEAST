@@ -25,8 +25,6 @@ class WebDriverFactory:
 
         if self.browser == "edge":
             options = webdriver.EdgeOptions()
-        elif self.browser == "firefox":
-            options = webdriver.FirefoxOptions()
         else:
             options = webdriver.ChromeOptions()
 
@@ -48,8 +46,6 @@ class WebDriverFactory:
             # If we have a path, we wrap it in a Service object
             if self.browser == "edge":
                 service = EdgeService(executable_path=driver_path)
-            elif self.browser == "firefox":
-                service = FirefoxService(executable_path=driver_path)
             else:
                 service = ChromeService(executable_path=driver_path)
 
@@ -58,15 +54,13 @@ class WebDriverFactory:
                 command_executor=remote_url,
                 options=options
             )
+        # Local laptop mode
         else:
-            # Local laptop mode
             if self.browser == "edge":
                 driver = webdriver.Edge(options=options, service=service)
-            elif self.browser == "firefox":
-                driver = webdriver.Firefox(options=options)
             else:
-                driver = webdriver.Chrome(options=options)
-        # Timeouts + ready state
+                driver = webdriver.Chrome(options=options, service=service)
+            # Timeouts + ready state
         driver.implicitly_wait(self.config.get("implicit_wait", 5))
         driver.set_page_load_timeout(self.config.get("page_load_timeout", 30))
 
