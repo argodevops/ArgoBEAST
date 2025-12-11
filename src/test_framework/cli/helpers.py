@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -17,13 +17,11 @@ ARGO_BEAST = """
           """
 
 
-def ensure_dir(dir):
-    if os.path.exists(dir):
-        return
-    create_dirs = dir.split("/")
-    for i in range(len(create_dirs)):
-        os.mkdir(f"{create_dirs[0]}/{create_dirs[i] if i > 0 else ''}")
-    return
+def ensure_dir(directory):
+    """
+    Creates the directory and all intermediate parents if they don't exist.
+    """
+    Path(directory).mkdir(parents=True, exist_ok=True)
 
 
 def ok(log: str):

@@ -115,7 +115,7 @@ def init():
     with open("features/environment.py", "w") as f:
         f.write(ENVIRONMENT_TEMPLATE)
 
-    with open("features/_common/.gitadd", "w") as f:
+    with open("features/_common/.gitkeep", "w") as f:
         f.write("# Keep this folder")
 
     with open("requirements.txt", "w") as f:
