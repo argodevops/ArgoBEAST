@@ -22,6 +22,12 @@ screenshot_on_failure: true
 output_directory: "test_output"
 retry_failed_steps: false
 
+# Allure reporting
+
+allure_reporting: false
+hide_skipped_tests: false
+auto_generate_report: false
+
 # Logging Level (accepts INFO, ERROR, WARNING, DEBUG)
 
 log_level: "INFO"
