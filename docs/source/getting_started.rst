@@ -45,7 +45,7 @@ Once you have the whl file in an accessible location run:
 
 ``pip install argobeast-x.x.x-py3-none-any.whl``
 
-NOTE: The name of the whl file may vary depending on version. You will need to replace ``x.x.x`` with the current verison. 
+NOTE: The name of the whl file may vary depending on version. You will need to replace ``x.x.x`` with the current version. 
 
 To confirm installation has been successful, you can run. 
 
