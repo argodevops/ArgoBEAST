@@ -163,7 +163,7 @@ More information can be found about this in [Getting Started](docs/source/gettin
 
 ArgoBEAST is still under development. Below is the current roadmap.
 
-- Support for Edge and Firefox
+- Support for Firefox
 
 - Extend for Appium support
 
