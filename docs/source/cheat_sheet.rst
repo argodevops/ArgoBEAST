@@ -113,6 +113,8 @@ Steps are where **logic**, **branching**, and **scenario-specific decisions** li
 
 📜 Feature Files
 ========================
+You can add a @skip tag to any scenario to automatically skip a test during a run. This won't count as failure but will show on the report as a skipped scenario. 
+
 Written in Gherkin:
 
 .. code-block:: Gherkin
