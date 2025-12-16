@@ -58,6 +58,8 @@ def before_all(context):
 
 
 def before_scenario(context, scenario):
+    if 'skip' in scenario.effective_tags:
+        scenario.skip("Marked with @skip")
     # 1. Normalize path
     current_file = scenario.feature.filename.replace('\\', '/')
 
@@ -130,12 +132,18 @@ def after_scenario(context, scenario):
 
 
 def after_all(context):
+    report_dir = "allure-report"
+    allure_dir = "allure-results"
+
     if context.beast_config.get("allure_reporting"):
+        if context.beast_config.get("allure_keep_history"):
+            if os.path.exists(report_dir):
+                shutil.copytree(f"{report_dir}/history",
+                                f"{allure_dir}/history")
+
         cleanup_results(context)
 
         if context.beast_config.get("auto_generate_report", True):
-            allure_dir = "allure-results"
-            report_dir = "allure-report"
             try:
                 subprocess.run(
                     ["allure", "generate", allure_dir,
