@@ -356,3 +356,14 @@ class BasePage():
                     row_data[header] = None  # Handle missing cells gracefully
             table_data.append(row_data)
         return table_data
+
+    def press_keys(self, locator, *keys):
+        """
+        Send special keys or key combinations to an element.
+        Useful for shortcuts like Ctrl+Enter, Tab, Escape.
+
+        :param locator: Locator tuple
+        :param keys: Keys to send (e.g., Keys.ENTER, Keys.CONTROL
+        """
+        element = self.find(locator)
+        element.send_keys(*keys)

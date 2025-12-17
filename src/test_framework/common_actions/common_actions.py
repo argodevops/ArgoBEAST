@@ -1,6 +1,7 @@
 from test_framework.base.base_page import BasePage
 from selenium.common.exceptions import (TimeoutException, ElementClickInterceptedException,
                                         StaleElementReferenceException)
+from selenium.webdriver.common.keys import Keys
 import time
 
 """
@@ -337,3 +338,23 @@ class CommonActions:
                 f"Missing columns: {missing}. Actual headers: {actual_headers}"
             )
         return True
+
+    def send_keyboard_input(self, locator, *keys):
+        """
+            Send keyboard input to an element using string names.
+            Usage: self.send_keyboard_input(LOCATOR, "CONTROL", "ENTER")
+            """
+        new_keys = []
+        for k in keys:
+            key_name = k.upper()
+            try:
+                # getattr(obj, name) looks for an attribute named 'name' inside 'obj'
+                # This is equivalent to doing Keys.ENTER, Keys.CONTROL, etc.
+                valid_key = getattr(Keys, key_name)
+                new_keys.append(valid_key)
+            except AttributeError:
+                # Optional: Handle cases where the key doesn't exist
+                print(f"Warning: {key_name} is not a valid Selenium Key")
+
+        # We must unpack (*) the list so they are passed as separate arguments
+        self.page.press_keys(locator, *new_keys)
