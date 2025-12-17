@@ -1,12 +1,11 @@
-=============
 Actions
 =============
 
 .. contents::
    :local:
-   :depth: 1
+   :depth: 2
 
- ❓What Are Actions?
+❓What Are Actions?
 ====================
 Actions are the glue that holds everything together. An action method will chain together UI Interactions from the Page to complete full tasks. 
 
@@ -88,7 +87,7 @@ Since these are "Common" actions, they will not cover specific use cases for you
    He stays high-level and outcome-focused.
 
 🎬 Actions Responsibilities
-===========================
+============================
 What it should do
 -----------------
 - Chain UI Interactions from the Page together to create workflows

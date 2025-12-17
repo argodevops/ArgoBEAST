@@ -16,39 +16,47 @@ class WebDriverFactory:
 
     def __init__(self, config):
         self.config = config
-        self.browser = config.get("browser")
+        self.browser = config.get("browser", "chrome").lower()
 
     def create_driver(self):
         """
         Create and return a new WebDriver instance based on config.
         """
-
-        if self.browser == "edge":
+        # --- 1. Setup Options ---
+        if self.browser == "firefox":
+            options = webdriver.FirefoxOptions()
+            if self.config.get("headless", False):
+                options.add_argument("--headless")
+        elif self.browser == "edge":
             options = webdriver.EdgeOptions()
+            if self.config.get("headless", False):
+                options.add_argument("--headless=new")
         else:
+            # Default to Chrome
             options = webdriver.ChromeOptions()
+            if self.config.get("headless", False):
+                options.add_argument("--headless=new")
 
-        # Headless mode
-        if self.config.get("headless", False):
-            options.add_argument("--headless=new")
-
-        # Window size
-        if "window_size" in self.config:
-            width, height = self.config["window_size"].split(",")
-            options.add_argument(f"--window-size={width},{height}")
+        # Apply optional custom flags
+        custom_flags = self.config.get("browser_args", [])
+        if isinstance(custom_flags, list):
+            for flag in custom_flags:
+                options.add_argument(flag)
 
         # Remote mode (Docker/Selenium Grid)
         driver_path = self.config.get("driver_path")
-        remote_url = self.config.get("remote_url", "")
         service = None
 
         if driver_path:
             # If we have a path, we wrap it in a Service object
             if self.browser == "edge":
                 service = EdgeService(executable_path=driver_path)
+            elif self.browser == "firefox":
+                service = FirefoxService(executable_path=driver_path)
             else:
                 service = ChromeService(executable_path=driver_path)
 
+        remote_url = self.config.get("remote_url", "")
         if remote_url:
             driver = webdriver.Remote(
                 command_executor=remote_url,
@@ -58,9 +66,21 @@ class WebDriverFactory:
         else:
             if self.browser == "edge":
                 driver = webdriver.Edge(options=options, service=service)
+            elif self.browser == "firefox":
+                driver = webdriver.Firefox(options=options, service=service)
             else:
                 driver = webdriver.Chrome(options=options, service=service)
-            # Timeouts + ready state
+
+        # Window Size (Universal fallback for all browsers)
+        if "window_size" in self.config:
+            # Handles "1920,1080" and "1920, 1080" safely
+            parts = self.config["window_size"].split(",")
+            if len(parts) == 2:
+                width = int(parts[0].strip())
+                height = int(parts[1].strip())
+                driver.set_window_size(width, height)
+
+        # Timeouts + ready state
         driver.implicitly_wait(self.config.get("implicit_wait", 5))
         driver.set_page_load_timeout(self.config.get("page_load_timeout", 30))
 
