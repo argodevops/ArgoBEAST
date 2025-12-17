@@ -19,6 +19,7 @@ class CommonActions:
     def get_element_with_text(self, locator, text):
         """
         Get the first element matching the locator with exact text
+
         :param locator: Locator tuple
         :param text: Exact text to match
         :return: WebElement or None
@@ -33,6 +34,7 @@ class CommonActions:
     def get_element_containing_text(self, locator, text):
         """
         Get the first element matching the locator that contains the text
+
         :param locator: Locator tuple
         :param text: Text to search for
         :return: WebElement or None
@@ -47,6 +49,7 @@ class CommonActions:
     def click_element_with_text(self, locator, text):
         """
         Click the first element matching the locator with exact text
+
         :param locator: Locator tuple
         :param text: Exact text to match
         :return: True if clicked, False otherwise
@@ -65,6 +68,7 @@ class CommonActions:
     def click_element_containing_text(self, locator: tuple, text: str):
         """
         Click the first element matching the locator that contains the text
+
         :param locator: Locator tuple
         :param text: Text to search for
         :return: True if clicked, False otherwise
@@ -78,6 +82,7 @@ class CommonActions:
     def find_in_list(self, elements: list, text: str, partial: bool = False):
         """
         Find an element in a list by text
+
         :param elements: List of WebElements
         :param text: Text to search for
         :param partial: Whether to match partially
@@ -94,6 +99,7 @@ class CommonActions:
     def wait_for_text(self, locator, text):
         """
         Wait for an element to have exact text
+
         :param locator: Locator tuple
         :param text: Exact text to wait for
         :return: True if text matches, False if timeout
@@ -112,6 +118,7 @@ class CommonActions:
     def wait_for_text_contains(self, locator: tuple, text: str):
         """
         Wait for an element to contain text
+
         :param locator: Locator tuple
         :param text: Text to wait for
         :return: True if text is contained, False if timeout
@@ -130,6 +137,7 @@ class CommonActions:
     def wait_for_url_contains(self, partial_url: str):
         """
         Wait for the current URL to contain a substring
+
         :param partial_url: Substring to wait for in the URL
         :return: True if URL contains substring, False if timeout
         """
@@ -142,6 +150,7 @@ class CommonActions:
     def retry_click(self, locator: tuple, retries: int = 3, delay: float = 0.5):
         """
         Retry clicking an element multiple times to handle flaky clicks
+
         :param locator: Locator tuple
         :param retries: Number of retry attempts
         :param delay: Delay between attempts in seconds
@@ -169,6 +178,13 @@ class CommonActions:
         return False
 
     def upload_file(self, locator, filepath):
+        """
+        Executes the logic to upload a file to a
+        standard file input element
+
+        :param locator: The locator for the file input
+        :param filepath: The path where the file is located
+        """
         self.page.set_value(locator=locator, keys=filepath)
         return True
 
@@ -177,6 +193,9 @@ class CommonActions:
         Iterates through data and populates the form using the provided map.
         Supports both explicit types: ((By.ID, 'x'), 'select')
         And implicit defaults: (By.ID, 'x') -> defaults to 'text'
+
+        :param form_map: A dictionary of form elements (tuples)
+        :param data_input: A dictionary of data the user wishes to add to the form 
         """
 
        # 1. auto-convert Behave Table if detected
@@ -217,6 +236,10 @@ class CommonActions:
     def verify_row_exists(self, table_locator, expected_data: dict):
         """
         Asserts that at least one row matches ALL keys/values in expected_data.
+
+        :param table_locator: Locator for the table
+        :param expected_data: Dictionary of expected key-value pairs
+        :return: True if a matching row is found, raises AssertionError otherwise
         """
         table_data = self.page.get_table_data(table_locator)
 
@@ -266,6 +289,8 @@ class CommonActions:
         :param table_locator: Locator for the table
         :param count: Expected number of rows (int or str convertible to int)
         :param filter_data: Optional dict of filter criteria
+        :return: True if count matches, raises AssertionError otherwise.
+
         If filter_data is None, checks total row count.
         """
         table_data = self.page.get_table_data(table_locator)
@@ -293,6 +318,13 @@ class CommonActions:
         return True
 
     def verify_column_headers(self, table_locator, expected_headers):
+        """
+        Verifies that the table contains all expected column headers.
+
+        :param table_locator: Locator for the table
+        :param expected_headers: List of expected column header names
+        :return: True if all headers are present, raises AssertionError otherwise
+        """
         actual_headers = self.page.get_table_headers(table_locator)
 
         missing = []
