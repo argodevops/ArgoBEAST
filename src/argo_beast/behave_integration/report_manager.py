@@ -2,8 +2,8 @@ import os
 import shutil
 import subprocess
 import logging
-from test_framework.behave_integration.behave_helpers import cleanup_results, DummyStreamOpener
-from test_framework.cli.helpers import ensure_dir
+from argo_beast.behave_integration.behave_helpers import cleanup_results, DummyStreamOpener
+from argo_beast.cli.helpers import ensure_dir
 
 
 class ReportManager:

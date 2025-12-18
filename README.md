@@ -124,39 +124,49 @@ More information can be found about this in [Getting Started](docs/source/gettin
 .
 ├── MANIFEST.in
 ├── README.md
-├── __init__.py
 ├── docs
 │   └── source
 │       ├── _static
-│       ├── _templates
+│       │   └── logo.png
+│       ├── a_b_testing.rst
+│       ├── actions.rst
+│       ├── advanced_features.rst
+│       ├── allure_reporting.rst
+│       ├── cheat_sheet.rst
 │       ├── conf.py
-│       ├── getting_started.md
-│       └── index.rst
+│       ├── configuration_guide.rst
+│       ├── features.rst
+│       ├── form_population_engine.rst
+│       ├── getting_started.rst
+│       ├── global_config.rst
+│       ├── index.rst
+│       ├── locators.rst
+│       ├── magic_hooks.rst
+│       ├── pages.rst
+│       └── steps.rst
 ├── pyproject.toml
 ├── requirements_tfw.txt
-└── src
-    └── test_framework
-        ├── base
-        │   ├── __init__.py
-        │   ├── base_page.py
-        │   ├── base_step_context.py
-        │   └── driver_factory.py
-        ├── behave_integration
-        │   ├── __init__.py
-        │   └── environment.py
-        ├── cli
-        │   ├── __init__.py
-        │   ├── create.py
-        │   ├── helpers.py
-        │   ├── main.py
-        │   └── templates.py
-        ├── common_actions
-        │   ├── __init__.py
-        │   └── common_actions.py
-        └── config
-            ├── __init__.py
-            ├── defaults.yml
-            └── loader.py
+├── src
+│   └── argo_beast
+│       ├── base
+│       │   ├── base_page.py
+│       │   ├── base_step_context.py
+│       │   └── driver_factory.py
+│       ├── behave_integration
+│       │   ├── behave_helpers.py
+│       │   ├── environment.py
+│       │   └── report_manager.py
+│       ├── cli
+│       │   ├── create.py
+│       │   ├── helpers.py
+│       │   ├── main.py
+│       │   └── templates.py
+│       ├── common_actions
+│       │   └── common_actions.py
+│       └── config
+│           ├── defaults.yml
+│           └── loader.py
+└── tests
 ```
 
 # Roadmap

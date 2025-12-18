@@ -1,1 +1,1 @@
-recursive-include src/test_framework/config *.yml
+recursive-include src/argo_beast/config *.yml

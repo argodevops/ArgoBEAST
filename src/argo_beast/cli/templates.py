@@ -1,5 +1,5 @@
 PAGE_TEMPLATE = """
-from test_framework.base.base_page import BasePage
+from argo_beast.base.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 class {ClassName}Page(BasePage):
@@ -11,7 +11,7 @@ class {ClassName}Page(BasePage):
 """
 
 ACTIONS_TEMPLATE = """
-from test_framework.common_actions.common_actions import CommonActions
+from argo_beast.common_actions.common_actions import CommonActions
 from pages.{name}_page import {ClassName}Page
 
 class {ClassName}Actions(CommonActions):
@@ -107,7 +107,7 @@ behave==1.2.6
 
 ENVIRONMENT_TEMPLATE = """
 # Automatically delegate hooks to the test framework.
-from test_framework.behave_integration.environment import *
+from argo_beast.behave_integration.environment import *
 # You do not need to touch this file.
 """
 

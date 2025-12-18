@@ -207,7 +207,7 @@ These are the methods that should be used, individual pages should not be respon
 
 .. dropdown:: Available Base Page UI Interactions (Click to Expand)
 
-   .. automodule:: test_framework.base.base_page
+   .. automodule:: argo_beast.base.base_page
       :members:
       :undoc-members:
       :show-inheritance:

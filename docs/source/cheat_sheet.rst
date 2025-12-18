@@ -165,7 +165,7 @@ Documented automatically via:
 
 .. code-block:: rst
 
-   .. automodule:: test_framework.common_actions.common_actions
+   .. automodule:: argo_beast.common_actions.common_actions
       :members:
 
 🧪 Writing Tests — Rule of Thumb

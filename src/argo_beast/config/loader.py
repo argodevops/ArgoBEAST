@@ -56,7 +56,7 @@ class ConfigLoader():
         :return: Default configuration dictionary
         """
         source = resources.files(
-            "test_framework.config").joinpath("defaults.yml")
+            "argo_beast.config").joinpath("defaults.yml")
         with resources.as_file(source) as f:
             try:
                 data = self._load_yaml(f)

@@ -2,7 +2,7 @@ venv
 screenshots
 */__pycache__
 .vscode
-src/test_framework.egg-info
+src/argo_beast.egg-info
 src/*.egg-info
 dist
 build
