@@ -61,6 +61,7 @@ CONFIG_TEMPLATE = """
 browser: chrome
 headless: true
 window_size: "1920,1080"
+remote_url: ""
 
 # Webdriver Constants
 
@@ -79,9 +80,24 @@ screenshot_on_failure: true
 output_directory: "test_output"
 retry_failed_steps: false
 
+# Optional: Add any extra flags here.
+# WARNING: Ensure these flags match your selected browser!
+# browser_args:
+#   - "--incognito"
+#   - "--disable-gpu"
+#   - "--ignore-certificate-errors"
+
+# Allure reporting
+
+allure_reporting: false # Set this to 'true' to enable allure reporting (will need to be installed)
+hide_skipped_tests: false # Add a @skip tag to any scenario to skip it - setting this to 'true' will hide the test from the report
+auto_generate_report: false # Setting this to 'true' will tell ArgoBEAST to attempt to generate an HTML report at the end of the run.
+allure_keep_history: false # Setting this to 'true' will keep a running history of the last 20 runs.
+
 # Logging Level (accepts INFO, ERROR, WARNING, DEBUG)
 
 log_level: "INFO"
+
 """
 
 REQUIREMENTS_TEMPLATE = """

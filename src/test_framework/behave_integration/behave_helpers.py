@@ -1,4 +1,5 @@
 # test_framework/core/behave_helpers.py
+import logging
 import os
 import json
 from behave.parser import parse_file
@@ -13,16 +14,14 @@ class DummyStreamOpener:
         self.stream = None
 
 
-def override_config_with_env_vars(config_data):
+def override_config_with_env_vars(config_data, ENV_OVERRIDES={
+    "BASE_URL": "base_url",
+    "REMOTE_URL": "remote_url",
+    "LOG_LEVEL": "log_level",
+}):
     """
     Checks for specific environment variables and overrides corresponding config values.
     """
-    ENV_OVERRIDES = {
-        "BASE_URL": "base_url",
-        "REMOTE_URL": "remote_url",
-        "LOG_LEVEL": "log_level",
-    }
-
     # Only print if strictly necessary to avoid console noise
     # print("Checking environment variables for config overrides...")
 
@@ -36,13 +35,10 @@ def override_config_with_env_vars(config_data):
     return config_data
 
 
-def cleanup_results(context):
+def cleanup_results(results_dir="allure-results", hide_skipped=False):
     """
     Cleans up the allure results directory based on internal rules and user config.
     """
-    results_dir = "allure-results"
-    user_wants_hide_skipped = context.beast_config.get(
-        "hide_skipped_tests", False)
 
     if not os.path.exists(results_dir):
         return
@@ -68,7 +64,7 @@ def cleanup_results(context):
 
             if is_magic_hook and status == "skipped":
                 should_delete = True
-            elif user_wants_hide_skipped and status == "skipped":
+            elif hide_skipped and status == "skipped":
                 should_delete = True
 
         except Exception:
@@ -108,12 +104,13 @@ def parse_tags(file_path):
     return hooks_found
 
 
-def parse_hooks():
+def parse_hooks(hooks_path=HOOKS_PATH):
     beast_hooks = {}
-    if not os.path.exists(HOOKS_PATH):
+    if not os.path.exists(hooks_path):
+        logging.warning(f"Hooks path '{hooks_path}' does not exist.")
         return {}
 
-    for root, dirs, files in os.walk(HOOKS_PATH):
+    for root, dirs, files in os.walk(hooks_path):
         for filename in files:
             if filename.endswith(".feature"):
                 file_path = os.path.join(root, filename)
@@ -125,19 +122,25 @@ def parse_hooks():
 
 def run_common_features(scenario, context, stage, fail_hard=True):
     all_tags = list(scenario.feature.tags) + list(scenario.tags)
+    hooks_library = getattr(context, 'beast_hooks', {})
+
     for tag in all_tags:
         if tag.startswith(f"{stage}:"):
             hook_id = tag.split(':', 1)[1]
 
-            if hasattr(context, 'beast_hooks') and hook_id in context.beast_hooks:
-                try:
-                    context.execute_steps(context.beast_hooks[hook_id])
-                except Exception as e:
-                    error_msg = f"ArgoBEAST {stage} Failed: Hook '@{hook_id}' encountered an error.\n{str(e)}"
-                    if fail_hard:
-                        assert False, error_msg
-                    else:
-                        print(f"WARNING: {error_msg}")
+            if hook_id in hooks_library:
+                if hasattr(context, 'execute_steps'):
+                    try:
+                        context.execute_steps(hooks_library[hook_id])
+                    except Exception as e:
+                        error_msg = f"ArgoBEAST {stage} Failed: Hook '@{hook_id}' encountered an error.\n{str(e)}"
+                        if fail_hard:
+                            assert False, error_msg
+                        else:
+                            logging.warning(f"WARNING: {error_msg}")
+                else:
+                    logging.warning(
+                        f"Unit Test: Skipping execution of hook '@{hook_id}' (No Behave runner)")
             else:
-                print(
-                    f"WARNING: Scenario requested @{stage}:{hook_id}, but it was not found in features/_common.")
+                logging.warning(
+                    f"WARNING: Scenario requested @{stage}:{hook_id}, but it was not found in library.")
