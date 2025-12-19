@@ -118,7 +118,7 @@ class BasePage():
             self._wait_for_clickable(locator).click()
             return True
         except TimeoutException:
-            self.logger.warning(f"Unable to click locator {locator.id}")
+            self.logger.warning(f"Unable to click locator {locator}")
             return False
 
     def type_text(self, locator, text: str, clear_first: bool = True):

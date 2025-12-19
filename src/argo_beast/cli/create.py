@@ -19,52 +19,52 @@ def create_common_features():
     return
 
 
-def create(name, type):
+def create(name, component_type):
     """
     Create a new component file
     :param name: Name of the component
     :param type: Type of the component (page, actions, steps, feature)
     """
     file_ext = "py"
-    if type == "feature":
+    if component_type == "feature":
         file_ext = "feature"
     snake = name.lower().replace(" ", "_")
     class_name = get_class_name(name)
     capital_name = snake.capitalize()
     snake_name = snake
 
-    if type == "actions":
-        directory = type
-    elif type == "steps":
+    if component_type == "actions":
+        directory = component_type
+    elif component_type == "steps":
         directory = "features/steps"
     else:
-        directory = f"{type}s"
+        directory = f"{component_type}s"
 
-    path = f"{directory}/{snake}_{type}.{file_ext}"
+    path = f"{directory}/{snake}_{component_type}.{file_ext}"
 
     if os.path.exists(path):
-        warn(f"{type} '{snake}' already exists")
+        warn(f"{component_type} '{snake}' already exists")
         return
 
     ensure_dir(directory)
     with open(f"{path}", "w") as f:
-        if type == "page":
+        if component_type == "page":
             f.write(PAGE_TEMPLATE.format(
                 Name=capital_name, name=snake_name, ClassName=class_name))
-        elif type == "actions":
+        elif component_type == "actions":
             f.write(ACTIONS_TEMPLATE.format(
                 Name=capital_name, name=snake_name, ClassName=class_name))
-        elif type == "steps":
+        elif component_type == "steps":
             f.write(STEPS_TEMPLATE.format(
                 Name=capital_name, name=snake_name, ClassName=class_name))
-        elif type == "feature":
+        elif component_type == "feature":
             f.write(FEATURE_TEMPLATE.format(
                 Name=capital_name, name=snake_name, ClassName=class_name))
         else:
-            error(f"Unknown type {type}")
+            error(f"Unknown type {component_type}")
             return
 
-    ok(f"created {type} {snake}")
+    ok(f"created {component_type} {snake}")
 
 
 def create_all(name):
