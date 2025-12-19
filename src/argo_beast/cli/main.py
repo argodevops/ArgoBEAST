@@ -16,7 +16,6 @@ def main():
         if args[0] == "init":
             print(ARGO_BEAST)
             init()
-            return
         elif args[0] == "hello":
             print(ARGO_BEAST)
             print("                   ### Welcome to ArgoBEAST! ###"
@@ -24,14 +23,15 @@ def main():
                   "\nA Python-based test automation framework for web applications, "
                   "\nbuilt on Behave, Selenium, and a clean Page Object Model. "
                   "\nGet started by running 'argotest init' to set up your first project.")
-            return
         elif args[0] == "docs":
             build_docs()
-            return
-
         else:
             info(f"Usage: argotest create <page|actions|feature> <Name> \n To initiate a new project try argotest init")
-            return
+        return
+
+    if len(args) > 3:
+        info(f"Usage: argotest create <page|actions|feature> <Name> \n To initiate a new project try argotest init")
+        return
 
     command, type_, name = args[0], args[1], args[2]
 
