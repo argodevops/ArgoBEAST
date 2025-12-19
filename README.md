@@ -22,6 +22,10 @@ A Python-based test automation framework for web applications, built on Behave, 
 
 - 🧰 Extendable actions + reusable BasePage helpers
 
+- 🪄 Magic hooks to enable simple reusable setup and teardown scenarios
+
+- 📝 Easily complete entire website forms with built in form logic
+
 # Build & Installation
 
 To build the whl you will need to ensure you have `build` installed and then build the whl.
