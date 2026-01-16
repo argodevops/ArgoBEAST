@@ -1,6 +1,7 @@
 import sys
-from .create import create, create_all, init, build_docs
+from .create import create, create_all, init
 from .helpers import warn, info, ARGO_BEAST
+from .generate_feature_docs import generate_rst_documentation
 
 
 def main():
@@ -24,7 +25,7 @@ def main():
                   "\nbuilt on Behave, Selenium, and a clean Page Object Model. "
                   "\nGet started by running 'argotest init' to set up your first project.")
         elif args[0] == "docs":
-            build_docs()
+            generate_rst_documentation(args)
         else:
             info(f"Usage: argotest create <page|actions|feature> <Name> \n To initiate a new project try argotest init")
         return

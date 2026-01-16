@@ -137,14 +137,3 @@ def init():
 
     if install_deps.lower() in ["y", "yes"]:
         pip_install("requirements.txt")
-
-
-def build_docs():
-    # subprocess.check_call([
-    #     "sphinx-build",
-    #     "-M",
-    #     "html",
-    #     "docs/source",
-    #     "docs/build",
-    # ])
-    info("This is a work in progress, ArgoBEAST is still under development")
