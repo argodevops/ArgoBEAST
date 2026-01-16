@@ -118,7 +118,7 @@ Below is a simple ActionClass for a login screen. Notice how there is no "if adm
 
 .. code-block:: python
 
-   from test_framework.common_actions.common_actions import CommonActions
+   from argo_beast.common_actions.common_actions import CommonActions
    from pages.login_page import LoginPage
 
    class LoginActions(CommonActions):
@@ -139,7 +139,7 @@ Each ActionsClass uses the CommonActions - This is a collection of common UI int
 
 .. dropdown:: Available Common Actions (Click to Expand)
 
-   .. automodule:: test_framework.common_actions.common_actions
+   .. automodule:: argo_beast.common_actions.common_actions
       :members:
       :undoc-members:
       :show-inheritance:

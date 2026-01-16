@@ -1,25 +1,21 @@
 # environment.py
 import os
-import shutil
 import datetime
-import subprocess
 from behave.model_core import Status
 from dotenv import load_dotenv
 
 # Internal Imports
-from test_framework.base.driver_factory import WebDriverFactory
-from test_framework.base.base_step_context import BaseStepContext
-from test_framework.config.loader import ConfigLoader
-from test_framework.cli.helpers import ensure_dir
+from argo_beast.base.driver_factory import WebDriverFactory
+from argo_beast.base.base_step_context import BaseStepContext
+from argo_beast.config.loader import ConfigLoader
+from argo_beast.cli.helpers import ensure_dir
+from argo_beast.behave_integration.report_manager import ReportManager
 
 # New Helper Imports
-from test_framework.behave_integration.behave_helpers import (
-    cleanup_results,
+from argo_beast.behave_integration.behave_helpers import (
     parse_hooks,
     run_common_features,
     override_config_with_env_vars,
-    DummyStreamOpener,
-    HOOKS_PATH
 )
 
 USER_CONFIG_PATH = "config/driver.yml"
@@ -27,37 +23,29 @@ load_dotenv()
 
 
 def before_all(context):
+    """
+    Behave hook to run before all tests.
+    :param context: Default Behave context object
+    """
     loader = ConfigLoader()
     user_config = os.getenv("TEST_CONFIG") or USER_CONFIG_PATH
     config_data = loader.load(user_config)
-    final_config = override_config_with_env_vars(config_data)
 
-    if final_config.get("allure_reporting"):
-        try:
-            from allure_behave.formatter import AllureFormatter
-        except ImportError:
-            raise ImportError(
-                "Allure reporting requested but 'allure-behave' is not installed.")
+    context.beast_config = override_config_with_env_vars(config_data)
 
-        allure_dir = "allure-results"
-        if os.path.exists(allure_dir):
-            shutil.rmtree(allure_dir)
-        ensure_dir(allure_dir)
+    context.report_manager = ReportManager(context)
+    context.report_manager.setup_reporting()
 
-        hide_excluded = final_config.get("hide_excluded_tests", False)
-        context.config.userdata['AllureFormatter.hide_excluded'] = str(
-            hide_excluded).lower()
-
-        allure_formatter = AllureFormatter(
-            DummyStreamOpener(allure_dir), context.config)
-        context._runner.formatters.append(allure_formatter)
-
-    context.beast_config = final_config
     context.factory = WebDriverFactory(context.beast_config)
     context.beast_hooks = parse_hooks()
 
 
 def before_scenario(context, scenario):
+    """
+    Behave hook to run before each scenario.
+    :param context: Default Behave context object
+    :param scenario: The scenario about to be executed
+    """
     if 'skip' in scenario.effective_tags:
         scenario.skip("Marked with @skip")
     # 1. Normalize path
@@ -96,11 +84,21 @@ def before_scenario(context, scenario):
     context.driver = context.factory.create_driver()
     context.app = BaseStepContext(context.driver, context.beast_config)
 
+    base_url = context.beast_config.get("base_url")
+    if base_url:
+        context.driver.get(base_url)
+
     # Run Magic Setup
     run_common_features(scenario, context, "setup", fail_hard=True)
 
 
 def after_scenario(context, scenario):
+    """
+    Behave hook to run after each scenario.
+
+    :param context: Default Behave context object
+    :param scenario: The scenario that just finished executing
+    """
     # 1. LOGIC: Only run Teardown if the test actually ran (wasn't skipped)
     if scenario.status != Status.skipped:
         run_common_features(scenario, context, "teardown", fail_hard=False)
@@ -132,37 +130,8 @@ def after_scenario(context, scenario):
 
 
 def after_all(context):
-    report_dir = "allure-report"
-    allure_dir = "allure-results"
-
-    if context.beast_config.get("allure_reporting"):
-        if context.beast_config.get("allure_keep_history"):
-            if os.path.exists(report_dir):
-                shutil.copytree(f"{report_dir}/history",
-                                f"{allure_dir}/history")
-
-        cleanup_results(context)
-
-        if context.beast_config.get("auto_generate_report", True):
-            try:
-                subprocess.run(
-                    ["allure", "generate", allure_dir,
-                        "--clean", "-o", report_dir],
-                    check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-                )
-                print(f"\n✨ Allure HTML report generated in './{report_dir}'")
-                shutil.make_archive("allure-report", 'zip', report_dir)
-                print(f"📦 Report zipped to './allure-report.zip'")
-
-            except FileNotFoundError:
-                # This explicitly catches "allure command not found"
-                print(
-                    f"\n🚫 Report Generation Skipped: 'allure' CLI is not installed or not in PATH.")
-                print(f"   Action: Install Allure or add it to your system PATH.")
-                print(
-                    f"   Note: Raw JSON results are safely saved in './{allure_dir}'")
-
-            except Exception as e:
-                # This catches other issues (permissions, disk space, corrupt data)
-                print(
-                    f"\n⚠️  Report generation failed due to an unexpected error: {e}")
+    """
+    Behave hook to run after all tests. 
+    :param context: Default Behave context object
+    """
+    context.report_manager.finalise_reporting()

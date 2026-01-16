@@ -188,7 +188,7 @@ Below is a simple Steps page for our login screen. Notice how the ``@then`` has 
 .. code-block:: python
 
    from behave import given, when, then
-   from test_framework.base.base_step_context import BaseStepContext
+   from argo_beast.base.base_step_context import BaseStepContext
    from actions.login_actions import LoginActions
    from pages.login_page import LoginPage
 

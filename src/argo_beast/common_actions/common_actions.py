@@ -1,4 +1,4 @@
-from test_framework.base.base_page import BasePage
+from argo_beast.base.base_page import BasePage
 from selenium.common.exceptions import (TimeoutException, ElementClickInterceptedException,
                                         StaleElementReferenceException)
 from selenium.webdriver.common.keys import Keys

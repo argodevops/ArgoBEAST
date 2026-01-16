@@ -19,6 +19,8 @@ class BasePage():
         self.driver = driver
         self.config = config
         self.wait = WebDriverWait(self.driver, self.config["explicit_wait"])
+        # Navigate to base URL
+        self.base_url = self.config.get("base_url", "")
 
     def _wait_for_visible(self, locator):
         """
@@ -59,6 +61,28 @@ class BasePage():
         except TimeoutException:
             return False
 
+    def _make_element_interactable(self, element):
+        """
+        Modify element styles to make it interactable
+        :param element: WebElement
+        """
+        script = (
+            "arguments[0].style.clip='auto';"
+            "arguments[0].style.clipPath='none';"
+            "arguments[0].style.width='auto';"
+            "arguments[0].style.height='auto';"
+            "arguments[0].style.visibility='visible';"
+            "arguments[0].style.display='block';"
+            "arguments[0].style.opacity='1';")
+        self.driver.execute_script(script, element)
+
+    def open_url(self, url: str):
+        """
+        Navigate to a specific URL
+        :param url: URL string
+        """
+        self.driver.get(url)
+
     def find(self, locator):
         """
         Find a single element
@@ -94,7 +118,7 @@ class BasePage():
             self._wait_for_clickable(locator).click()
             return True
         except TimeoutException:
-            self.logger.warning(f"Unable to click locator {locator.id}")
+            self.logger.warning(f"Unable to click locator {locator}")
             return False
 
     def type_text(self, locator, text: str, clear_first: bool = True):
@@ -191,13 +215,8 @@ class BasePage():
 
         # Ensure element is visible before sending keys.
         self.logger.info("Making input visible.")
-        self.driver.execute_script("arguments[0].style.clip='auto';"
-                                   "arguments[0].style.clipPath='none';"
-                                   "arguments[0].style.width='auto';"
-                                   "arguments[0].style.height='auto';"
-                                   "arguments[0].style.visibility='visible';"
-                                   "arguments[0].style.display='block';"
-                                   "arguments[0].style.opacity='1';", element)
+        self._make_element_interactable(element)
+
         try:
             element.send_keys(keys)
             self.logger.info(f"{keys} sent to {locator}")

@@ -43,8 +43,9 @@ class ConfigLoader():
         :return: Parsed YAML as dictionary
         """
         try:
-            yaml_file = yaml.safe_load(open(path))
-            return yaml_file or {}
+            with open(path, "r") as f:
+                yaml_file = yaml.safe_load(f)
+                return yaml_file or {}
         except Exception as e:
             self.logger.error(f"Error loading yaml file: {e}")
             return {}
@@ -55,9 +56,13 @@ class ConfigLoader():
         :return: Default configuration dictionary
         """
         source = resources.files(
-            "test_framework.config").joinpath("defaults.yml")
+            "argo_beast.config").joinpath("defaults.yml")
         with resources.as_file(source) as f:
-            data = self._load_yaml(f)
+            try:
+                data = self._load_yaml(f)
+            except Exception as e:
+                self.logger.error(
+                    "Internal defaults missing, try reinstalling ArgoBEAST")
         return data or {}
 
     def _deep_merge(self, base: dict, override: dict) -> dict:

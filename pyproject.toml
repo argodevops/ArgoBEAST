@@ -1,6 +1,6 @@
 [project]
 name = "argobeast"
-version = "1.1.2"
+version = "2.0.0"
 description = "A Python-based test automation framework for Behave with a clean Page Object architecture and CLI scaffolding."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -19,7 +19,7 @@ dependencies = [
 
 # Entry point for CLI
 [project.scripts]
-argobeast = "test_framework.cli.main:main"
+argobeast = "argo_beast.cli.main:main"
 
 # Setuptools settings
 [build-system]
@@ -31,7 +31,7 @@ package-dir = {"" = "src"}  # IMPORTANT for src/ layout
 
 # Include non-Python files inside the package
 [tool.setuptools.package-data]
-"test_framework" = ["**/*.yml"]
+"argo_beast" = ["**/*.yml"]
 
 # Automatically include all packages under src/
 [tool.setuptools.packages.find]

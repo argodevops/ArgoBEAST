@@ -18,11 +18,10 @@ class WebDriverFactory:
         self.config = config
         self.browser = config.get("browser", "chrome").lower()
 
-    def create_driver(self):
+    def _get_browser_options(self):
         """
-        Create and return a new WebDriver instance based on config.
+        Internal helper to get browser options based on config.
         """
-        # --- 1. Setup Options ---
         if self.browser == "firefox":
             options = webdriver.FirefoxOptions()
             if self.config.get("headless", False):
@@ -32,7 +31,6 @@ class WebDriverFactory:
             if self.config.get("headless", False):
                 options.add_argument("--headless=new")
         else:
-            # Default to Chrome
             options = webdriver.ChromeOptions()
             if self.config.get("headless", False):
                 options.add_argument("--headless=new")
@@ -43,18 +41,43 @@ class WebDriverFactory:
             for flag in custom_flags:
                 options.add_argument(flag)
 
+        return options
+
+    def _create_local_driver(self, options, service=None):
+        """
+        Internal helper to create a local WebDriver instance.
+        """
+        if self.browser == "edge":
+            return webdriver.Edge(options=options, service=service)
+        elif self.browser == "firefox":
+            return webdriver.Firefox(options=options, service=service)
+        else:
+            return webdriver.Chrome(options=options, service=service)
+
+    def _create_service(self, driver_path):
+        """
+        Internal helper to create a Service object based on browser type.
+        """
+        if self.browser == "edge":
+            return EdgeService(executable_path=driver_path)
+        elif self.browser == "firefox":
+            return FirefoxService(executable_path=driver_path)
+        else:
+            return ChromeService(executable_path=driver_path)
+
+    def create_driver(self):
+        """
+        Create and return a new WebDriver instance based on config.
+        """
+        options = self._get_browser_options()
+
         # Remote mode (Docker/Selenium Grid)
         driver_path = self.config.get("driver_path")
         service = None
 
         if driver_path:
             # If we have a path, we wrap it in a Service object
-            if self.browser == "edge":
-                service = EdgeService(executable_path=driver_path)
-            elif self.browser == "firefox":
-                service = FirefoxService(executable_path=driver_path)
-            else:
-                service = ChromeService(executable_path=driver_path)
+            service = self._create_service(driver_path)
 
         remote_url = self.config.get("remote_url", "")
         if remote_url:
@@ -64,12 +87,7 @@ class WebDriverFactory:
             )
         # Local laptop mode
         else:
-            if self.browser == "edge":
-                driver = webdriver.Edge(options=options, service=service)
-            elif self.browser == "firefox":
-                driver = webdriver.Firefox(options=options, service=service)
-            else:
-                driver = webdriver.Chrome(options=options, service=service)
+            driver = self._create_local_driver(options, service=service)
 
         # Window Size (Universal fallback for all browsers)
         if "window_size" in self.config:
@@ -83,11 +101,6 @@ class WebDriverFactory:
         # Timeouts + ready state
         driver.implicitly_wait(self.config.get("implicit_wait", 5))
         driver.set_page_load_timeout(self.config.get("page_load_timeout", 30))
-
-        # Navigate to base URL
-        base_url = self.config.get("base_url")
-        if base_url:
-            driver.get(base_url)
 
         return driver
 
