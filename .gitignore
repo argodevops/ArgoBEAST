@@ -9,3 +9,4 @@ build
 .pytest_cache
 .coverage
 src/argo_beast/config/__pycache__
+src/argobeast.egg-info
