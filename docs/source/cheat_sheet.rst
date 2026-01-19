@@ -10,9 +10,9 @@ Feature  →  Steps  →  Actions  →  Pages  →  WebDriver
 What      Describe   Decide      Do        Execute
 
 - **Features** = High-level behaviour descriptions written in Gherkin.
-- **Steps**    = Logical instructions (Given/When/Then). *Contains branching & decisions.*
-- **Actions**  = Workflow orchestrators. *Chain Page interactions; no branching.*
-- **Pages**    = UI element definitions + single UI interactions (“micro-actions”).
+- **Steps** = Logical instructions (Given/When/Then). *Contains branching & decisions.*
+- **Actions** = Workflow orchestrators. *Chain Page interactions; no branching.*
+- **Pages** = UI element definitions + single UI interactions (“micro-actions”).
 - **BasePage** = Provides interaction helpers (click, type, wait…).
 
 📁 Directory Structure
@@ -24,6 +24,9 @@ What      Describe   Decide      Do        Execute
    ├── actions/
    ├── features/
    │   └── steps/
+   ├── docs/
+   │   └── source/
+   │       └── beast_docs/  <-- Auto-generated RST lands here
    └── config/
        └── driver.yml
 
@@ -37,6 +40,20 @@ What      Describe   Decide      Do        Execute
    argobeast create actions <name>
    argobeast create steps <name>
    argobeast create feature <name>
+   argobeast generate-docs  <-- NEW!
+
+📚 Living Documentation
+========================
+Convert Gherkin features into Sphinx-ready RST files.
+
+.. code-block:: bash
+
+   argobeast generate-docs [-y]
+
+- **Source:** Scans ``./features``
+- **Target:** Wipes & populates ``./docs/source/beast_docs/``
+- **Flag -y:** Skips confirmation (Use for CI/CD pipelines)
+- **Warning:** This command is **destructive** to the target folder.
 
 📌 Locators (Pages)
 ========================
@@ -191,5 +208,4 @@ Documented automatically via:
 
 ✔️ Always use BaseStepContext inside steps  
 ✔️ Always name locators clearly  
-✔️ Always split steps logically by page  
-
+✔️ Always split steps logically by page

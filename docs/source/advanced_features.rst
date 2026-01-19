@@ -13,5 +13,6 @@ Whilst you can spend time writing complex code, there are some useful advanced f
    form_population_engine
    global_config
    a_b_testing
+   generate_docs
 
 
