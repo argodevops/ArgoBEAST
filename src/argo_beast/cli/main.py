@@ -24,7 +24,7 @@ def main():
                   "\nA Python-based test automation framework for web applications, "
                   "\nbuilt on Behave, Selenium, and a clean Page Object Model. "
                   "\nGet started by running 'argotest init' to set up your first project.")
-        elif args[0] == "docs":
+        elif args[0] == "generate-docs":
             generate_rst_documentation(args)
         else:
             info(f"Usage: argotest create <page|actions|feature> <Name> \n To initiate a new project try argotest init")
