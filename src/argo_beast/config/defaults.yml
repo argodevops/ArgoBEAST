@@ -20,7 +20,8 @@ default_route: "/"
 
 screenshot_on_failure: true
 output_directory: "test_output"
-retry_failed_steps: false
+retry_failed_scenarios: false
+max_retries: 2
 
 # Optional: Add any extra flags here.
 # WARNING: Ensure these flags match your selected browser!

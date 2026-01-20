@@ -2,6 +2,7 @@ PAGE_TEMPLATE = """
 from argo_beast.base.base_page import BasePage
 from selenium.webdriver.common.by import By
 
+
 class {ClassName}Page(BasePage):
     def __init__(self, driver, config):
         super().__init__(driver, config)
@@ -13,6 +14,7 @@ class {ClassName}Page(BasePage):
 ACTIONS_TEMPLATE = """
 from argo_beast.common_actions.common_actions import CommonActions
 from pages.{name}_page import {ClassName}Page
+
 
 class {ClassName}Actions(CommonActions):
     PageClass = {ClassName}Page
@@ -78,7 +80,8 @@ default_route: "/"
 
 screenshot_on_failure: true
 output_directory: "test_output"
-retry_failed_steps: false
+retry_failed_scenarios: false
+max_retries: 2
 
 # Optional: Add any extra flags here.
 # WARNING: Ensure these flags match your selected browser!
