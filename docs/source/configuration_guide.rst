@@ -46,6 +46,9 @@ These settings control the instantiation of the browser session.
    * - **browser**
      - The browser to run tests on.
      - ``chrome``, ``firefox``, ``edge`` (Case insensitive)
+   * - **driver_path**
+     - The path to your WebDriver executable (e.g., chromedriver.exe).
+     - Required if not using Selenium Manager. Can be left empty if using Selenium Manager or if the driver is in your system PATH.
    * - **headless**
      - Runs the browser without a visible UI. Recommended for CI/Docker.
      - ``true`` / ``false``
@@ -131,10 +134,11 @@ Framework Behaviour
 * **output_directory**:
   The folder where failed screenshots and other artifacts are saved.
 
-* **retry_failed_steps**:
-  *(Experimental)* If ``true``, the framework attempts to re-run fragile steps. Default is ``false``.
+* **retry_failed_scenarios**:
+  *(Experimental)* If ``true``, the framework attempts to re-run fragile scenarios. Default is ``false``.
 
-Allure Reporting
+* **max_retries**:
+    *(Experimental)* The maximum number of retry attempts for failed scenarios when ``retry_failed_scenarios`` is enabled. Default is ``2``.
 ----------------
 
 ArgoBEAST has built-in integration for Allure, provided you have the ``allure`` command-line tool installed on your machine.
