@@ -147,5 +147,5 @@ Each ActionsClass uses the CommonActions - This is a collection of common UI int
 TL;DR
 =====
 
-The ActionsClass doesn't contain any complex logic, any decisions and branching happens in the **Steps** 
+The ActionsClass doesn't contain any complex logic, any decisions and branching happens in the **Steps**. 
 Actions simply chain together UI Interactions from the respective Page to make something happen. 

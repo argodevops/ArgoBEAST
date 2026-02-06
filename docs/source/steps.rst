@@ -25,21 +25,20 @@ Behave offers annotations to describe what type of instruction the step is. For 
    # login_steps.py
    @given("I am on the login page")
    def step_go_to_page(context):
-       ctx = BaseStepContext(context)
-       context.page = ctx.get_page(LoginPage)
+       actions = context.app.get_actions(LoginActions)
+       actions.go_to_page()
 
    @when("I log in using {username} and {password}")
    def step_example_action(context,username, password):
-      ctx = BaseStepContext(context)
-      actions = ctx.get_actions(LoginActions)
+      actions = context.app.get_actions(LoginActions)
       actions.log_in(username, password)
    
    # home_steps.py
    @then("I should see the home page welcome message")
    def step_assert_result(context):
-      ctx = BaseStepContext(context)
-      home = ctx.get_actions(HomeActions)
-      assert home.page.is_visible(home.page.WELCOME_MESSAGE)
+      actions = context.app.get_actions(HomeActions)
+      home = actions.get_home_page_welcome_message()
+      assert home == "Welcome to the Home Page!"
       
 
 This follows the usual format of a feature (we'll cover feature files later on). 
@@ -64,7 +63,7 @@ This follows the usual format of a feature (we'll cover feature files later on).
    Overseeing them is the factory floor manager.
    He doesn't touch the boxes himself — he just organises the order of operations:
    first stack, then label, then move.
-   That’s your Actions layer.
+   That's your Actions layer.
 
    But above all of this is the CEO.
 
@@ -94,7 +93,7 @@ This follows the usual format of a feature (we'll cover feature files later on).
 
    That's exactly what Steps do.
 
-   Steps don’t click buttons or type into fields.
+   Steps don't click buttons or type into fields.
    Steps decide which workflow should run, under what conditions, and with which data.
    They contain the business rules, special cases, and branching choices that determine
    which Action should be executed.
@@ -106,7 +105,7 @@ This follows the usual format of a feature (we'll cover feature files later on).
    Steps → Actions → Pages
    Decide → Organise → Do
 
-   That’s the role of Steps in ArgoBEAST.
+   That's the role of Steps in ArgoBEAST.
 
 👣 Steps Responsibilities
 ===========================
@@ -130,33 +129,29 @@ What they should not do
 
 ``BaseStepContext`` acts like a **magic backpack** for your test steps.
 
-When you write a Step (Given / When / Then), you often need access to:
+When you write a Step (**Given / When / Then**), you need a way to trigger your automation logic without worrying about how objects are instantiated or how the WebDriver is managed. 
 
-- the correct **Page** (e.g., ``LoginPage``, ``HomePage``)
-- the correct **Actions** class (e.g., ``LoginActions``, ``HomeActions``)
-- the existing **WebDriver** and **configuration**  
-
-Instead of making you create these manually, ``BaseStepContext`` gives you two helpful tools:
+Instead of requiring manual setup, ``BaseStepContext`` provides a streamlined gateway to your test logic via the Actions layer:
 
 .. code-block:: python
 
-   ctx.get_page(SomePage)
-   ctx.get_actions(SomeActions)
+   context.app.get_actions(SomeActions)
 
-Think of these like buttons on the backpack:
+How it works:
+------------
 
-- “Give me the right Page for this step”
-- “Give me the right Actions for this workflow”
-
-You don’t have to build these objects yourself or remember how they connect.  
-``BaseStepContext`` handles all of that for you so your Steps stay clean and focused only on describing behaviour.
+* **Clean Steps:** You primarily interact with **Actions** classes. This keeps your step definitions focused on high-level behavior rather than technical implementation.
+* **Automatic Page Handling:** You never need to explicitly call or manage Pages within your steps. Because your Pages derive from ``BasePage``, they automatically inherit the correct WebDriver and configuration context.
+* **Seamless Integration:** When you request an ``Actions`` class through the context, ArgoBEAST ensures it is ready to communicate with the underlying Page objects immediately.
 
 In short:
+---------
 
-- **Steps** describe *what* should happen  
-- **BaseStepContext** quietly provides everything needed to *make it happen*  
+* **Steps** describe *what* should happen.
+* **Actions** define *how* it happens by interacting with the Page layer.
+* **BaseStepContext** is the bridge that provides those Actions instantly.
 
-It keeps your test code simple, tidy, and easy to understand.
+It keeps your test code simple, tidy, and strictly focused on describing the user journey.
 
 🎨 Creating a New Steps file
 =============================
@@ -175,7 +170,7 @@ Furthermore, Behave offers other options such as ``@step`` this will work in any
 More information can be found in the Behave documentation 
 https://behave.readthedocs.io/en/latest/. 
 
-The template will assume the existence of the respective PageClass, and ActionsClass and import them automatically.
+The template will assume the existence of the respective ActionsClass and import it automatically. Though you can of course import any other actions or pages you like.
 
 | *NOTE: If you have not initialised the page and actions, the imports will fail*
 | *NOTE: The generated steps file will include imports for the matching Page and Actions classes. If you change file or class names, update these imports manually.*
@@ -190,20 +185,18 @@ Below is a simple Steps page for our login screen. Notice how the ``@then`` has 
    from behave import given, when, then
    from argo_beast.base.base_step_context import BaseStepContext
    from actions.login_actions import LoginActions
-   from pages.login_page import LoginPage
 
    # Behave automatically injects `context`
    # BaseStepContext gives you .get_page() and .get_actions()
 
    @given("I am on the login page")
    def step_go_to_page(context):
-       ctx = BaseStepContext(context)
-       context.page = ctx.get_page(LoginPage)
+       actions = context.app.get_actions(LoginActions)
+       actions.go_to_page()
 
    @when("I log in using {username} and {password}")
    def step_example_action(context,username, password):
-      ctx = BaseStepContext(context)
-      actions = ctx.get_actions(LoginActions)
+      actions = context.app.get_actions(LoginActions)
       actions.log_in(username, password)
 
 

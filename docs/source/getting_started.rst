@@ -95,7 +95,9 @@ Configuration
 | The file you'll need to check is ``config/driver.yml``.
 | This contains configuration for the WebDriver such as:
 |
-| - Browser (Currently the only supported browser is Chrome)
+| - Browser (ArgoBEAST supports Chrome, Firefox, and Edge)
+| - Headless (Whether the browser should run in headless mode or not)
+| - driver_path (This is the path to your WebDriver executable, e.g. chromedriver.exe required if you are not using Selenium Manager)
 | - Base URL (This is where your app is hosted)
 | - WebDriver Wait: (This is the default wait time for the webdriver, used when searching for locators or waiting for the page to render.)
 |
