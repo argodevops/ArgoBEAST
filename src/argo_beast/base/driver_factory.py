@@ -22,18 +22,22 @@ class WebDriverFactory:
         """
         Internal helper to get browser options based on config.
         """
+        page_load_strategy = self.config.get("page_load_strategy", "normal")
         if self.browser == "firefox":
             options = webdriver.FirefoxOptions()
             if self.config.get("headless", False):
                 options.add_argument("--headless")
+            options.set_capability("pageLoadStrategy", page_load_strategy)
         elif self.browser == "edge":
             options = webdriver.EdgeOptions()
             if self.config.get("headless", False):
                 options.add_argument("--headless=new")
+            options.set_capability("pageLoadStrategy", page_load_strategy)
         else:
             options = webdriver.ChromeOptions()
             if self.config.get("headless", False):
                 options.add_argument("--headless=new")
+            options.set_capability("pageLoadStrategy", page_load_strategy)
 
         # Apply optional custom flags
         custom_flags = self.config.get("browser_args", [])

@@ -3,7 +3,6 @@ import os
 import datetime
 from behave.model_core import Status
 from dotenv import load_dotenv
-
 # Internal Imports
 from argo_beast.base.driver_factory import WebDriverFactory
 from argo_beast.base.base_step_context import BaseStepContext
@@ -22,6 +21,63 @@ USER_CONFIG_PATH = "config/driver.yml"
 load_dotenv()
 
 
+def _patch_with_driver_healing(scenario, context):
+    """
+    Custom wrapper that catches failures and heals the driver if it's dead.
+    """
+    original_run = scenario.run
+    # Default to 2 retries (3 attempts total)
+    max_retries = context.beast_config.get("max_retries", 2)
+    base_url = context.beast_config.get("base_url")
+
+    def run_with_healing(runner):
+        # --- Attempt 1 ---
+        ctx = runner.context
+        original_run(runner)
+        if not scenario.status == "failed":
+            return
+
+        # --- Retries ---
+        for attempt in range(max_retries):
+            for step in scenario.steps:
+                step.status = "untested"
+
+            try:
+                # Test if driver is alive by navigating
+                if base_url:
+                    ctx.driver.get(base_url)
+            except Exception as e:
+                # If driver is dead, kill and respawn
+                try:
+                    ctx.driver.quit()
+                except:
+                    pass
+
+                # Re-create using your factory
+                ctx.driver = ctx.factory.create_driver()
+                ctx.app = BaseStepContext(
+                    ctx.driver, context.beast_config)
+
+                if base_url:
+                    ctx.driver.get(base_url)
+            try:
+                run_common_features(scenario, ctx, "setup", fail_hard=True)
+            except Exception as e:
+                print(f"DEBUG: Magic Setup failed during retry: {e}")
+                # If setup failed, we can't run the scenario.
+                # We mark the scenario as failed (so the loop continues or finishes).
+                scenario.set_status("failed")
+                continue  # Skip directly to the next retry attempt (or finish)
+
+            # C. Run Again
+            original_run(runner)
+
+            if not scenario.status == "failed":
+                return
+
+    scenario.run = run_with_healing
+
+
 def before_all(context):
     """
     Behave hook to run before all tests.
@@ -30,7 +86,6 @@ def before_all(context):
     loader = ConfigLoader()
     user_config = os.getenv("TEST_CONFIG") or USER_CONFIG_PATH
     config_data = loader.load(user_config)
-
     context.beast_config = override_config_with_env_vars(config_data)
 
     context.report_manager = ReportManager(context)
@@ -40,15 +95,28 @@ def before_all(context):
     context.beast_hooks = parse_hooks()
 
 
+def before_feature(context, feature):
+    """
+    Run once per feature file. 
+    Decides if we need to wrap scenarios in retry logic.
+    """
+    global_retry = context.beast_config.get("retry_failed_scenarios", False)
+
+    for scenario in feature.walk_scenarios():
+        if global_retry or "autoretry" in scenario.effective_tags:
+            _patch_with_driver_healing(scenario, context)
+
+
 def before_scenario(context, scenario):
     """
     Behave hook to run before each scenario.
     :param context: Default Behave context object
     :param scenario: The scenario about to be executed
     """
+
     if 'skip' in scenario.effective_tags:
         scenario.skip("Marked with @skip")
-    # 1. Normalize path
+    # 1. Normalise path
     current_file = scenario.feature.filename.replace('\\', '/')
 
     # 2. Check if this is a Magic Hook (lives in _common)
