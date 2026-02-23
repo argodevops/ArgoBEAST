@@ -3,7 +3,7 @@ deepmerge==2.0
 python-dotenv==1.2.1
 PyYAML==6.0.3
 pytest==9.0.2
-selenium==4.23.1
+selenium==4.40.0
 myst_parser==4.0.1
 sphinx-book-theme==1.1.4
 sphinx-design==0.6.1

@@ -104,7 +104,7 @@ log_level: "INFO"
 """
 
 REQUIREMENTS_TEMPLATE = """
-selenium==4.23.1
+selenium==4.40.0
 behave==1.2.6
 """
 

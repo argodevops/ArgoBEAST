@@ -127,6 +127,10 @@ Below is a simple ActionClass for a login screen. Notice how there is no "if adm
       def __init__(self, page):
          super().__init__(page)
       
+      def step_go_to_page(context):
+       return self.page.get_header()
+       
+      
       def log_in(self,username,password):
          self.page.enter_username(username)
          self.page.enter_password(password)

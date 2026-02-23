@@ -1,6 +1,6 @@
 [project]
 name = "argobeast"
-version = "2.0.2"
+version = "2.1.0"
 description = "A Python-based test automation framework for Behave with a clean Page Object architecture and CLI scaffolding."
 readme = "README.md"
 requires-python = ">=3.9"
