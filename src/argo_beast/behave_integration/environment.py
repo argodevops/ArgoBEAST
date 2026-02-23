@@ -1,6 +1,7 @@
 # environment.py
 import os
 import datetime
+import time
 from behave.model_core import Status
 from dotenv import load_dotenv
 # Internal Imports
@@ -22,61 +23,50 @@ load_dotenv()
 
 
 def _patch_with_driver_healing(scenario, context):
-    """
-    Custom wrapper that catches failures and heals the driver if it's dead.
-    """
     original_run = scenario.run
-    # Default to 2 retries (3 attempts total)
     max_retries = context.beast_config.get("max_retries", 2)
-    base_url = context.beast_config.get("base_url")
 
     def run_with_healing(runner):
-        # --- Attempt 1 ---
         ctx = runner.context
         original_run(runner)
-        if not scenario.status == "failed":
+
+        if scenario.status != Status.failed:
             return
 
-        # --- Retries ---
         for attempt in range(max_retries):
-            for step in scenario.steps:
-                step.status = "untested"
-
-            try:
-                # Test if driver is alive by navigating
-                if base_url:
-                    ctx.driver.get(base_url)
-            except Exception as e:
-                # If driver is dead, kill and respawn
+            if getattr(ctx, 'driver', None):
                 try:
                     ctx.driver.quit()
                 except:
                     pass
+                ctx.driver = None
 
-                # Re-create using your factory
+            scenario.reset()
+            # Mark steps as untested so they show up in logs correctly
+            for step in scenario.steps:
+                step.status = Status.untested
+
+            # 3. Fresh Start
+            try:
                 ctx.driver = ctx.factory.create_driver()
-                ctx.app = BaseStepContext(
-                    ctx.driver, context.beast_config)
-
+                context.driver = ctx.driver # Sync
+                
+                base_url = context.beast_config.get("base_url")
                 if base_url:
                     ctx.driver.get(base_url)
-            try:
-                run_common_features(scenario, ctx, "setup", fail_hard=True)
+                
+                run_common_features(scenario, context, "setup", fail_hard=True)
+                
+                # 4. Execute
+                original_run(runner)
+
+                if scenario.status != Status.failed:
+                    return
             except Exception as e:
-                print(f"DEBUG: Magic Setup failed during retry: {e}")
-                # If setup failed, we can't run the scenario.
-                # We mark the scenario as failed (so the loop continues or finishes).
-                scenario.set_status("failed")
-                continue  # Skip directly to the next retry attempt (or finish)
-
-            # C. Run Again
-            original_run(runner)
-
-            if not scenario.status == "failed":
-                return
+                print(f"Retry {attempt + 1} aborted due to: {e}")
+                continue
 
     scenario.run = run_with_healing
-
 
 def before_all(context):
     """
