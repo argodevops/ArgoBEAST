@@ -189,10 +189,11 @@ Below is a simple Steps page for our login screen. Notice how the ``@then`` has 
    # Behave automatically injects `context`
    # BaseStepContext gives you .get_page() and .get_actions()
 
-   @given("I am on the login page")
-   def step_go_to_page(context):
+   @given("I am on the {login} page")
+   def step_go_to_page(context, page_name):
        actions = context.app.get_actions(LoginActions)
-       actions.go_to_page()
+       header = actions.go_to_page()
+       assert header == page_name
 
    @when("I log in using {username} and {password}")
    def step_example_action(context,username, password):
