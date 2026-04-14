@@ -19,3 +19,4 @@ You will learn.
    tutorial/3_configuring_webdriver
    tutorial/4_creating_a_feature
    tutorial/5_creating_steps
+   tutorial/6_creating_actions
