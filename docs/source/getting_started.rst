@@ -18,7 +18,7 @@ This is comprised of:
 - Steps
 - Features
 
-You’ll find more information on each component throughout this documentation.
+You'll find more information on each component throughout this documentation.
 
 At the highest level are Features.
 Features use Gherkin syntax, powered by Behave, to describe tests in a clear, human-readable format.
