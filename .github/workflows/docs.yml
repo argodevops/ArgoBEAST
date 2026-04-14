@@ -3,7 +3,7 @@ name: Build and Deploy Sphinx Docs to Public Repo
 on:
   push:
     branches:
-      - main
+      - feature/set-up-tutorial
 
 permissions:
   contents: write
