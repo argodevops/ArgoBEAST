@@ -23,7 +23,7 @@ With your environment active, install the latest version directly from our centr
 
 .. code-block:: bash
 
-    pip install https://github.com/PaulS-Argo/ArgoBEAST-Documentation/raw/main/latest/argobeast-latest-py3-none-any.whl
+    pip install https://github.com/PaulS-Argo/ArgoBEAST-Documentation/raw/main/latest/argobeast-0.0.0_latest-py3-none-any.whl
 
 
 If you prefer using uv for faster dependency management, you can create an environment and install ArgoBEAST in one go:
@@ -35,4 +35,4 @@ If you prefer using uv for faster dependency management, you can create an envir
     source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
     # Install ArgoBEAST
-    uv pip install https://github.com/PaulS-Argo/ArgoBEAST-Documentation/raw/main/latest/argobeast-latest-py3-none-any.whl
+    uv pip install https://github.com/PaulS-Argo/ArgoBEAST-Documentation/raw/main/latest/argobeast-0.0.0_latest-py3-none-any.whl

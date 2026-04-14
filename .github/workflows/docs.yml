@@ -56,7 +56,7 @@ jobs:
           mkdir -p public-docs/latest
 
           # 2. Copy the .whl file into the latest folder
-          cp dist/*.whl public-docs/latest/argobeast-latest-py3-none-any.whl
+          cp dist/*.whl public-docs/latest/argobeast-0.0.0_latest-py3-none-any.whl
 
           # 3. Sync HTML docs to the root of public-docs
           # CRITICAL: We exclude 'latest/' so rsync doesn't delete the .whl we just moved
