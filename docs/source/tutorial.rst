@@ -18,3 +18,4 @@ You will learn.
    tutorial/2_initiating_project
    tutorial/3_configuring_webdriver
    tutorial/4_creating_a_feature
+   tutorial/5_creating_steps

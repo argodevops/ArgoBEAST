@@ -13,7 +13,7 @@ More information can be found in the features portion of this documentation.
 
 You'll see a new file appear in the features directory. Open it and update the code as follows:
 
-.. code-block:: feature
+.. code-block:: Gherkin
 
     Feature: Find_chris_tutorial
 
