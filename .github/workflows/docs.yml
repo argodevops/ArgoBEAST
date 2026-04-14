@@ -35,6 +35,20 @@ jobs:
         run: |
           python -m build
 
+      - name: Extract Version and Update Docs
+        run: |
+          # Extract version from pyproject.toml (assumes standard version = "X.X.X" format)
+          VERSION=$(grep -m 1 '^version = ' pyproject.toml | cut -d '"' -f 2)
+          echo "Detected Version: $VERSION"
+          
+          # Construct the full URL
+          WHL_NAME="argobeast-${VERSION}-py3-none-any.whl"
+          INSTALL_URL="https://github.com/PaulS-Argo/ArgoBEAST-Documentation/raw/main/latest/${WHL_NAME}"
+          
+          # Replace the placeholder in all tutorial files
+          find docs/source -name "*.rst" -exec sed -i "s|ARGO_BEAST_INSTALL_URL|${INSTALL_URL}|g" {} +
+          find docs/source -name "*.md" -exec sed -i "s|ARGO_BEAST_INSTALL_URL|${INSTALL_URL}|g" {} +
+
       - name: Force git to use PAT for all GitHub URLs
         run: |
           git config --global url."https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/".insteadOf "https://github.com/"
@@ -53,10 +67,11 @@ jobs:
             public-docs
           
           # 1. Prepare the package directory
-          mkdir -p public-docs/latest
+          rm -rf public-docs/latest/*.whl
+          mkdir -p public-docs/latest/
 
           # 2. Copy the .whl file into the latest folder
-          cp dist/*.whl public-docs/latest/argobeast-0.0.0-py3-none-any.whl
+          cp dist/*.whl public-docs/latest/
 
           # 3. Sync HTML docs to the root of public-docs
           # CRITICAL: We exclude 'latest/' so rsync doesn't delete the .whl we just moved
