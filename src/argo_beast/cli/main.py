@@ -11,7 +11,7 @@ def main():
     args = sys.argv[1:]
 
     if len(args) < 1:
-        info(f"Usage: argotest create <page|actions|feature> <Name> \n To initiate a new project try argotest init")
+        info(f"Usage: argobeast create <page|actions|feature> <Name> \n To initiate a new project try argobeast init")
         return
     if len(args) < 3:
         if args[0] == "init":
@@ -23,15 +23,15 @@ def main():
                   "\n___________________________________________________________________"
                   "\nA Python-based test automation framework for web applications, "
                   "\nbuilt on Behave, Selenium, and a clean Page Object Model. "
-                  "\nGet started by running 'argotest init' to set up your first project.")
+                  "\nGet started by running 'argobeast init' to set up your first project.")
         elif args[0] == "generate-docs":
             generate_rst_documentation(args)
         else:
-            info(f"Usage: argotest create <page|actions|feature> <Name> \n To initiate a new project try argotest init")
+            info(f"Usage: argobeast create <page|actions|feature> <Name> \n To initiate a new project try argobeast init")
         return
 
     if len(args) > 3:
-        info(f"Usage: argotest create <page|actions|feature> <Name> \n To initiate a new project try argotest init")
+        info(f"Usage: argobeast create <page|actions|feature> <Name> \n To initiate a new project try argobeast init")
         return
 
     command, type_, name = args[0], args[1], args[2]
@@ -43,7 +43,7 @@ def main():
 
     if type_ not in ["actions", "page", "feature", "steps", "all"]:
         warn(f"Unknown type {type}")
-        info("Usage: argotest create <page|actions|feature|steps> <Name>")
+        info("Usage: argobeast create <page|actions|feature|steps> <Name>")
         return
 
     info(f"Creating {name}")
