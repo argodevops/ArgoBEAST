@@ -3,7 +3,14 @@ Chapter 2 - Initiating a Project
 
 Now you've installed ArgoBEAST you're ready to start writing your first test. 
 
-1. Start by opening a terminal and running.
+1. Start by opening a terminal and running the following to create a new directory.
+
+.. code-block:: bash
+    
+    mkdir argobeast-tutorial
+    cd argobeast-tutorial
+
+2. Make sure you're terminal is on the new directory and initiate a new ArgoBEAST project as follows:
 
 .. code-block:: bash
 
@@ -13,7 +20,7 @@ You will be asked if you want to include example files. For this tutorial, pleas
 
 You will also be asked if you would like to attempt to install the required dependencies - it's recommended you select yes.
 
-2. You should now have the following file structure:
+3. You should now have the following file structure:
 
 .. code-block:: bash
 
