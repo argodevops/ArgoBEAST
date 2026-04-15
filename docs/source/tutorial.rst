@@ -21,3 +21,4 @@ You will learn.
    tutorial/5_creating_steps
    tutorial/6_creating_actions
    tutorial/7_creating_pages
+   tutorial/8_running_the_test

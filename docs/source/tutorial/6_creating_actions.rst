@@ -111,3 +111,7 @@ We're looking for this image.
             return self.page.is_chris_visible()
 
 As with our `given` step, we're returning the result. This is extremely important for a `then` step as it allows us to assert the result of the test. 
+
+It is quite normal for an action to call a single page method. However, it is important to understand that actions are not limited to a single UI interaction and can orchestrate multiple interactions as needed.
+
+For example, if you wanted to create a step such as `When I find Chris`, the corresponding action would need to call the `navigate_to_page(page)` method followed by the `is_chris_visible()` method to complete the full user workflow.  
