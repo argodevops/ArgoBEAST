@@ -1,5 +1,5 @@
 
-ArgoBEAST Tutorial
+Tutorial
 =======================
 
 This is a step by step tutorial to build your first test using ArgoBEAST. 

@@ -74,6 +74,8 @@ Replace the `@given` block with:
 
 .. code-block:: python
 
+    # Paste this below actions = with the same indentation.
+    
         expected_text = "Who We Are"
         screen_text = actions.get_home_text()
         assert screen_text == expected_text
