@@ -31,4 +31,4 @@ To run your test simply open a terminal (if you're using a virtual environment e
    
    behave
 
-Congratulations! You've just written your first test with ArgoBEAST
+Congratulations! You've just written your first test with ArgoBEAST.
