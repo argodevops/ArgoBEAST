@@ -20,3 +20,4 @@ You will learn.
    tutorial/4_creating_a_feature
    tutorial/5_creating_steps
    tutorial/6_creating_actions
+   tutorial/7_creating_pages
