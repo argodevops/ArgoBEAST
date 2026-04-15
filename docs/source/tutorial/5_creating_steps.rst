@@ -74,9 +74,9 @@ Replace the `@given` block with:
 
 .. code-block:: python
 
-    expected_text = "Who We Are"
-    screen_text = actions.get_home_text()
-    assert screen_text == expected_text
+        expected_text = "Who We Are"
+        screen_text = actions.get_home_text()
+        assert screen_text == expected_text
 
 
 The "Home Page" Dilemma
