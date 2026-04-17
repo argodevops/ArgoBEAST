@@ -1,9 +1,10 @@
 import pytest
-from unittest.mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch
 from argo_beast.config.loader import ConfigLoader
 
 
 # --- 1. Test the Merging Logic (Pure Logic) ---
+
 
 @pytest.fixture
 def loader():
@@ -18,8 +19,9 @@ def test_deep_merge_functionality(loader):
     result = loader._deep_merge(base, override)
 
     assert result["browser"] == "chrome"  # Kept from base
-    assert result["timeout"] == 30        # Overwritten
-    assert result["nested"]["key"] == 2   # Nested overwrite works
+    assert result["timeout"] == 30  # Overwritten
+    assert result["nested"]["key"] == 2  # Nested overwrite works
+
 
 # --- 2. Test YAML Loading (I/O) ---
 
@@ -31,6 +33,7 @@ def test_load_yaml_handles_errors(loader):
             result = loader._load_yaml("dummy.yml")
             assert result == {}
             mock_log.assert_called()
+
 
 # --- 3. Test Internal Resource Loading ---
 
@@ -46,10 +49,13 @@ def test_load_internal_defaults(mock_res, loader):
     with patch("argo_beast.config.loader.resources.as_file") as mock_as_file:
         mock_as_file.return_value.__enter__.return_value = "fake_path.yml"
 
-        with patch.object(loader, "_load_yaml", return_value={"default": True}) as mock_load:
+        with patch.object(
+            loader, "_load_yaml", return_value={"default": True}
+        ) as mock_load:
             result = loader._load_internal_defaults()
             assert result == {"default": True}
             mock_load.assert_called_with("fake_path.yml")
+
 
 # --- 4. Test The Main Public Method (Orchestration) ---
 
@@ -62,4 +68,5 @@ def test_load_orchestration_missing_user_path(loader):
                 result = loader.load("non_existent.yml")
                 assert result == {"a": 1}
                 mock_warn.assert_called_with(
-                    "No user config can be found, using defaults")
+                    "No user config can be found, using defaults"
+                )

@@ -1,0 +1,32 @@
+name: run unit tests against latest version of argobeast
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+      
+      - name: Set up Python
+        run: uv python install
+
+      - name: install dependencies
+        run: uv sync --frozen --no-install-project --group dev --extra allure
+      
+      - name: Run ruff format check
+        run: uv run ruff check src tests
+      
+      - name: Lint code with pylint
+        run: uv run pylint src
+
+      - name: Run tests
+        run: uv run pytest

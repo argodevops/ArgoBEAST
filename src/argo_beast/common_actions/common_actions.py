@@ -1,16 +1,14 @@
-from argo_beast.base.base_page import BasePage
-from selenium.common.exceptions import (TimeoutException, ElementClickInterceptedException,
-                                        StaleElementReferenceException)
-from selenium.webdriver.common.keys import Keys
 import time
-
-"""
-Common actions for interacting with web elements
-"""
+from selenium.common.exceptions import (
+    TimeoutException,
+    ElementClickInterceptedException,
+    StaleElementReferenceException,
+)
+from selenium.webdriver.common.keys import Keys
+from argo_beast.base.base_page import BasePage
 
 
 class CommonActions:
-
     def __init__(self, page: BasePage):
         self.page = page
         self.driver = page.driver
@@ -58,13 +56,13 @@ class CommonActions:
         element = self.get_element_with_text(locator, text)
         if not element:
             return False
-        elif element.text == text:
+        if element.text == text:
             element.click()
             return True
-        else:
-            self.logger.warning(
-                f"The element text '{element.text}' does not exactly match '{text}'")
-            return False
+        self.logger.warning(
+            f"The element text '{element.text}' does not exactly match '{text}'"
+        )
+        return False
 
     def click_element_containing_text(self, locator: tuple, text: str):
         """
@@ -107,13 +105,11 @@ class CommonActions:
         """
         try:
             self.page.wait.until(
-                lambda d: self.page._wait_for_visible(
-                    locator).text.strip() == text
+                lambda d: self.page._wait_for_visible(locator).text.strip() == text  # pylint: disable=protected-access
             )
             return True
         except TimeoutException:
-            self.logger.warning(
-                f"Element {locator} did not have exact text '{text}'")
+            self.logger.warning(f"Element {locator} did not have exact text '{text}'")
             return False
 
     def wait_for_text_contains(self, locator: tuple, text: str):
@@ -125,14 +121,10 @@ class CommonActions:
         :return: True if text is contained, False if timeout
         """
         try:
-            self.page.wait.until(
-                lambda d: text in self.page.find(
-                    locator).text.strip()
-            )
+            self.page.wait.until(lambda d: text in self.page.find(locator).text.strip())
             return True
         except TimeoutException:
-            self.logger.warning(
-                f"Element {locator} did not contain text '{text}'")
+            self.logger.warning(f"Element {locator} did not contain text '{text}'")
             return False
 
     def wait_for_url_contains(self, partial_url: str):
@@ -146,7 +138,8 @@ class CommonActions:
 
         raise NotImplementedError(
             "wait_for_url_contains is not implemented yet."
-            "This will be added when navigation actions are introduced.")
+            "This will be added when navigation actions are introduced."
+        )
 
     def retry_click(self, locator: tuple, retries: int = 3, delay: float = 0.5):
         """
@@ -196,19 +189,19 @@ class CommonActions:
         And implicit defaults: (By.ID, 'x') -> defaults to 'text'
 
         :param form_map: A dictionary of form elements (tuples)
-        :param data_input: A dictionary of data the user wishes to add to the form 
+        :param data_input: A dictionary of data the user wishes to add to the form
         """
 
-       # 1. auto-convert Behave Table if detected
-        if hasattr(data_input, 'rows'):
+        # 1. auto-convert Behave Table if detected
+        if hasattr(data_input, "rows"):
             form_data = [row.as_dict() for row in data_input]
         else:
             form_data = data_input
 
         # 2. The Engine Loop
         for row in form_data:
-            field = row['field']
-            value = row['value']
+            field = row["field"]
+            value = row["value"]
 
             if field in form_map:
                 definition = form_map[field]
@@ -218,7 +211,11 @@ class CommonActions:
                 # If yes: It's the full config -> ((By.ID, '1'), 'text')
                 # If no:  It's just a locator  -> (By.ID, '1')
 
-                if isinstance(definition, tuple) and len(definition) > 0 and isinstance(definition[0], tuple):
+                if (
+                    isinstance(definition, tuple)
+                    and len(definition) > 0
+                    and isinstance(definition[0], tuple)
+                ):
                     locator = definition[0]
                     input_type = definition[1].lower()
                 else:
@@ -229,10 +226,12 @@ class CommonActions:
 
             else:
                 # Safe access to page name (handle if self.page isn't set)
-                page_name = getattr(self.page, '__class__', {}).get(
-                    '__name__', 'UnknownPage') if hasattr(self, 'page') else 'CurrentPage'
-                raise ValueError(
-                    f"Field '{field}' not found in map for {page_name}.")
+                page_name = (
+                    getattr(self.page, "__class__", {}).get("__name__", "UnknownPage")
+                    if hasattr(self, "page")
+                    else "CurrentPage"
+                )
+                raise ValueError(f"Field '{field}' not found in map for {page_name}.")
 
     def verify_row_exists(self, table_locator, expected_data: dict):
         """
@@ -280,7 +279,8 @@ class CommonActions:
             if match:
                 # If we found a match, that's a FAILURE
                 raise AssertionError(
-                    f"Found unexpected row: {row} matching filter criteria: {expected_data}")
+                    f"Found unexpected row: {row} matching filter criteria: {expected_data}"
+                )
         return True
 
     def verify_table_contains_count(self, table_locator, count: int, filter_data=None):
@@ -341,9 +341,9 @@ class CommonActions:
 
     def send_keyboard_input(self, locator, *keys):
         """
-            Send keyboard input to an element using string names.
-            Usage: self.send_keyboard_input(LOCATOR, "CONTROL", "ENTER")
-            """
+        Send keyboard input to an element using string names.
+        Usage: self.send_keyboard_input(LOCATOR, "CONTROL", "ENTER")
+        """
         new_keys = []
         for k in keys:
             key_name = k.upper()

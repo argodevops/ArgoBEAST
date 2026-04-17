@@ -1,16 +1,14 @@
-
-'''
+"""
 Base class for step context
-'''
+"""
 
 
-class BaseStepContext():
-
+class BaseStepContext:
     def __init__(self, driver, config):
         self.driver = driver
         self.config = config
 
-    def get_page(self, PageClass):
+    def get_page(self, PageClass):  # pylint: disable=invalid-name
         """
         Get an instance of a page object
         :param PageClass: Class of the page object
@@ -18,7 +16,7 @@ class BaseStepContext():
         """
         return PageClass(self.driver, self.config)
 
-    def get_actions(self, ActionsClass):
+    def get_actions(self, ActionsClass):  # pylint: disable=invalid-name
         """
         Get an instance of an actions object
         :param ActionsClass: Class of the actions object

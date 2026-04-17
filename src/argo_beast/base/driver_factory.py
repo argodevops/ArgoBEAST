@@ -54,10 +54,9 @@ class WebDriverFactory:
         """
         if self.browser == "edge":
             return webdriver.Edge(options=options, service=service)
-        elif self.browser == "firefox":
+        if self.browser == "firefox":
             return webdriver.Firefox(options=options, service=service)
-        else:
-            return webdriver.Chrome(options=options, service=service)
+        return webdriver.Chrome(options=options, service=service)  # Default to Chrome
 
     def _create_service(self, driver_path):
         """
@@ -65,10 +64,9 @@ class WebDriverFactory:
         """
         if self.browser == "edge":
             return EdgeService(executable_path=driver_path)
-        elif self.browser == "firefox":
+        if self.browser == "firefox":
             return FirefoxService(executable_path=driver_path)
-        else:
-            return ChromeService(executable_path=driver_path)
+        return ChromeService(executable_path=driver_path)  # Default to Chrome
 
     def create_driver(self):
         """
@@ -76,16 +74,16 @@ class WebDriverFactory:
         """
         options = self._get_browser_options()
         remote_url = self.config.get("remote_url", "")
-        
+
         timeout_val = self.config.get("grid_timeout", 60)
 
         if remote_url:
-            grid_config = ClientConfig(remote_server_addr=remote_url, timeout=timeout_val) 
-            
+            grid_config = ClientConfig(
+                remote_server_addr=remote_url, timeout=timeout_val
+            )
+
             driver = webdriver.Remote(
-                command_executor=remote_url,
-                options=options,
-                client_config=grid_config
+                command_executor=remote_url, options=options, client_config=grid_config
             )
         else:
             driver_path = self.config.get("driver_path")
