@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*' # Triggers on tags like v1.0.0
+    branches:
+      - feature/publish-to-pypi # Also trigger on pushes to the publish branch for testing
 
 jobs:
   release:
