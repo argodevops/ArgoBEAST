@@ -1,3 +1,5 @@
+import logging
+import os
 from selenium.common.exceptions import TimeoutException, InvalidArgumentException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
@@ -5,11 +7,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as ec
-import logging
-import os
 
 
-class BasePage():
+class BasePage:
     """
     Selenium Base class for all page objects
     """
@@ -73,7 +73,8 @@ class BasePage():
             "arguments[0].style.height='auto';"
             "arguments[0].style.visibility='visible';"
             "arguments[0].style.display='block';"
-            "arguments[0].style.opacity='1';")
+            "arguments[0].style.opacity='1';"
+        )
         self.driver.execute_script(script, element)
 
     def open_url(self, url: str):
@@ -180,12 +181,10 @@ class BasePage():
         """
         try:
             element = self._wait_for_visible(locator)
-            self.driver.execute_script(
-                "arguments[0].scrollIntoView()", element)
+            self.driver.execute_script("arguments[0].scrollIntoView()", element)
             return True
         except TimeoutException:
-            self.logger.warning(
-                "Could not find element and scroll at this time")
+            self.logger.warning("Could not find element and scroll at this time")
             return False
 
     def scroll_to_bottom(self):
@@ -194,8 +193,7 @@ class BasePage():
         :return: True if scrolled, False if error
         """
         try:
-            self.driver.execute_script(
-                "window.scrollTo(0, document.body.scrollHeight)")
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
             return True
         except Exception as e:
             self.logger.warning(f"Scroll to bottom failed: {e}")
@@ -222,8 +220,7 @@ class BasePage():
             self.logger.info(f"{keys} sent to {locator}")
             return True
         except InvalidArgumentException:
-            self.logger.error(
-                f"Could not send keys {keys} to locator {locator}")
+            self.logger.error(f"Could not send keys {keys} to locator {locator}")
             return False
 
     def populate_dropdown(self, locator, value):
@@ -236,7 +233,7 @@ class BasePage():
         self.logger.info(f"Selecting '{value}' in dropdown {locator}")
         try:
             Select(element).select_by_visible_text(value)
-        except:
+        except:  # pylint: disable=bare-except  # noqa: E722
             Select(element).select_by_value(value)
 
     def populate_combobox(self, locator, value):
@@ -257,11 +254,10 @@ class BasePage():
         if not element:
             raise ValueError(f"Checkbox not found: {locator}")
 
-        should_be_checked = str(value).lower() in ['true', 'yes', 'on', '1']
+        should_be_checked = str(value).lower() in ["true", "yes", "on", "1"]
 
         if element.is_selected() != should_be_checked:
-            self.logger.info(
-                f"Toggling checkbox {locator} to {should_be_checked}")
+            self.logger.info(f"Toggling checkbox {locator} to {should_be_checked}")
             element.click()
 
     def populate_radio_group(self, locator, value):
@@ -276,29 +272,25 @@ class BasePage():
         # Strategy A: Text Match
         try:
             target_element = container.find_element(
-                By.XPATH,
-                f".//label[contains(normalize-space(), '{value}')]"
+                By.XPATH, f".//label[contains(normalize-space(), '{value}')]"
             )
-        except:
+        except:  # pylint: disable=bare-except  # noqa: E722
             pass
 
         # Strategy B: Value Match
         if not target_element:
             try:
                 target_element = container.find_element(
-                    By.XPATH,
-                    f".//input[@type='radio'][@value='{value}']"
+                    By.XPATH, f".//input[@type='radio'][@value='{value}']"
                 )
-            except:
+            except:  # pylint: disable=bare-except  # noqa: E722
                 pass
 
         if target_element:
-            self.logger.info(
-                f"Clicking radio option '{value}' in group {locator}")
+            self.logger.info(f"Clicking radio option '{value}' in group {locator}")
             target_element.click()
         else:
-            raise ValueError(
-                f"Radio option '{value}' not found in group {locator}")
+            raise ValueError(f"Radio option '{value}' not found in group {locator}")
 
     # --- THE DISPATCHER ---
 
@@ -327,8 +319,7 @@ class BasePage():
             self.populate_radio_group(locator, value)
 
         else:
-            raise ValueError(
-                f"Unknown input_type '{input_type}' for locator {locator}")
+            raise ValueError(f"Unknown input_type '{input_type}' for locator {locator}")
 
     def get_table_headers(self, locator):
         """

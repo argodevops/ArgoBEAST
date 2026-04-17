@@ -1,9 +1,9 @@
 # environment.py
 import os
 import datetime
-import time
 from behave.model_core import Status
 from dotenv import load_dotenv
+
 # Internal Imports
 from argo_beast.base.driver_factory import WebDriverFactory
 from argo_beast.base.base_step_context import BaseStepContext
@@ -34,10 +34,10 @@ def _patch_with_driver_healing(scenario, context):
             return
 
         for attempt in range(max_retries):
-            if getattr(ctx, 'driver', None):
+            if getattr(ctx, "driver", None):
                 try:
                     ctx.driver.quit()
-                except:
+                except:  # pylint: disable=bare-except  # noqa: E722
                     pass
                 ctx.driver = None
 
@@ -49,14 +49,12 @@ def _patch_with_driver_healing(scenario, context):
             # 3. Fresh Start
             try:
                 ctx.driver = ctx.factory.create_driver()
-                context.driver = ctx.driver # Sync
-                
+                context.driver = ctx.driver  # Update main context reference as well
                 base_url = context.beast_config.get("base_url")
                 if base_url:
                     ctx.driver.get(base_url)
-                
                 run_common_features(scenario, context, "setup", fail_hard=True)
-                
+
                 # 4. Execute
                 original_run(runner)
 
@@ -67,6 +65,7 @@ def _patch_with_driver_healing(scenario, context):
                 continue
 
     scenario.run = run_with_healing
+
 
 def before_all(context):
     """
@@ -87,7 +86,7 @@ def before_all(context):
 
 def before_feature(context, feature):
     """
-    Run once per feature file. 
+    Run once per feature file.
     Decides if we need to wrap scenarios in retry logic.
     """
     global_retry = context.beast_config.get("retry_failed_scenarios", False)
@@ -104,15 +103,14 @@ def before_scenario(context, scenario):
     :param scenario: The scenario about to be executed
     """
 
-    if 'skip' in scenario.effective_tags:
+    if "skip" in scenario.effective_tags:
         scenario.skip("Marked with @skip")
     # 1. Normalise path
-    current_file = scenario.feature.filename.replace('\\', '/')
+    current_file = scenario.feature.filename.replace("\\", "/")
 
     # 2. Check if this is a Magic Hook (lives in _common)
     # We check if "_common" is a distinct part of the path to avoid partial matches
     if "/_common/" in current_file or "_common/" in current_file:
-
         should_run = False
 
         # CHECK A: Did the user ask for specific TAGS? (e.g. behave -t @login)
@@ -121,7 +119,7 @@ def before_scenario(context, scenario):
 
         # CHECK B: Did the user explicitly point to this file/folder?
         else:
-            user_args = [p.replace('\\', '/') for p in context.config.paths]
+            user_args = [p.replace("\\", "/") for p in context.config.paths]
             for arg in user_args:
                 # If arg is specific (features/_common/login.feature) -> Run
                 if arg == current_file:
@@ -135,7 +133,8 @@ def before_scenario(context, scenario):
         # EXECUTE SKIP
         if not should_run:
             scenario.skip(
-                f"Skipping Library Scenario '{scenario.name}' (Implicit Bulk Run)")
+                f"Skipping Library Scenario '{scenario.name}' (Implicit Bulk Run)"
+            )
             return
 
     # --- STANDARD STARTUP ---
@@ -162,7 +161,7 @@ def after_scenario(context, scenario):
         run_common_features(scenario, context, "teardown", fail_hard=False)
 
     # 2. DEBUG: Screenshot on Failure
-    if scenario.status == Status.failed and getattr(context, 'driver', None):
+    if scenario.status == Status.failed and getattr(context, "driver", None):
         should_snap = context.beast_config.get("screenshot_on_failure", False)
         if str(should_snap).lower() == "true":
             output_dir = context.beast_config.get("output_directory", "output")
@@ -176,7 +175,7 @@ def after_scenario(context, scenario):
 
     # 3. CLEANUP: Always quit the driver if it exists, regardless of status
     # We use getattr() to safely check if 'driver' exists to avoid AttributeErrors
-    if getattr(context, 'driver', None):
+    if getattr(context, "driver", None):
         try:
             context.driver.quit()
         except Exception:
@@ -189,7 +188,7 @@ def after_scenario(context, scenario):
 
 def after_all(context):
     """
-    Behave hook to run after all tests. 
+    Behave hook to run after all tests.
     :param context: Default Behave context object
     """
     context.report_manager.finalise_reporting()

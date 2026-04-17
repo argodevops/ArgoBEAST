@@ -1,5 +1,4 @@
-import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 from argo_beast.behave_integration.report_manager import ReportManager
 
 
@@ -34,6 +33,7 @@ def test_setup_reporting_cleans_and_registers_formatter(
     # 3. Verify formatter is added to Behave's runner
     assert len(mock_context._runner.formatters) == 1
 
+
 # --- Test Finalization Logic ---
 
 
@@ -55,17 +55,20 @@ def test_finalise_reporting_runs_allure_cli(
     assert "allure" in args[0]
     assert "generate" in args[0]
     # Verify zip creation
-    mock_zip.assert_called_once_with("allure-report", 'zip', "allure-report")
+    mock_zip.assert_called_once_with("allure-report", "zip", "allure-report")
 
 
 def test_run_cli_handles_missing_allure_gracefully(mock_context):
     manager = ReportManager(mock_context)
 
-    with patch("argo_beast.behave_integration.report_manager.subprocess.run") as mock_run:
+    with patch(
+        "argo_beast.behave_integration.report_manager.subprocess.run"
+    ) as mock_run:
         # Simulate Allure not being installed in WSL/PATH
         mock_run.side_effect = FileNotFoundError
 
         with patch("logging.warning") as mock_log:
             manager._run_cli()
             mock_log.assert_called_with(
-                "Allure CLI not found in PATH. Generation skipped.")
+                "Allure CLI not found in PATH. Generation skipped."
+            )

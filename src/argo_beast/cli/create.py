@@ -1,22 +1,23 @@
-from .helpers import ensure_dir, ok, warn, error, info, get_class_name
-from .templates import (PAGE_TEMPLATE, STEPS_TEMPLATE,
-                        ACTIONS_TEMPLATE, FEATURE_TEMPLATE,
-                        CONFIG_TEMPLATE, REQUIREMENTS_TEMPLATE,
-                        ENVIRONMENT_TEMPLATE, COMMON_FEATURE_EXAMPLE)
 import os
 import sys
 import subprocess
-
-"""
-CLI functions for creating test framework components
-"""
+from .helpers import ensure_dir, ok, warn, error, get_class_name
+from .templates import (
+    PAGE_TEMPLATE,
+    STEPS_TEMPLATE,
+    ACTIONS_TEMPLATE,
+    FEATURE_TEMPLATE,
+    CONFIG_TEMPLATE,
+    REQUIREMENTS_TEMPLATE,
+    ENVIRONMENT_TEMPLATE,
+    COMMON_FEATURE_EXAMPLE,
+)
 
 
 def create_common_features():
     directory = "features/_common"
-    with open(f"{directory}/login.feature", "w") as f:
+    with open(f"{directory}/login.feature", "w", encoding="utf-8") as f:
         f.write(COMMON_FEATURE_EXAMPLE)
-    return
 
 
 def create(name, component_type):
@@ -47,19 +48,31 @@ def create(name, component_type):
         return
 
     ensure_dir(directory)
-    with open(f"{path}", "w") as f:
+    with open(f"{path}", "w", encoding="utf-8") as f:
         if component_type == "page":
-            f.write(PAGE_TEMPLATE.format(
-                Name=capital_name, name=snake_name, ClassName=class_name))
+            f.write(
+                PAGE_TEMPLATE.format(
+                    Name=capital_name, name=snake_name, ClassName=class_name
+                )
+            )
         elif component_type == "actions":
-            f.write(ACTIONS_TEMPLATE.format(
-                Name=capital_name, name=snake_name, ClassName=class_name))
+            f.write(
+                ACTIONS_TEMPLATE.format(
+                    Name=capital_name, name=snake_name, ClassName=class_name
+                )
+            )
         elif component_type == "steps":
-            f.write(STEPS_TEMPLATE.format(
-                Name=capital_name, name=snake_name, ClassName=class_name))
+            f.write(
+                STEPS_TEMPLATE.format(
+                    Name=capital_name, name=snake_name, ClassName=class_name
+                )
+            )
         elif component_type == "feature":
-            f.write(FEATURE_TEMPLATE.format(
-                Name=capital_name, name=snake_name, ClassName=class_name))
+            f.write(
+                FEATURE_TEMPLATE.format(
+                    Name=capital_name, name=snake_name, ClassName=class_name
+                )
+            )
         else:
             error(f"Unknown type {component_type}")
             return
@@ -68,9 +81,9 @@ def create(name, component_type):
 
 
 def create_all(name):
-    all = ["page", "actions", "steps"]
+    all_requirements = ["page", "actions", "steps"]
 
-    for i in all:
+    for i in all_requirements:
         create(name, i)
 
 
@@ -79,28 +92,31 @@ def pip_install(requirements_path: str):
     Install dependencies from a requirements file using pip
     :param requirements_path: Path to the requirements.txt file
     """
-    subprocess.check_call([
-        sys.executable,
-        "-m", "pip",
-        "install",
-        "-r",
-        requirements_path
-    ])
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install", "-r", requirements_path]
+    )
 
 
 def init():
     """
     Initialize a new test framework structure
     """
-    directories = ["pages", "actions", "features",
-                   "features/steps", "config", "features/_common"]
+    directories = [
+        "pages",
+        "actions",
+        "features",
+        "features/steps",
+        "config",
+        "features/_common",
+    ]
     examples = ["page", "actions", "feature", "steps"]
     accepted_response = ["y", "yes", "n", "no"]
 
     user_input = False
     while not user_input:
         include_examples = input(
-            "Would you like to include example files within the directories? [Y]es,[N]o: ")
+            "Would you like to include example files within the directories? [Y]es,[N]o: "
+        )
         if include_examples.lower() in accepted_response:
             user_input = True
         else:
@@ -109,16 +125,16 @@ def init():
     for d in directories:
         ensure_dir(d)
 
-    with open("config/driver.yml", "w") as f:
+    with open("config/driver.yml", "w", encoding="utf-8") as f:
         f.write(CONFIG_TEMPLATE)
 
-    with open("features/environment.py", "w") as f:
+    with open("features/environment.py", "w", encoding="utf-8") as f:
         f.write(ENVIRONMENT_TEMPLATE)
 
-    with open("features/_common/.gitkeep", "w") as f:
+    with open("features/_common/.gitkeep", "w", encoding="utf-8") as f:
         f.write("# Keep this folder")
 
-    with open("requirements.txt", "w") as f:
+    with open("requirements.txt", "w", encoding="utf-8") as f:
         f.write(REQUIREMENTS_TEMPLATE)
 
     if include_examples in ["y", "yes"]:
@@ -129,7 +145,8 @@ def init():
     user_input = False
     while not user_input:
         install_deps = input(
-            "Would you like to attempt to install the required dependencies? [Y]es,[N]o: ")
+            "Would you like to attempt to install the required dependencies? [Y]es,[N]o: "
+        )
         if install_deps.lower() in accepted_response:
             user_input = True
         else:

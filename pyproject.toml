@@ -48,10 +48,29 @@ allure = [
     "allure-behave"
 ]
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "pytest==9.0.3",
+    "pylint",
     "build",  # The standard PEP 517 build frontend
     "twine",  # For uploading to PyPI
     "argobeast[allure]", # For pytests to run correctly
 ]
+
+[tool.pylint.messages_control]
+# Disable nitpicky rules that often clash with testing frameworks
+disable = [
+    "C0114", # missing-module-docstring
+    "C0115", # missing-class-docstring
+    "C0116", # missing-function-docstring
+    "R0903", # too-few-public-methods (common in Page Objects)
+    "W0511", # fixme (allow TODOs),
+    "W0718",
+    "W1203", # logging-fstring-interpolation
+]
+
+[tool.pylint.format]
+max-line-length = 120  # More generous than the default 100
+
+[tool.pylint.master]
+fail-under = 10.0 # Force a perfect score on your filtered rules

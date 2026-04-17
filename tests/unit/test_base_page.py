@@ -1,5 +1,3 @@
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.keys import Keys
 import pytest
 from unittest.mock import MagicMock, patch
 from selenium.common.exceptions import TimeoutException, InvalidArgumentException
@@ -17,6 +15,7 @@ def base_page(mock_driver):
     config = {"explicit_wait": 10, "base_url": "http://test.com"}
     return BasePage(mock_driver, config)
 
+
 # --- 1. Testing Atomic Waiters ---
 
 
@@ -26,9 +25,12 @@ def test_wait_for_visible_calls_selenium_wait(base_page, mock_driver):
     mock_element = MagicMock()
 
     # We mock the 'until' method of the WebDriverWait object
-    with patch("selenium.webdriver.support.wait.WebDriverWait.until", return_value=mock_element):
+    with patch(
+        "selenium.webdriver.support.wait.WebDriverWait.until", return_value=mock_element
+    ):
         element = base_page._wait_for_visible(locator)
         assert element == mock_element
+
 
 # --- 2. Testing High-Level Actions ---
 
@@ -56,8 +58,9 @@ def test_click_timeout_returns_false(base_page):
 
             assert result is False
             # Ensure the log was called with the tuple, not an .id attribute
-            mock_log.warning.assert_called_with(
-                f"Unable to click locator {locator}")
+            mock_log.warning.assert_called_with(f"Unable to click locator {locator}")
+
+
 # --- 3. Testing Form Helpers (The Dispatcher) ---
 
 
@@ -67,6 +70,7 @@ def test_populate_form_field_text_routing(base_page):
     with patch.object(base_page, "type_text") as mock_type:
         base_page.populate_form_field(locator, "paul", input_type="text")
         mock_type.assert_called_once_with(locator, "paul")
+
 
 # --- 4. Testing Table Logic (The Complex Stuff) ---
 
@@ -91,7 +95,7 @@ def test_get_table_data_parsing(base_page):
     # Setup the 'find_elements' returns
     mock_table.find_elements.side_effect = [
         [mock_header_1, mock_header_2],  # Call 1: Headers
-        [mock_row]                      # Call 2: Rows
+        [mock_row],  # Call 2: Rows
     ]
     mock_row.find_elements.return_value = [mock_cell_1, mock_cell_2]
 
@@ -114,7 +118,8 @@ def test_populate_dropdown_logic(base_page):
             base_page.populate_dropdown(locator, "Option 1")
             # Verify it tries to select by visible text
             mock_select.return_value.select_by_visible_text.assert_called_with(
-                "Option 1")
+                "Option 1"
+            )
 
 
 def test_populate_checkbox_toggle(base_page):
@@ -151,7 +156,6 @@ def test_find_all_returns_empty_list_on_timeout(base_page):
 
     # 1. Simulate the timeout
     with patch.object(base_page, "_wait_for_presence", side_effect=TimeoutException):
-
         # 2. Patch the logger instance already attached to the base_page
         with patch.object(base_page, "logger") as mock_logger:
             result = base_page.find_all(locator)
@@ -179,8 +183,7 @@ def test_get_table_data_with_missing_cells(base_page):
     mock_cell.text = "Alice"
 
     # find_elements returns: [headers], then [rows]
-    mock_table.find_elements.side_effect = [
-        [mock_header, mock_header_2], [mock_row]]
+    mock_table.find_elements.side_effect = [[mock_header, mock_header_2], [mock_row]]
     # the row's find_elements returns only one cell
     mock_row.find_elements.return_value = [mock_cell]
 
@@ -204,6 +207,7 @@ def test_get_table_headers_fallback_logic(base_page):
         headers = base_page.get_table_headers((By.ID, "table"))
         assert headers == ["FallBackHeader"]
 
+
 # --- 2. Testing Radio Groups and Dispatcher (The branch-heavy parts) ---
 
 
@@ -219,6 +223,7 @@ def test_populate_radio_group_text_strategy(base_page):
         # Verify it used the Label XPATH strategy first
         args, _ = mock_container.find_element.call_args
         assert "label" in args[1]
+
 
 # --- 3. Testing JS Executions (Scrolling and Visibility) ---
 
@@ -252,6 +257,7 @@ def test_set_value_handles_invalid_argument(base_page):
             # 2. Assert against our explicit mock
             base_page.logger.error.assert_called()
 
+
 # --- 4. Testing Visibility variants ---
 
 
@@ -266,7 +272,6 @@ def test_populate_checkbox_toggle_logic(base_page):
     mock_el = MagicMock()
     # Mocking _wait_for_clickable to return our element
     with patch.object(base_page, "_wait_for_clickable", return_value=mock_el):
-
         # Case 1: Target is 'true', element is NOT selected -> Should click
         mock_el.is_selected.return_value = False
         base_page.populate_checkbox(("id", "check"), "true")
@@ -287,7 +292,6 @@ def test_populate_form_field_dispatcher_routing(base_page):
     with patch.object(base_page, "populate_dropdown") as mock_drop:
         with patch.object(base_page, "populate_checkbox") as mock_check:
             with patch.object(base_page, "populate_radio_group") as mock_radio:
-
                 base_page.populate_form_field(locator, "value", "select")
                 mock_drop.assert_called_once_with(locator, "value")
 

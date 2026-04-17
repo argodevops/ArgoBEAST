@@ -1,5 +1,4 @@
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from argo_beast.cli.main import main
 
 # We patch the names inside the main.py module

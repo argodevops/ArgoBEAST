@@ -1,11 +1,13 @@
 import os
 import pytest
 from unittest.mock import MagicMock, patch
-from argo_beast.behave_integration.behave_helpers import (override_config_with_env_vars,
-                                                          cleanup_results,
-                                                          parse_tags,
-                                                          parse_hooks,
-                                                          run_common_features)
+from argo_beast.behave_integration.behave_helpers import (
+    override_config_with_env_vars,
+    cleanup_results,
+    parse_tags,
+    parse_hooks,
+    run_common_features,
+)
 
 
 def test_override_config_base_url(monkeypatch):
@@ -24,7 +26,9 @@ def test_override_config_base_url(monkeypatch):
     assert updated_config["other_key"] == "stays"
 
 
-def test_no_override_when_env_not_set(initial_config={"base_url": "http://original.com"}):
+def test_no_override_when_env_not_set(
+    initial_config={"base_url": "http://original.com"},
+):
     """Verify config remains unchanged if no env vars are present."""
     updated_config = override_config_with_env_vars(initial_config)
     assert updated_config["base_url"] == "http://original.com"
@@ -41,12 +45,9 @@ def test_cleanup_results_removes_skipped_allure_json(tmp_path, create_allure_fil
     cleanup_results(results_dir=str(results_dir), hide_skipped=True)
 
     # 3. Assert
-    assert not os.path.exists(
-        str(skipped_file)), "Skipped file was not deleted!"
-    assert not os.path.exists(
-        str(magic_file)), "Magic file was not deleted!"
-    assert os.path.exists(
-        str(passed_file)), "Passed file was accidentally deleted!"
+    assert not os.path.exists(str(skipped_file)), "Skipped file was not deleted!"
+    assert not os.path.exists(str(magic_file)), "Magic file was not deleted!"
+    assert os.path.exists(str(passed_file)), "Passed file was accidentally deleted!"
 
 
 def test_cleanup_results_keeps_non_skipped_allure_json(tmp_path, create_allure_files):
@@ -60,12 +61,9 @@ def test_cleanup_results_keeps_non_skipped_allure_json(tmp_path, create_allure_f
     cleanup_results(results_dir=str(results_dir), hide_skipped=False)
 
     # 3. Assert
-    assert os.path.exists(
-        str(skipped_file)), "Skipped file was accidentally deleted!"
-    assert not os.path.exists(
-        str(magic_file)), "Magic file was not deleted!"
-    assert os.path.exists(
-        str(passed_file)), "Passed file was accidentally deleted!"
+    assert os.path.exists(str(skipped_file)), "Skipped file was accidentally deleted!"
+    assert not os.path.exists(str(magic_file)), "Magic file was not deleted!"
+    assert os.path.exists(str(passed_file)), "Passed file was accidentally deleted!"
 
 
 def test_parse_tags_extracts_steps_correctly():
@@ -89,7 +87,10 @@ def test_parse_tags_extracts_steps_correctly():
     mock_feature.scenarios = [mock_scenario]
 
     # 2. Patch 'parse_file' so it returns our mock instead of reading the disk
-    with patch("argo_beast.behave_integration.behave_helpers.parse_file", return_value=mock_feature):
+    with patch(
+        "argo_beast.behave_integration.behave_helpers.parse_file",
+        return_value=mock_feature,
+    ):
         # The path doesn't matter now because the mock intercepts it
         result = parse_tags("dummy_path.feature")
 
@@ -125,7 +126,10 @@ def test_parse_hooks_aggregates_multiple_files(tmp_path):
             return {"db_hook": "Then I clean DB"}
         return {}
 
-    with patch("argo_beast.behave_integration.behave_helpers.parse_tags", side_effect=side_effect):
+    with patch(
+        "argo_beast.behave_integration.behave_helpers.parse_tags",
+        side_effect=side_effect,
+    ):
         # 3. Action
         results = parse_hooks(hooks_path=str(common_dir))
 
@@ -164,13 +168,11 @@ def test_run_common_features_fails_hard_on_error(mock_context):
     mock_scenario.tags = []
 
     mock_context.beast_hooks = {"db": "Given a broken DB"}
-    mock_context.execute_steps = MagicMock(
-        side_effect=Exception("Connection Timeout"))
+    mock_context.execute_steps = MagicMock(side_effect=Exception("Connection Timeout"))
 
     # 3. Action & Assert
     with pytest.raises(AssertionError) as excinfo:
-        run_common_features(mock_scenario, mock_context,
-                            stage="setup", fail_hard=True)
+        run_common_features(mock_scenario, mock_context, stage="setup", fail_hard=True)
 
     assert "ArgoBEAST setup Failed" in str(excinfo.value)
     assert "Connection Timeout" in str(excinfo.value)

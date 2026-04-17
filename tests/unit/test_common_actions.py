@@ -45,7 +45,9 @@ def test_get_element_with_text_returns_none_on_miss(actions, mock_page):
 
     assert result is None
     actions.logger.warning.assert_called_with(
-        "No element found with exact text 'Missing'")
+        "No element found with exact text 'Missing'"
+    )
+
 
 # --- 2. Testing The Flaky Click (Retry Logic) ---
 
@@ -62,6 +64,7 @@ def test_retry_click_succeeds_on_second_attempt(actions, mock_page):
 
     assert result is True
     assert mock_page.click.call_count == 2
+
 
 # --- 3. Testing Form Dispatcher (The Engine) ---
 
@@ -88,7 +91,9 @@ def test_populate_generic_form_handles_behave_table(actions, mock_page):
 
     # 4. Assert
     mock_page.populate_form_field.assert_called_once_with(
-        ("id", "user"), "paul", "text")
+        ("id", "user"), "paul", "text"
+    )
+
 
 # --- 4. Testing Table Assertions ---
 
@@ -97,7 +102,7 @@ def test_verify_row_exists_success(actions, mock_page):
     """Verify assertion passes when a matching row is found."""
     mock_page.get_table_data.return_value = [
         {"ID": "1", "User": "Alice"},
-        {"ID": "2", "User": "Bob"}
+        {"ID": "2", "User": "Bob"},
     ]
 
     result = actions.verify_row_exists(("id", "table"), {"User": "Bob"})
@@ -117,6 +122,7 @@ def test_verify_row_exists_raises_assertion_error(actions, mock_page):
 def test_send_keyboard_input_mapping(actions, mock_page):
     """Verify string names like 'ENTER' are converted to Selenium Keys objects."""
     from selenium.webdriver.common.keys import Keys
+
     locator = ("id", "search")
 
     # Action: We pass strings, the framework should find the Selenium Constants
@@ -124,11 +130,7 @@ def test_send_keyboard_input_mapping(actions, mock_page):
 
     # Assert
     # We verify that the Page's press_keys was called with the actual Keys objects
-    mock_page.press_keys.assert_called_once_with(
-        locator,
-        Keys.CONTROL,
-        Keys.ENTER
-    )
+    mock_page.press_keys.assert_called_once_with(locator, Keys.CONTROL, Keys.ENTER)
 
 
 def test_verify_table_contains_count_with_filter(actions, mock_page):
@@ -136,7 +138,7 @@ def test_verify_table_contains_count_with_filter(actions, mock_page):
     mock_page.get_table_data.return_value = [
         {"Status": "Active", "Name": "A"},
         {"Status": "Active", "Name": "B"},
-        {"Status": "Inactive", "Name": "C"}
+        {"Status": "Inactive", "Name": "C"},
     ]
 
     # Should find exactly 2 'Active' rows
@@ -180,6 +182,7 @@ def test_click_element_with_text_mismatch_warning(actions, mock_page):
         assert result is False
         actions.logger.warning.assert_called()
 
+
 # --- 2. Testing The Wait-For Logic (Lambdas) ---
 
 
@@ -200,6 +203,7 @@ def test_wait_for_text_logic(actions, mock_page):
     # Execute the lambda against a dummy driver to verify its logic
     assert wait_condition("driver") is True
 
+
 # --- 3. Testing Retry Logic (Stale Elements) ---
 
 
@@ -214,6 +218,7 @@ def test_retry_click_handles_stale_element(actions, mock_page):
     assert mock_page.click.call_count == 2
     actions.logger.warning.assert_called()
 
+
 # --- 4. Testing Complex Form Population ---
 
 
@@ -225,8 +230,8 @@ def test_populate_generic_form_default_to_text(actions, mock_page):
     actions.populate_generic_form(form_map, data_input)
 
     # Check if it called populate_form_field with the default 'text' type
-    mock_page.populate_form_field.assert_called_once_with(
-        ("id", "u-1"), "paul", "text")
+    mock_page.populate_form_field.assert_called_once_with(("id", "u-1"), "paul", "text")
+
 
 # --- 5. Testing Keyboard Logic ---
 
