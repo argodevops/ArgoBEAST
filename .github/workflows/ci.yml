@@ -1,4 +1,4 @@
-name: run tests
+name: run unit tests against latest version of argobeast
 on:
   push:
 
