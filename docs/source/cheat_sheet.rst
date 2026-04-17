@@ -1,5 +1,5 @@
 ===========================
-ArgoBEAST Cheat Sheet
+Cheat Sheet
 ===========================
 
 A fast reference guide for building tests using the ArgoBEAST framework.

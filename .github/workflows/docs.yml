@@ -3,7 +3,7 @@ name: Build and Deploy Sphinx Docs to Public Repo
 on:
   push:
     branches:
-      - main
+      - dev
 
 permissions:
   contents: write
@@ -24,8 +24,26 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install sphinx-book-theme myst_parser sphinx_design
+          pip install sphinx-book-theme myst_parser sphinx_design build
           pip install .
+
+      - name: Build whl file
+        run: |
+          python -m build
+
+      - name: Extract Version and Update Docs
+        run: |
+          # Extract version from pyproject.toml (assumes standard version = "X.X.X" format)
+          VERSION=$(grep -m 1 '^version = ' pyproject.toml | cut -d '"' -f 2)
+          echo "Detected Version: $VERSION"
+          
+          # Construct the full URL
+          WHL_NAME="argobeast-${VERSION}-py3-none-any.whl"
+          INSTALL_URL="https://github.com/PaulS-Argo/ArgoBEAST-Documentation/raw/main/latest/${WHL_NAME}"
+          
+          # Replace the placeholder in all tutorial files
+          find docs/source -name "*.rst" -exec sed -i "s|ARGO_BEAST_INSTALL_URL|${INSTALL_URL}|g" {} +
+          find docs/source -name "*.md" -exec sed -i "s|ARGO_BEAST_INSTALL_URL|${INSTALL_URL}|g" {} +
 
       - name: Build Sphinx documentation
         run: |
@@ -42,20 +60,30 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+          # Clean up any previous runs and clone the target repo
           rm -rf public-docs
-
           git clone --depth 1 --branch main \
             https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git \
             public-docs
+          
+          # 1. Prepare the package directory
+          rm -rf public-docs/latest/*.whl
+          mkdir -p public-docs/latest/
 
-          # Copy docs *without deleting the repo’s .git folder*
-          rsync -av --delete --exclude='.git/' docs/build/html/ public-docs/
+          # 2. Copy the .whl file into the latest folder
+          cp dist/*.whl public-docs/latest/
 
+          # 3. Sync HTML docs to the root of public-docs
+          # CRITICAL: We exclude 'latest/' so rsync doesn't delete the .whl we just moved
+          rsync -av --delete --exclude='.git/' --exclude='latest/' docs/build/html/ public-docs/
+
+          # 4. Commit and Push
           cd public-docs
           touch .nojekyll
           git add -A
           if ! git diff --cached --quiet; then
-            git commit -m "Update docs (run $GITHUB_RUN_NUMBER)"
+            git commit -m "Update docs and .whl artifact (run $GITHUB_RUN_NUMBER)"
+            git push origin main
+          else
+            echo "No changes detected, skipping push."
           fi
-
-          git push https://${{ secrets.ARGO_BEAST_DOCS }}@github.com/PaulS-Argo/ArgoBEAST-Documentation.git main

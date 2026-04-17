@@ -1,4 +1,4 @@
-ArgoBEAST Configuration Guide
+Configuration Guide
 =============================
 
 ArgoBEAST is controlled via the user configuration file, typically named ``driver.yml``.

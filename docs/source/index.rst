@@ -22,3 +22,4 @@ Welcome to ArgoBEAST's documentation! ArgoBEAST is a powerful Python-based test 
    allure_reporting
    advanced_features
    cheat_sheet
+   tutorial
