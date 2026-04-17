@@ -6,21 +6,19 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'ArgoBEAST'
-copyright = '2025, Paul Shears'
-author = 'Paul Shears'
-release = '2.1.2'
+project = "ArgoBEAST"
+copyright = "2025, Paul Shears"
+author = "Paul Shears"
+release = "2.1.2"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['myst_parser', 'sphinx.ext.autodoc',
-              'sphinx_design']
+extensions = ["myst_parser", "sphinx.ext.autodoc", "sphinx_design"]
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 exclude_patterns = []
 
 html_theme = "sphinx_book_theme"
 html_logo = "_static/logo.png"
-html_static_path = ['_static']
-    
+html_static_path = ["_static"]

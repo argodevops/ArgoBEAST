@@ -2,7 +2,7 @@ behave==1.2.6
 deepmerge==2.0
 python-dotenv==1.2.1
 PyYAML==6.0.3
-pytest==9.0.2
+pytest==9.0.3
 selenium==4.40.0
 myst_parser==4.0.1
 sphinx-book-theme==1.1.4

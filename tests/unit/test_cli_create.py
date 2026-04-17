@@ -1,5 +1,4 @@
-import pytest
-from unittest.mock import patch, mock_open, MagicMock
+from unittest.mock import patch, mock_open
 from argo_beast.cli.create import create, create_all, init, pip_install
 
 # Targeting helpers and builtins for file operations
@@ -20,7 +19,7 @@ def test_create_page_writes_correct_file(mock_ok, mock_class, mock_exists, mock_
 
     # Verify directory check and file opening
     mock_ensure.assert_called_once_with("pages")
-    m.assert_called_once_with("pages/login_page.py", "w")
+    m.assert_called_once_with('pages/login_page.py', 'w', encoding='utf-8')
 
     # Verify template content was written (checking for ClassName injection)
     handle = m()
@@ -39,6 +38,7 @@ def test_create_all_triggers_multiple_calls():
         assert "page" in calls
         assert "actions" in calls
         assert "steps" in calls
+
 
 # --- 2. Testing Project Initialization (init) ---
 
@@ -60,6 +60,7 @@ def test_init_creates_project_structure(mock_pip, mock_ensure):
     assert "features/environment.py" in written_files
     assert "requirements.txt" in written_files
 
+
 # --- 3. Testing Subprocess Calls ---
 
 
@@ -69,6 +70,6 @@ def test_pip_install_calls_correct_command(mock_call):
     """Verify pip_install triggers a 'pip install -r' subprocess."""
     pip_install("reqs.txt")
 
-    mock_call.assert_called_once_with([
-        "/usr/bin/python", "-m", "pip", "install", "-r", "reqs.txt"
-    ])
+    mock_call.assert_called_once_with(
+        ["/usr/bin/python", "-m", "pip", "install", "-r", "reqs.txt"]
+    )

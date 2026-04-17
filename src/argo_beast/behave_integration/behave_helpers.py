@@ -14,23 +14,25 @@ class DummyStreamOpener:
         self.stream = None
 
 
-def override_config_with_env_vars(config_data, ENV_OVERRIDES={
-    "BASE_URL": "base_url",
-    "REMOTE_URL": "remote_url",
-    "LOG_LEVEL": "log_level",
-}):
+def override_config_with_env_vars(config_data, env_overrides=None):
     """
     Checks for specific environment variables and overrides corresponding config values.
     """
     # Only print if strictly necessary to avoid console noise
     # print("Checking environment variables for config overrides...")
 
-    for env_var, config_key in ENV_OVERRIDES.items():
+    if env_overrides is None:
+        env_overrides = {
+            "BASE_URL": "base_url",
+            "REMOTE_URL": "remote_url",
+            "LOG_LEVEL": "log_level",
+        }
+
+    for env_var, config_key in env_overrides.items():
         env_value = os.getenv(env_var)
         if env_value:
             config_data[config_key] = env_value
-            print(
-                f"  --> OVERRIDE: {config_key} set to '{env_value}' via {env_var}")
+            print(f"  --> OVERRIDE: {config_key} set to '{env_value}' via {env_var}")
 
     return config_data
 
@@ -51,7 +53,7 @@ def cleanup_results(results_dir="allure-results", hide_skipped=False):
         should_delete = False
 
         try:
-            with open(filepath, "r") as f:
+            with open(filepath, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             status = data.get("status")
@@ -59,8 +61,7 @@ def cleanup_results(results_dir="allure-results", hide_skipped=False):
             full_name = data.get("fullName", "")
 
             # Combine checks: True if "_common" is in EITHER the titlePath OR the fullName
-            is_magic_hook = "_common" in str(
-                title_path) or "_common" in full_name
+            is_magic_hook = "_common" in str(title_path) or "_common" in full_name
 
             if is_magic_hook and status == "skipped":
                 should_delete = True
@@ -84,7 +85,7 @@ def parse_tags(file_path):
     for scenario in feature.scenarios:
         hook_id = None
         for tag in scenario.tags:
-            if tag.startswith('setup:') or tag.startswith('teardown:'):
+            if tag.startswith("setup:") or tag.startswith("teardown:"):
                 continue
             hook_id = tag
             break
@@ -110,7 +111,7 @@ def parse_hooks(hooks_path=HOOKS_PATH):
         logging.warning(f"Hooks path '{hooks_path}' does not exist.")
         return {}
 
-    for root, dirs, files in os.walk(hooks_path):
+    for root, _, files in os.walk(hooks_path):
         for filename in files:
             if filename.endswith(".feature"):
                 file_path = os.path.join(root, filename)
@@ -122,14 +123,14 @@ def parse_hooks(hooks_path=HOOKS_PATH):
 
 def run_common_features(scenario, context, stage, fail_hard=True):
     all_tags = list(scenario.feature.tags) + list(scenario.tags)
-    hooks_library = getattr(context, 'beast_hooks', {})
+    hooks_library = getattr(context, "beast_hooks", {})
 
     for tag in all_tags:
         if tag.startswith(f"{stage}:"):
-            hook_id = tag.split(':', 1)[1]
+            hook_id = tag.split(":", 1)[1]
 
             if hook_id in hooks_library:
-                if hasattr(context, 'execute_steps'):
+                if hasattr(context, "execute_steps"):
                     try:
                         context.execute_steps(hooks_library[hook_id])
                     except Exception as e:
@@ -140,7 +141,9 @@ def run_common_features(scenario, context, stage, fail_hard=True):
                             logging.warning(f"WARNING: {error_msg}")
                 else:
                     logging.warning(
-                        f"Unit Test: Skipping execution of hook '@{hook_id}' (No Behave runner)")
+                        f"Unit Test: Skipping execution of hook '@{hook_id}' (No Behave runner)"
+                    )
             else:
                 logging.warning(
-                    f"WARNING: Scenario requested @{stage}:{hook_id}, but it was not found in library.")
+                    f"WARNING: Scenario requested @{stage}:{hook_id}, but it was not found in library."
+                )
