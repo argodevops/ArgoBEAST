@@ -3,7 +3,7 @@ name: Build and Deploy Sphinx Docs to Public Repo
 on:
   push:
     branches:
-      - dev
+      - main
 
 permissions:
   contents: write
@@ -44,7 +44,8 @@ jobs:
           # Replace the placeholder in all tutorial files
           find docs/source -name "*.rst" -exec sed -i "s|ARGO_BEAST_INSTALL_URL|${INSTALL_URL}|g" {} +
           find docs/source -name "*.md" -exec sed -i "s|ARGO_BEAST_INSTALL_URL|${INSTALL_URL}|g" {} +
-
+          find docs/source -name "*.rst" -exec sed -i "s|ARGO_BEAST_VERSION|${VERSION}|g" {} +
+          find docs/source -name "*.md" -exec sed -i "s|ARGO_BEAST_VERSION|${VERSION}|g" {} +
       - name: Build Sphinx documentation
         run: |
           sphinx-build -M html docs/source docs/build
