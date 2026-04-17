@@ -24,4 +24,4 @@ jobs:
         run: uv sync --frozen --no-install-project --group dev --extra allure
       
       - name: Run tests
-        run: uv pytest
+        run: uv run pytest

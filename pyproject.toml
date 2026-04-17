@@ -3,7 +3,7 @@ name = "argobeast"
 version = "2.1.2"
 description = "A Python-based test automation framework for Behave with a clean Page Object architecture and CLI scaffolding."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [
     { name = "Paul Shears", email = "paul.s@argodevops.co.uk" }
 ]
@@ -50,7 +50,7 @@ allure = [
 
 [tool.uv]
 dev-dependencies = [
-    "pytest>=7.0",
+    "pytest==9.0.3",
     "build",  # The standard PEP 517 build frontend
     "twine",  # For uploading to PyPI
     "argobeast[allure]", # For pytests to run correctly
