@@ -1,13 +1,12 @@
-========
 Pages
-========
+=====
 
 .. contents::
    :local:
    :depth: 2
 
 ❓What Are Pages?
-===============
+=================
 Pages are low level wrappers for locators and basic UI interactions. 
 They should not contain any complex logic about how the functionality works - they simply "paint the picture" by providing interactions for the actions page to utilise. 
 
@@ -66,7 +65,7 @@ Actions should be smart. They orchestrate multi-step flows and business logic.
    | ``(What)      (Describe) (Decide)    (Do)      (Execute)``
 
 📜 Page Responsibilities
-=====================
+========================
 What it should do
 ----------------
 - Specify the locators (fields that need to be populated)
@@ -204,6 +203,8 @@ Each page uses the BasePage. This is where ArgoBEAST really benefits the user.
 BasePage contains methods for most of the common actions a user might perform on a locator.
 
 These are the methods that should be used, individual pages should not be responsible for any new WebDriver logic. 
+
+.. _inline-markup-pages:
 
 .. dropdown:: Available Base Page UI Interactions (Click to Expand)
 
