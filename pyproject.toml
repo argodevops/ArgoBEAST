@@ -7,6 +7,12 @@ requires-python = ">=3.10"
 authors = [
     { name = "Paul Shears", email = "paul.s@argodevops.co.uk" }
 ]
+license = "Apache-2.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Testing",
+]
 
 # Your dependencies for the framework itself (not test requirements)
 dependencies = [
@@ -21,12 +27,16 @@ dependencies = [
 [project.scripts]
 argobeast = "argo_beast.cli.main:main"
 
+[project.urls]
+Documentation = "https://pauls-argo.github.io/ArgoBEAST-Documentation/"
+
 # Setuptools settings
 [build-system]
 requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
+include-package-data = true
 package-dir = {"" = "src"}  # IMPORTANT for src/ layout
 
 # Include non-Python files inside the package
