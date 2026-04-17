@@ -3,7 +3,7 @@ name: Build and Deploy Sphinx Docs to Public Repo
 on:
   push:
     branches:
-      - dev
+      - bug/generate-docs-not-working-windows
 
 permissions:
   contents: write

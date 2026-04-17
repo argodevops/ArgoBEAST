@@ -48,7 +48,7 @@ def generate_rst_documentation(args):
 
                     rst_content = build_rst_content(feature)
 
-                    with open(output_path, "w") as f:
+                    with open(output_path, "w", encoding="utf-8") as f:
                         f.write(rst_content)
 
                     rst_files.append(filename)
@@ -133,7 +133,7 @@ def build_rst_content(feature):
 def generate_index_file(output_dir, files):
     """Creates a table of contents for the features folder."""
     index_path = os.path.join(output_dir, "index.rst")
-    with open(index_path, "w") as f:
+    with open(index_path, "w", encoding="utf-8") as f:
         f.write("Test Specifications\n")
         f.write("===================\n\n")
     # --- LEVEL 2 DEFENSE: THE CONTEXT ---
