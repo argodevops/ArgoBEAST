@@ -1,4 +1,3 @@
-```markdown
 # ArgoBEAST 🚀
 
 ![PyPI - Version](https://img.shields.io/pypi/v/argobeast)
