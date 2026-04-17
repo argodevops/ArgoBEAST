@@ -52,6 +52,7 @@ allure = [
 dev = [
     "pytest==9.0.3",
     "pylint",
+    "ruff",
     "build",  # The standard PEP 517 build frontend
     "twine",  # For uploading to PyPI
     "argobeast[allure]", # For pytests to run correctly
