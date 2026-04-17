@@ -7,7 +7,8 @@ from .generate_feature_docs import generate_rst_documentation
 
 def fix_windows_encoding():
     """
-    Ensures python utf-8 encoding is added to the terminal output for a consistent experience across platforms, especially for Windows users.
+    Ensures python utf-8 encoding is added to the terminal output for a consistent experience across platforms, 
+    especially for Windows users.
     """
     if sys.platform == "win32":
         # Forces the standard output/input to use utf-8

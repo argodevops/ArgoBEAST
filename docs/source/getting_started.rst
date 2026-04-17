@@ -37,15 +37,16 @@ Once the core functionality has been built, creating new tests becomes quick and
 
 Installation
 ============
+
+**NOTE: The installation process is currently being updated to allow for installation directly from PyPI. In the meantime, please refer to the tutorial on installing ArgoBEAST for instructions on how to install using the whl file.**
+
 Before you can start a new project, you will need to install ArgoBEAST.
 
 You can do this with the whl file (instructions on how to generate a new whl file can be found in the README.md)
 
 Once you have the whl file in an accessible location run: 
 
-``pip install argobeast-x.x.x-py3-none-any.whl``
-
-NOTE: The name of the whl file may vary depending on version. You will need to replace ``x.x.x`` with the current version. 
+``pip install argobeast-ARGO_BEAST_VERSION-py3-none-any.whl``
 
 To confirm installation has been successful, you can run. 
 
