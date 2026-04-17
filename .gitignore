@@ -1,4 +1,5 @@
 venv
+.venv
 screenshots
 __pycache__*
 .vscode
@@ -8,5 +9,5 @@ dist
 build
 .pytest_cache
 .coverage
-src/argo_beast/config/__pycache__
+src/argo_beast/config/__pycache__*
 src/argobeast.egg-info

@@ -1,13 +1,26 @@
-import sys
+import sys 
+import io
 from .create import create, create_all, init
 from .helpers import warn, info, ARGO_BEAST
 from .generate_feature_docs import generate_rst_documentation
 
 
+def fix_windows_encoding():
+    """
+    Ensures python utf-8 encoding is added to the terminal output for a consistent experience across platforms, 
+    especially for Windows users.
+    """
+    if sys.platform == "win32":
+        # Forces the standard output/input to use utf-8
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
 def main():
     """
     Main CLI entry point
     """
+    fix_windows_encoding()
+
     args = sys.argv[1:]
 
     if len(args) < 1:
