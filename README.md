@@ -1,14 +1,24 @@
-## ArgoBEAST
+```markdown
+# ArgoBEAST 🚀
 
-### BEhave And Selenium Testing Framework
+![PyPI - Version](https://img.shields.io/pypi/v/argobeast)
+![PyPI - License](https://img.shields.io/pypi/l/argobeast)
+![Pylint Score](https://img.shields.io/badge/pylint-10.0-brightgreen)
 
-A Python-based test automation framework for web applications, built on Behave, Selenium, and a clean Page Object Model. Includes a CLI tool for scaffolding pages, actions, steps, and project structure.
+### The Professional Platform-as-a-Product (PaaP) for Web Automation
+
+ArgoBEAST is more than a wrapper; it's a structural engine for high-scale testing. It transforms raw Selenium and Behave into a standardised, professional-grade framework with zero-config scaffolding and a strict separation of concerns.
+
+**Key Architectural Pillars:**
+- **Standardized Scaffolding:** Instant generation of the Page Object Model (POM) stack—Pages, Actions, Steps, and Features—via a dedicated CLI.
+- **Enterprise-Grade Logic:** Built-in form handling, automatic configuration merging, and high-standard linting (10/10 Pylint).
+- **Selenium-First, Mobile-Ready:** Native Selenium support with a roadmap focused on Appium integration for mobile testing.
 
 ## Benefits
 
 - 🧱 CLI scaffolding for pages, actions, steps, and project setup
 
-- 🔄 Backend-agnostic architecture (Selenium today, Playwright optional later)
+- 🔄 Backend-agnostic architecture (Selenium today, Appium later)
 
 - 🧪 Behave BDD support out of the box
 
@@ -26,20 +36,16 @@ A Python-based test automation framework for web applications, built on Behave, 
 
 - 📝 Easily complete entire website forms with built in form logic
 
-# Build & Installation
+# Installation
 
-To build the whl you will need to ensure you have `build` installed and then build the whl.
-
+Install via pip:
 ```bash
-pip install build
-python3 -m build # Run this from the root directory
+pip install argobeast
 ```
 
-The whl will output to the dist folder. From here you can download/copy to any other location.
-To install run:
-
+Or using UV (recommended for development):
 ```bash
-pip install argobeast-x.x.x-py3-none-any.whl
+uv add argobeast
 ```
 
 To check the installation has run correctly run:
@@ -63,7 +69,7 @@ This will give you the option to generate example files which can be used as a t
 - features/steps/login_steps.py
 - pages/login_page.py
 
-For more information on how to use these files and create your own tests see [Getting Started](docs/source/getting_started.rst)
+For more information on how to use these files and create your own tests see [Getting Started](https://pauls-argo.github.io/ArgoBEAST-Documentation/getting_started.html)
 
 Other files generated are:
 
@@ -103,7 +109,7 @@ my-tests/
 - ConfigLoader
   - merges baked defaults with user config
 
-More information on how to use these pages can be found in [Getting Started](docs/source/getting_started.rst)
+More information on how to use these pages can be found in [Getting Started](https://pauls-argo.github.io/ArgoBEAST-Documentation/getting_started.html)
 
 ## Other CLI Commands
 
@@ -120,65 +126,13 @@ argobeast create feature <name of feature> # A page can have multiple features, 
 
 You can configure your test target by editing config/driver.yml
 
-More information can be found about this in [Getting Started](docs/source/getting_started.rst)
+More information can be found about this in [Getting Started](https://pauls-argo.github.io/ArgoBEAST-Documentation/getting_started.html)
 
-# Project Directory Tree
-
-```
-.
-├── MANIFEST.in
-├── README.md
-├── docs
-│   └── source
-│       ├── _static
-│       │   └── logo.png
-│       ├── a_b_testing.rst
-│       ├── actions.rst
-│       ├── advanced_features.rst
-│       ├── allure_reporting.rst
-│       ├── cheat_sheet.rst
-│       ├── conf.py
-│       ├── configuration_guide.rst
-│       ├── features.rst
-│       ├── form_population_engine.rst
-│       ├── getting_started.rst
-│       ├── global_config.rst
-│       ├── index.rst
-│       ├── locators.rst
-│       ├── magic_hooks.rst
-│       ├── pages.rst
-│       └── steps.rst
-├── pyproject.toml
-├── requirements_dev.txt
-├── src
-│   └── argo_beast
-│       ├── base
-│       │   ├── base_page.py
-│       │   ├── base_step_context.py
-│       │   └── driver_factory.py
-│       ├── behave_integration
-│       │   ├── behave_helpers.py
-│       │   ├── environment.py
-│       │   └── report_manager.py
-│       ├── cli
-│       │   ├── create.py
-│       │   ├── helpers.py
-│       │   ├── main.py
-│       │   └── templates.py
-│       ├── common_actions
-│       │   └── common_actions.py
-│       └── config
-│           ├── defaults.yml
-│           └── loader.py
-└── tests
-```
 
 # Roadmap
 
-ArgoBEAST is still under development. Below is the current roadmap.
+ArgoBEAST is actively developed with a focus on professional testing environments:
 
-- Extend for Appium support
-
-- Docker integration
-
-- Dockerfiles for running with no browser (Selenium Grid - already included)
+- **Appium Integration:** Expanding the DriverFactory to support mobile automation.
+- **Dockerized Execution:** Standardised Dockerfiles for Selenium Grid and headless execution.
+- **Reporting Enhancements:** Deep integration for Allure reports (logic currently in `before_all`).
