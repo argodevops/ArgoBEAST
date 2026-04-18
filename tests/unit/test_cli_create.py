@@ -1,5 +1,5 @@
 from unittest.mock import patch, mock_open
-from argo_beast.cli.create import create, create_all, init, pip_install
+from argo_beast.cli.create import create, create_all, init
 
 # Targeting helpers and builtins for file operations
 CREATE_PATH = "argo_beast.cli.create"
@@ -19,7 +19,7 @@ def test_create_page_writes_correct_file(mock_ok, mock_class, mock_exists, mock_
 
     # Verify directory check and file opening
     mock_ensure.assert_called_once_with("pages")
-    m.assert_called_once_with('pages/login_page.py', 'w', encoding='utf-8')
+    m.assert_called_once_with("pages/login_page.py", "w", encoding="utf-8")
 
     # Verify template content was written (checking for ClassName injection)
     handle = m()
@@ -44,11 +44,10 @@ def test_create_all_triggers_multiple_calls():
 
 
 @patch(f"{CREATE_PATH}.ensure_dir")
-@patch(f"{CREATE_PATH}.pip_install")
-def test_init_creates_project_structure(mock_pip, mock_ensure):
+def test_init_creates_project_structure(mock_ensure):
     """Verify init() creates the standard folder and file set."""
-    # We mock input to simulate user saying 'Yes' to examples and 'No' to pip
-    with patch("builtins.input", side_effect=["y", "n"]):
+    # We mock input to simulate user saying 'Yes' to examples
+    with patch("builtins.input", side_effect=["y"]):
         with patch("builtins.open", mock_open()) as m:
             with patch(f"{CREATE_PATH}.create_common_features"):
                 with patch(f"{CREATE_PATH}.create"):
@@ -59,17 +58,3 @@ def test_init_creates_project_structure(mock_pip, mock_ensure):
     assert "config/driver.yml" in written_files
     assert "features/environment.py" in written_files
     assert "requirements.txt" in written_files
-
-
-# --- 3. Testing Subprocess Calls ---
-
-
-@patch(f"{CREATE_PATH}.subprocess.check_call")
-@patch(f"{CREATE_PATH}.sys.executable", "/usr/bin/python")
-def test_pip_install_calls_correct_command(mock_call):
-    """Verify pip_install triggers a 'pip install -r' subprocess."""
-    pip_install("reqs.txt")
-
-    mock_call.assert_called_once_with(
-        ["/usr/bin/python", "-m", "pip", "install", "-r", "reqs.txt"]
-    )

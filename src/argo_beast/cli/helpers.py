@@ -48,6 +48,6 @@ def get_class_name(name):
     capitals = [n.capitalize() for n in name.split(" ")]
     class_name = ""
     for c in capitals:
-        class_name += c # pylint: disable=consider-using-join
+        class_name += c  # pylint: disable=consider-using-join
 
     return class_name
