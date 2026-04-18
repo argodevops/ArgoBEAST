@@ -57,4 +57,3 @@ def test_init_creates_project_structure(mock_ensure):
     written_files = [call[0][0] for call in m.call_args_list]
     assert "config/driver.yml" in written_files
     assert "features/environment.py" in written_files
-    assert "requirements.txt" in written_files

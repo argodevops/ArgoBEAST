@@ -6,7 +6,6 @@ from .templates import (
     ACTIONS_TEMPLATE,
     FEATURE_TEMPLATE,
     CONFIG_TEMPLATE,
-    REQUIREMENTS_TEMPLATE,
     ENVIRONMENT_TEMPLATE,
     COMMON_FEATURE_EXAMPLE,
 )
@@ -121,9 +120,6 @@ def init():
 
     with open("features/_common/.gitkeep", "w", encoding="utf-8") as f:
         f.write("# Keep this folder")
-
-    with open("requirements.txt", "w", encoding="utf-8") as f:
-        f.write(REQUIREMENTS_TEMPLATE)
 
     if include_examples in ["y", "yes"]:
         create_common_features()
