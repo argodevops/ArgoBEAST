@@ -18,8 +18,6 @@ Now you've installed ArgoBEAST you're ready to start writing your first test.
 
 You will be asked if you want to include example files. For this tutorial, please select no as we'll be creating them ourselves as we go. 
 
-You will also be asked if you would like to attempt to install the required dependencies - it's recommended you select yes.
-
 3. You should now have the following file structure:
 
 .. code-block:: bash
@@ -32,8 +30,7 @@ You will also be asked if you would like to attempt to install the required depe
    │   ├── _common
    │   ├── environment.py
    │   └── steps
-   ├── pages
-   └── requirements.txt
+   └── pages
 
 Directory Breakdown
 -------------------
@@ -45,7 +42,6 @@ Directory Breakdown
 - **features/environment.py**: Behave requires this file to run. The heavy lifting has been included in the ArgoBEAST framework but for Behave to remain happy, it needs to be able to see the environment.py file. Do not touch this. 
 - **features/steps**: Steps files will be stored here. 
 - **pages**: Pages files will be stored here.
-- **requirements.txt**: This lists the versions of selenium and behave currently used by ArgoBEAST. 
 
 
 

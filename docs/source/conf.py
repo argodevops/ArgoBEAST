@@ -7,9 +7,9 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "ArgoBEAST"
-copyright = "2025, Paul Shears"
+copyright = "2026, Paul Shears"
 author = "Paul Shears"
-release = "2.1.2"
+release = "2.1.4"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

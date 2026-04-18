@@ -23,7 +23,7 @@ With your environment active, install the latest version directly from our centr
 
 .. code-block:: bash
 
-    pip install ARGO_BEAST_INSTALL_URL
+    pip install argobeast
 
 
 If you prefer using uv for faster dependency management, you can create an environment and install ArgoBEAST in one go:
@@ -35,4 +35,4 @@ If you prefer using uv for faster dependency management, you can create an envir
     source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
     # Install ArgoBEAST
-    uv pip install ARGO_BEAST_INSTALL_URL
+    uv add argobeast

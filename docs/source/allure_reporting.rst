@@ -24,6 +24,12 @@ You must ensure the adapter library is installed:
 
     pip install allure-behave
 
+If using uv, you can add it to your environment with:
+
+.. code-block:: bash
+
+    uv add allure-behave    
+
 HTML Report Generation
 ----------------------
 

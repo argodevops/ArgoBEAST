@@ -1,6 +1,4 @@
 import os
-import sys
-import subprocess
 from .helpers import ensure_dir, ok, warn, error, get_class_name
 from .templates import (
     PAGE_TEMPLATE,
@@ -8,7 +6,6 @@ from .templates import (
     ACTIONS_TEMPLATE,
     FEATURE_TEMPLATE,
     CONFIG_TEMPLATE,
-    REQUIREMENTS_TEMPLATE,
     ENVIRONMENT_TEMPLATE,
     COMMON_FEATURE_EXAMPLE,
 )
@@ -87,16 +84,6 @@ def create_all(name):
         create(name, i)
 
 
-def pip_install(requirements_path: str):
-    """
-    Install dependencies from a requirements file using pip
-    :param requirements_path: Path to the requirements.txt file
-    """
-    subprocess.check_call(
-        [sys.executable, "-m", "pip", "install", "-r", requirements_path]
-    )
-
-
 def init():
     """
     Initialize a new test framework structure
@@ -134,23 +121,7 @@ def init():
     with open("features/_common/.gitkeep", "w", encoding="utf-8") as f:
         f.write("# Keep this folder")
 
-    with open("requirements.txt", "w", encoding="utf-8") as f:
-        f.write(REQUIREMENTS_TEMPLATE)
-
     if include_examples in ["y", "yes"]:
         create_common_features()
         for e in examples:
             create("login", e)
-
-    user_input = False
-    while not user_input:
-        install_deps = input(
-            "Would you like to attempt to install the required dependencies? [Y]es,[N]o: "
-        )
-        if install_deps.lower() in accepted_response:
-            user_input = True
-        else:
-            warn("Please select a valid option")
-
-    if install_deps.lower() in ["y", "yes"]:
-        pip_install("requirements.txt")
