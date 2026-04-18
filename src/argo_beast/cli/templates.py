@@ -103,10 +103,6 @@ log_level: "INFO"
 
 """
 
-REQUIREMENTS_TEMPLATE = """
-selenium==4.40.0
-behave==1.2.6
-"""
 
 ENVIRONMENT_TEMPLATE = """
 # Automatically delegate hooks to the test framework.
