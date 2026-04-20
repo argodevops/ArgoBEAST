@@ -23,3 +23,4 @@ Welcome to ArgoBEAST's documentation! ArgoBEAST is a powerful Python-based test 
    advanced_features
    cheat_sheet
    tutorial
+   troubleshooting
