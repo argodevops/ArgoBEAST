@@ -140,7 +140,7 @@ As in the previous 2 steps, ignore the non-existent import. We're focussing on t
 
 .. code-block:: python
    
-   @then("I should see Chris")
+   @then("I can find chris")
    def check_chris_visible(context):
        actions = context.app.get_actions(AboutActions)
        assert actions.is_chris_visible()
