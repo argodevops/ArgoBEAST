@@ -42,11 +42,11 @@ Installation
 
 Before you can start a new project, you will need to install ArgoBEAST.
 
-You can do this with the whl file (instructions on how to generate a new whl file can be found in the README.md)
+``pip install argobeast``
 
-Once you have the whl file in an accessible location run: 
+or, if you are using uv (recommended)
 
-``pip install argobeast-ARGO_BEAST_VERSION-py3-none-any.whl``
+``uv add argobeast``
 
 To confirm installation has been successful, you can run. 
 

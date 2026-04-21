@@ -1,137 +1,95 @@
-# ArgoBEAST 🚀
+<p align="center">
+  <img src="https://pauls-argo.github.io/ArgoBEAST-Documentation/_static/logo.png" alt="ArgoBEAST Logo" width="250">
+</p>
 
-![PyPI - Version](https://img.shields.io/pypi/v/argobeast)
-![PyPI - License](https://img.shields.io/pypi/l/argobeast)
-![Pylint Score](https://img.shields.io/badge/pylint-10.0-brightgreen)
+<h1 align="center">ArgoBEAST 🚀</h1>
 
-### The Professional Platform-as-a-Product (PaaP) for Web Automation
+<p align="center">
+  <img src="https://img.shields.io/pypi/v/argobeast" alt="PyPI - Version">
+  <img src="https://img.shields.io/static/v1?label=license&message=Apache%202.0&color=blue" alt="PyPI - License">
+  <img src="https://img.shields.io/badge/pylint-10.0-brightgreen" alt="Pylint Score">
+</p>
 
-ArgoBEAST is more than a wrapper; it's a structural engine for high-scale testing. It transforms raw Selenium and Behave into a standardised, professional-grade framework with zero-config scaffolding and a strict separation of concerns.
+### Stop Building Frameworks. Start Writing Tests.
 
-**Key Architectural Pillars:**
-- **Standardized Scaffolding:** Instant generation of the Page Object Model (POM) stack—Pages, Actions, Steps, and Features—via a dedicated CLI.
-- **Enterprise-Grade Logic:** Built-in form handling, automatic configuration merging, and high-standard linting (10/10 Pylint).
-- **Selenium-First, Mobile-Ready:** Native Selenium support with a roadmap focused on Appium integration for mobile testing.
+**ArgoBEAST** is a structural engine for Selenium and Behave. It eliminates the "scramble" of test automation by providing a pre-structured, collaborative ecosystem that forces consistency across your entire team.
 
-## Benefits
+**Scaffold a professional Page Object Model (POM) architecture in minutes.**
 
-- 🧱 CLI scaffolding for pages, actions, steps, and project setup
+---
 
-- 🔄 Backend-agnostic architecture (Selenium today, Appium later)
+## Why ArgoBEAST?
 
-- 🧪 Behave BDD support out of the box
+Most automation projects fail because of inconsistent structure and complex driver logic. ArgoBEAST "crushes" that grunt work by providing the guardrails necessary for collaborative success.
 
-- 📄 Automatic config loading and merging (defaults + user overrides)
+* **⚡ Zero-Config Scaffolding:** Generate a full, professional POM stack—Pages, Actions, Steps, and Features—in seconds via the CLI.
+* **🤝 Enforced Collaboration:** Every engineer follows the same pattern: **Pages → Actions → Steps → Features**. No more "lone wolf" code styles.
+* **🏗️ Architecture Built-In:** Inherit from `BasePage` and `CommonActions` to get enterprise-grade form handling and element synchronization out of the box.
+* **📉 Regression Creep Killer:** Standardized logic makes high-frequency smoke testing easy to implement, maintain, and scale.
 
-- 📦 Packaged and reusable as a .whl
+---
 
-- 🧍 Separation of concerns (Pages → Actions → Steps → Features)
+## Get Started
 
-- 💥 Screenshot capture on failure
-
-- 🧰 Extendable actions + reusable BasePage helpers
-
-- 🪄 Magic hooks to enable simple reusable setup and teardown scenarios
-
-- 📝 Easily complete entire website forms with built in form logic
-
-# Installation
-
-Install via pip:
+### 1. Install
 ```bash
 pip install argobeast
-```
-
-Or using UV (recommended for development):
-```bash
+# OR (Recommended)
 uv add argobeast
 ```
 
-To check the installation has run correctly run:
-
-```bash
-argobeast hello
-```
-
-# Initiating a New Project
-
-To initialise a project run:
-
+### 2. Initialize Your Project
 ```bash
 argobeast init
 ```
+This scaffolds a complete, framework-agnostic environment. You can opt-in to generate **example template files** (based on a login scenario) to see the ArgoBEAST pattern in action.
 
-This will give you the option to generate example files which can be used as a template for your testing. These starter files will assume you're building tests for a login page.
-
-- actions/login_actions.py
-- features/login_feature.feature
-- features/steps/login_steps.py
-- pages/login_page.py
-
-For more information on how to use these files and create your own tests see [Getting Started](https://pauls-argo.github.io/ArgoBEAST-Documentation/getting_started.html)
-
-Other files generated are:
-
-- requirements.txt (This is a starter file including the initial requirements for your Behave & Selenium testing environment)
-- config/driver.yml (This can be customised by the user)
-- features/environment.py (Do not touch this file - behave relies on it to run the tests)
-
-### File Structure After Init
-
+### 3. Build Your First Test
+Use the CLI to generate the blueprint for your specific application:
 ```bash
-my-tests/
-│
-├── pages/
-│   └── login_page.py
-├── actions/
-│   └── login_actions.py
-├── features/
-│   ├── login.feature
-│   └── steps/
-│       └── login_steps.py
-├── config/
-│   └── driver.yml
-└── features/environment.py   <-- auto-loads framework hooks
+argobeast create page checkout
+argobeast create actions checkout
+argobeast create steps checkout
 ```
+Simply add your locators to the `Page` and your business logic to the `Actions`—ArgoBEAST handles the driver injection and configuration merging behind the scenes.
 
-- Pages
-  - Store locators
-  - Inherit BasePage
-- Actions
-  - Contain business logic
-  - Inherit CommonActions
-- Steps
-  - thin Behave glue
-  - call Actions
-- DriverFactory
-  - Selenium setup
-- ConfigLoader
-  - merges baked defaults with user config
+---
 
-More information on how to use these pages can be found in [Getting Started](https://pauls-argo.github.io/ArgoBEAST-Documentation/getting_started.html)
+## The Workflow: Scalability by Design
 
-## Other CLI Commands
+ArgoBEAST enforces a clean separation of concerns, ensuring your tests remain readable and maintainable:
 
-ArgoBEAST includes simple commands for generating new pages, actions, steps, and feature files:
+| Component | Responsibility | Parent Class |
+| :--- | :--- | :--- |
+| **Pages** | Store element locators and IDs | `BasePage` |
+| **Actions** | High-level business logic & form filling | `CommonActions` |
+| **Steps** | Thin Behave "glue" code | N/A |
+| **Features** | Human-readable Gherkin scenarios | N/A |
 
-```bash
-argobeast create page <name of page> # Replace <name of page>
-argobeast create steps <name of page>
-argobeast create actions <name of page>
-argobeast create feature <name of feature> # A page can have multiple features, so make this descriptive
-```
+---
 
-### Configure Your Test Target
+## The "No-Logic" Driver Engine
 
-You can configure your test target by editing config/driver.yml
+Stop wrestling with `webdriver` initializations and messy `environment.py` hooks. ArgoBEAST abstracts the heavy lifting into a simple configuration layer.
 
-More information can be found about this in [Getting Started](https://pauls-argo.github.io/ArgoBEAST-Documentation/getting_started.html)
+* **⚙️ Logic-Free Configuration:** Control browser types, headless modes, and timeouts via `config/driver.yml`. Change browsers or toggle headless mode without touching a single line of Python code.
+* **🪄 Zero-Bloat environment.py:** Framework-level setup/teardown is handled by ArgoBEAST's engine, keeping your project files focused solely on your project logic.
+* **📸 Automatic Recovery:** Built-in screenshot capture on every failure, handled internally by framework hooks.
+* **📑 Advanced Form Logic:** Use built-in dictionary mapping to complete massive web forms in a single action call.
 
+---
 
-# Roadmap
+## Roadmap
 
-ArgoBEAST is actively developed with a focus on professional testing environments:
+ArgoBEAST is built for the future of professional QA:
+- **V2: Dockerized Execution:** Standardized containers for Selenium Grid and headless execution.
+- **V2: Reporting Enhancements:** Native, deep integration for Allure reports.
+- **V3: Mobile Support:** Expanding the DriverFactory to support native Appium integration.
 
-- **Appium Integration:** Expanding the DriverFactory to support mobile automation.
-- **Dockerized Execution:** Standardised Dockerfiles for Selenium Grid and headless execution.
-- **Reporting Enhancements:** Deep integration for Allure reports (logic currently in `before_all`).
+---
+
+### Resources
+- **Documentation:** [Full Guide & API Reference](https://pauls-argo.github.io/ArgoBEAST-Documentation/)
+- **License:** Apache 2.0
+
+**ArgoBEAST: INSTANT VERIFICATION. STRUCTURED, SCALABLE TESTING.**
