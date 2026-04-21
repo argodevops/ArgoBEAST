@@ -3,8 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-ArgoBEAST documentation
-=======================
+ArgoBEAST
+==========
+Version ARGO_BEAST_VERSION
 
 Welcome to ArgoBEAST's documentation! ArgoBEAST is a powerful Python-based test automation framework designed to streamline your testing process with a clean Page Object architecture and CLI scaffolding.
 

@@ -42,8 +42,6 @@ jobs:
           INSTALL_URL="https://github.com/PaulS-Argo/ArgoBEAST-Documentation/raw/main/latest/${WHL_NAME}"
           
           # Replace the placeholder in all tutorial files
-          find docs/source -name "*.rst" -exec sed -i "s|ARGO_BEAST_INSTALL_URL|${INSTALL_URL}|g" {} +
-          find docs/source -name "*.md" -exec sed -i "s|ARGO_BEAST_INSTALL_URL|${INSTALL_URL}|g" {} +
           find docs/source -name "*.rst" -exec sed -i "s|ARGO_BEAST_VERSION|${VERSION}|g" {} +
           find docs/source -name "*.md" -exec sed -i "s|ARGO_BEAST_VERSION|${VERSION}|g" {} +
       - name: Build Sphinx documentation

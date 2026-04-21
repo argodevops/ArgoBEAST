@@ -42,11 +42,11 @@ Installation
 
 Before you can start a new project, you will need to install ArgoBEAST.
 
-You can do this with the whl file (instructions on how to generate a new whl file can be found in the README.md)
+``pip install argobeast``
 
-Once you have the whl file in an accessible location run: 
+or, if you are using uv (recommended)
 
-``pip install argobeast-ARGO_BEAST_VERSION-py3-none-any.whl``
+``uv add argobeast``
 
 To confirm installation has been successful, you can run. 
 
@@ -67,19 +67,20 @@ This will create the directories and files you will need to get started.
 You will be asked during initiation if you'd like example files to get you started. 
 This will produce the following file structure.
 :: 
-   my-tests/
-   │
-   ├── pages/
-   │   └── login_page.py
-   ├── actions/
-   │   └── login_actions.py
-   ├── features/
-   │   ├── login.feature
-   │   └── steps/
-   │       └── login_steps.py
-   ├── config/
-   │   └── driver.yml
-   └── features/environment.py   
+
+  my-tests/
+  │
+  ├── pages/
+  │   └── login_page.py
+  ├── actions/
+  │   └── login_actions.py
+  ├── features/
+  │   ├── login.feature
+  │   └── steps/
+  │       └── login_steps.py
+  ├── config/
+  │   └── driver.yml
+  └── features/environment.py   
    
 Behave discovers environment.py automatically, this contains logic for before, during and after tests. You should not touch this file. 
 
@@ -111,7 +112,3 @@ Next Steps
 | Congratulations! Now you have everything you need to start writing tests. 
 |
 | Move on to the next section to start learning about the POM!
-
-.. button-link:: pages
-   :type: next
-   :text: Next → Pages
