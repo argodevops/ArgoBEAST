@@ -50,7 +50,7 @@ def step_example_action(context,name):
     # Example: actions.login("user", "pass")
     pass
 
-@then("I should see an example result")
+@then("I should see an expected result")
 def step_assert_result(context):
     actions = context.app.get_actions({ClassName}Actions)
     # Example: assert actions.page.is_visible(actions.page.SUCCESS_MESSAGE)
