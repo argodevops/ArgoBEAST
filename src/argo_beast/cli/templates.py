@@ -137,3 +137,39 @@ Feature: Authentication Hooks
     When I click the "Continue as Guest" link
     Then I should be on the home page
 """
+
+DOCKERFILE_TEMPLATE = """
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt* . 
+RUN pip install --no-cache-dir argobeast \
+    && if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
+RUN useradd -m argouser
+USER argouser
+ENV PS1="[argobeast lab]: " \
+    IS_IN_LAB=True 
+"""
+
+DOCKER_COMPOSE_TEMPLATE = """
+services:
+  selenium-grid:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+      - "7900:7900" # NoVNC - lets users WATCH the tests in a browser
+    shm_size: 2gb
+
+  argobeast-runner:
+    build: .
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - SE_REMOTE_URL=http://selenium-grid:4444/wd/hub
+      - ARGO_ENV=container
+      - IS_IN_LAB=True
+    depends_on:
+      - selenium-grid
+    tty: true
+    stdin_open: true
+"""
