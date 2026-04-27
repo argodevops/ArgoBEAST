@@ -10,12 +10,12 @@ def _update_driver_config():
 
     if not os.path.exists(config_path):
         warn("No driver.yml found, skipping lab configuration.")
-        ok(
+        warn(
             "if you are using a custom configuration, you can add the following to your driver.yml \n"
             "to connect to the lab Grid:\n"
         )
-        ok(f'remote_url: "{remote_url}"\n')
-        return False
+        warn(f'remote_url: "{remote_url}"\n')
+        return True
 
     with open(config_path, "r", encoding="utf-8") as f:
         content = f.readlines()
@@ -37,7 +37,7 @@ def _update_driver_config():
                 "or remove the existing remote_url configuration to allow argobeast to add the correct "
                 "one automatically."
             )
-        return False
+            return False
 
     ok("Wiring up the driver.yml to the lab Grid...")
 

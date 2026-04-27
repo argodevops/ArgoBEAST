@@ -14,6 +14,7 @@ Welcome to ArgoBEAST's documentation! ArgoBEAST is a powerful Python-based test 
    :caption: Contents:
 
    getting_started
+   beast_lab
    pages
    actions
    steps
