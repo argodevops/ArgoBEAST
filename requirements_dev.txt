@@ -1,6 +1,6 @@
 behave==1.2.6
 deepmerge==2.0
-python-dotenv==1.2.1
+python-dotenv==1.2.2
 PyYAML==6.0.3
 pytest==9.0.3
 selenium==4.40.0

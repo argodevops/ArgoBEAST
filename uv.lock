@@ -56,7 +56,7 @@ wheels = [
 
 [[package]]
 name = "argobeast"
-version = "2.1.4"
+version = "2.2.4b1"
 source = { editable = "." }
 dependencies = [
     { name = "behave" },

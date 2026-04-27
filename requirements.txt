@@ -34,7 +34,7 @@ Pygments==2.20.0
 pyproject_hooks==1.2.0
 PySocks==1.7.1
 pytest==9.0.3
-python-dotenv==1.2.1
+python-dotenv==1.2.2
 PyYAML==6.0.3
 requests==2.33.0
 roman-numerals==4.1.0
