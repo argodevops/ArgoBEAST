@@ -24,44 +24,26 @@ def ensure_dir(directory):
     Path(directory).mkdir(parents=True, exist_ok=True)
 
 
-def ok(*args, **kwargs):
-    prefix = f"{GREEN}[OK]{RESET}"
+def _beast_print(prefix, color, *args, **kwargs):
+    prefix_str = f"{color}[{prefix}]{RESET}"
     if args:
         args = list(args)
-        args[0] = f"{prefix} {args[0]}"
+        args[0] = f"{prefix_str} {args[0]}"
     else:
-        args = [prefix]
+        args = [prefix_str]
     print(*args, **kwargs)
-
-
-def warn(*args, **kwargs):
-    prefix = f"{YELLOW}[WARN]{RESET}"
-    if args:
-        args = list(args)
-        args[0] = f"{prefix} {args[0]}"
-    else:
-        args = [prefix]
-    print(*args, **kwargs)
-
-
-def info(*args, **kwargs):
-    prefix = f"{PURPLE}[INFO]{RESET}"
-    if args:
-        args = list(args)
-        args[0] = f"{prefix} {args[0]}"
-    else:
-        args = [prefix]
-    print(*args, **kwargs)
-
 
 def error(*args, **kwargs):
-    prefix = f"{RED}[ERROR]{RESET}"
-    if args:
-        args = list(args)
-        args[0] = f"{prefix} {args[0]}"
-    else:
-        args = [prefix]
-    print(*args, **kwargs)
+    _beast_print("ERROR", RED, *args, **kwargs)
+
+def ok(*args, **kwargs):
+    _beast_print("OK", GREEN, *args, **kwargs)
+
+def warn(*args, **kwargs):
+    _beast_print("WARN", YELLOW, *args, **kwargs)
+
+def info(*args, **kwargs):
+    _beast_print("INFO", PURPLE, *args, **kwargs)
 
 
 def get_class_name(name):
