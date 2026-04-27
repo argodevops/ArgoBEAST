@@ -145,6 +145,7 @@ COPY requirements.txt* .
 RUN pip install --no-cache-dir argobeast \
     && if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
 RUN useradd -m argouser
+RUN echo "export PS1='[argobeast lab]: \\w \\$ '" >> /home/argouser/.bashrc
 USER argouser
 ENV PS1="[argobeast lab]: " \
     IS_IN_LAB=True 
@@ -159,8 +160,12 @@ services:
       - "7900:7900" # NoVNC - lets users WATCH the tests in a browser
     shm_size: 2gb
 
-  argobeast-runner:
-    build: .
+  argobeast_runner:
+    image: argobeast_runner
+    container_name: argobeast-runner
+    build: 
+      context: .
+      dockerfile: argobeast.dockerfile
     volumes:
       - .:/app
     working_dir: /app

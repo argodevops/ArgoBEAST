@@ -29,14 +29,14 @@ def ok(log: str):
     print(string)
 
 
-def warn(log: str):
+def warn(log: str, *kwargs):
     string = f"{YELLOW}[WARN]{RESET} {log}"
-    print(string)
+    print(string, *kwargs)
 
 
-def info(log: str):
+def info(log: str, *kwargs):
     string = f"{PURPLE}[INFO]{RESET} {log}"
-    print(string)
+    print(string, kwargs)
 
 
 def error(log: str):

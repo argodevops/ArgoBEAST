@@ -3,7 +3,7 @@ import io
 from .create import create, create_all, init
 from .helpers import warn, info, ARGO_BEAST
 from .generate_feature_docs import generate_rst_documentation
-from .build_lab import build_lab
+from .beast_lab import build_lab, open_lab, close_lab
 
 
 def fix_windows_encoding():
@@ -68,8 +68,20 @@ def main():
         )
         return
 
-    if args[0] == "build" and len(args) > 1 and args[1] == "lab":
-        build_lab()
+    if len(args) > 1 and args[1] == "lab":
+        if args[0] == "build":
+            build_lab()
+        elif args[0] == "open":
+            open_lab()
+        elif args[0] in ["close","stop"]:
+            close_lab()
+        else:
+            info(
+                "Usage: argobeast <build|open|close> lab\n"
+                "  build lab - Build the ArgoBEAST lab Docker image.\n"
+                "  open lab  - Open the ArgoBEAST lab environment (requires Docker).\n"
+                "  close lab - Close the ArgoBEAST lab environment."
+            )
         return
 
     if len(args) < 3:
