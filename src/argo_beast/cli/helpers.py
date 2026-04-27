@@ -1,5 +1,4 @@
 from pathlib import Path
-import string
 
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
