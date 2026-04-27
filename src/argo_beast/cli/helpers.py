@@ -1,4 +1,5 @@
 from pathlib import Path
+import string
 
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -24,24 +25,44 @@ def ensure_dir(directory):
     Path(directory).mkdir(parents=True, exist_ok=True)
 
 
-def ok(log: str):
-    string = f"{GREEN}[OK]{RESET} {log}"
-    print(string)
+def ok(*args, **kwargs):
+    prefix = f"{GREEN}[OK]{RESET}"
+    if args:
+        args = list(args)
+        args[0] = f"{prefix} {args[0]}"
+    else:
+        args = [prefix]
+    print(*args, **kwargs)
 
 
-def warn(log: str, *kwargs):
-    string = f"{YELLOW}[WARN]{RESET} {log}"
-    print(string, *kwargs)
+def warn(*args, **kwargs):
+    prefix = f"{YELLOW}[WARN]{RESET}"
+    if args:
+        args = list(args)
+        args[0] = f"{prefix} {args[0]}"
+    else:
+        args = [prefix]
+    print(*args, **kwargs)
 
 
-def info(log: str, *kwargs):
-    string = f"{PURPLE}[INFO]{RESET} {log}"
-    print(string, kwargs)
+def info(*args, **kwargs):
+    prefix = f"{PURPLE}[INFO]{RESET}"
+    if args:
+        args = list(args)
+        args[0] = f"{prefix} {args[0]}"
+    else:
+        args = [prefix]
+    print(*args, **kwargs)
 
 
-def error(log: str):
-    string = f"{RED}[ERROR]{RESET} {log}"
-    print(string)
+def error(*args, **kwargs):
+    prefix = f"{RED}[ERROR]{RESET}"
+    if args:
+        args = list(args)
+        args[0] = f"{prefix} {args[0]}"
+    else:
+        args = [prefix]
+    print(*args, **kwargs)
 
 
 def get_class_name(name):
