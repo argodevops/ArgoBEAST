@@ -11,12 +11,13 @@ def _update_driver_config():
     if not os.path.exists(config_path):
         warn("No driver.yml found, skipping lab configuration.")
         ok(
-            "if you are using a custom configuration, you can add the following to your driver.yml to connect to the lab Grid:\n"
+            "if you are using a custom configuration, you can add the following to your driver.yml \n"
+            "to connect to the lab Grid:\n"
         )
         ok(f'remote_url: "{remote_url}"\n')
         return False
 
-    with open(config_path, "r") as f:
+    with open(config_path, "r", encoding="utf-8") as f:
         content = f.readlines()
 
     # Check if we've already added the lab config
@@ -32,10 +33,9 @@ def _update_driver_config():
         else:
             warn(
                 "remote_url configuration already exists in driver.yml but it does not match the lab Grid URL.\n"
-                "To use the lab, please update the remote_url in your driver.yml to point to {}. \n"
-                "or remove the existing remote_url configuration to allow argobeast to add the correct one automatically.".format(
-                    remote_url
-                )
+                f"To use the lab, please update the remote_url in your driver.yml to point to {remote_url}. \n"
+                "or remove the existing remote_url configuration to allow argobeast to add the correct "
+                "one automatically."
             )
         return False
 
@@ -43,7 +43,7 @@ def _update_driver_config():
 
     # We append it to the end or modify the specific key
     # Adding it as a commented-out toggle is often the friendliest way
-    with open(config_path, "a") as f:
+    with open(config_path, "a", encoding="utf-8") as f:
         f.write("\n# Added by argobeast build lab\n")
         f.write(f'remote_url: "{remote_url}"\n')
     return True
@@ -91,7 +91,7 @@ def open_lab():
 
     if not _update_driver_config():
         return
-    
+
     ok("Setting things up and opening the lab door...")
     cmd = [
         "docker",
