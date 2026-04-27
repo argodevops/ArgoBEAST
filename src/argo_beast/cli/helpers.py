@@ -24,24 +24,26 @@ def ensure_dir(directory):
     Path(directory).mkdir(parents=True, exist_ok=True)
 
 
-def ok(log: str):
-    string = f"{GREEN}[OK]{RESET} {log}"
-    print(string)
+def _beast_print(prefix, color, *args, **kwargs):
+    prefix_str = f"{color}[{prefix}]{RESET}"
+    if args:
+        args = list(args)
+        args[0] = f"{prefix_str} {args[0]}"
+    else:
+        args = [prefix_str]
+    print(*args, **kwargs)
 
+def error(*args, **kwargs):
+    _beast_print("ERROR", RED, *args, **kwargs)
 
-def warn(log: str):
-    string = f"{YELLOW}[WARN]{RESET} {log}"
-    print(string)
+def ok(*args, **kwargs):
+    _beast_print("OK", GREEN, *args, **kwargs)
 
+def warn(*args, **kwargs):
+    _beast_print("WARN", YELLOW, *args, **kwargs)
 
-def info(log: str):
-    string = f"{PURPLE}[INFO]{RESET} {log}"
-    print(string)
-
-
-def error(log: str):
-    string = f"{RED}[ERROR]{RESET} {log}"
-    print(string)
+def info(*args, **kwargs):
+    _beast_print("INFO", PURPLE, *args, **kwargs)
 
 
 def get_class_name(name):

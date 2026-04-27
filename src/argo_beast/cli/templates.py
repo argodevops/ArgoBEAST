@@ -50,7 +50,7 @@ def step_example_action(context,name):
     # Example: actions.login("user", "pass")
     pass
 
-@then("I should see an example result")
+@then("I should see an expected result")
 def step_assert_result(context):
     actions = context.app.get_actions({ClassName}Actions)
     # Example: assert actions.page.is_visible(actions.page.SUCCESS_MESSAGE)
@@ -136,4 +136,45 @@ Feature: Authentication Hooks
     Given I navigate to the login page
     When I click the "Continue as Guest" link
     Then I should be on the home page
+"""
+
+DOCKERFILE_TEMPLATE = """
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt* . 
+RUN pip install --no-cache-dir argobeast \
+    && if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
+RUN useradd -m argouser
+RUN echo "export PS1='[argobeast lab]: \\w \\$ '" >> /home/argouser/.bashrc
+USER argouser
+ENV PS1="[argobeast lab]: " \
+    IS_IN_LAB=True 
+"""
+
+DOCKER_COMPOSE_TEMPLATE = """
+services:
+  selenium-grid:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+      - "7900:7900" # NoVNC - lets users WATCH the tests in a browser
+    shm_size: 2gb
+
+  argobeast_runner:
+    image: argobeast_runner
+    container_name: argobeast-runner
+    build: 
+      context: .
+      dockerfile: argobeast.dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - SE_REMOTE_URL=http://selenium-grid:4444/wd/hub
+      - ARGO_ENV=container
+      - IS_IN_LAB=True
+    depends_on:
+      - selenium-grid
+    tty: true
+    stdin_open: true
 """
