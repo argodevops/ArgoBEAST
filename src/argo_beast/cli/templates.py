@@ -146,6 +146,7 @@ RUN pip install --no-cache-dir argobeast \
     && if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
 RUN useradd -m argouser
 RUN echo "export PS1='[argobeast lab]: \\w \\$ '" >> /home/argouser/.bashrc
+RUN chown -R argouser:argouser /app
 USER argouser
 ENV PS1="[argobeast lab]: " \
     IS_IN_LAB=True 
@@ -167,7 +168,7 @@ services:
       context: .
       dockerfile: argobeast.dockerfile
     volumes:
-      - .:/app
+      - ..:/app
     working_dir: /app
     environment:
       - SE_REMOTE_URL=http://selenium-grid:4444/wd/hub
