@@ -7,18 +7,21 @@ The **ArgoBEAST Lab** is a standardised, containerised testing environment. It p
 
 This is the recommended way to run tests in environments like **WSL2**, **GitPod**, or **CI/CD pipelines** where local browser management is often problematic.
 
+.. important::
+
+   Important: The ArgoBEAST Lab is a fully isolated environment. It manages its own Python interpreter and dependencies internally. It is not compatible with host-managed virtual environments (e.g., .venv, uv, conda). If you use these tools locally, the Lab will ignore them in favour of its own internal "restocked" requirements.
+
 Commands Overview
 =================
 
-+---------------------------+---------------+------------------------------------------------------------+
-| Command                   | Action        | Description                                                |
-+===========================+===============+============================================================+
-| ``argobeast build lab``   | **Construct** | Generates the Docker infrastructure and local directory.    |
-+---------------------------+---------------+------------------------------------------------------------+
-| ``argobeast open lab``    | **Enter** | Boots the Selenium Grid, updates config, and enters shell. |
-+---------------------------+---------------+------------------------------------------------------------+
-| ``argobeast close lab``   | **Sanitise** | Shuts down the environment and frees up system resources.   |
-+---------------------------+---------------+------------------------------------------------------------+
+
+===========================  ===============  ============================================================
+Command                      Action           Description
+===========================  ===============  ============================================================
+``argobeast build lab``      **Construct**    Generates the Docker infrastructure and local directory.
+``argobeast open lab``       **Enter**        Boots the Selenium Grid, updates config, and enters shell.
+``argobeast close lab``      **Sanitise**     Shuts down the environment and frees up system resources.
+===========================  ===============  ============================================================
 
 1. argobeast build lab
 ======================
