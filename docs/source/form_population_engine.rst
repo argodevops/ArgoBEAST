@@ -23,6 +23,7 @@ Testers define the data using a vertical Data Table. You do not need to specify 
     Scenario: Create a new user
       Given I am on the registration page
       When I populate the registration form with:
+        | field          | value        | # Note: field and value are required headers for the engine to work
         | Name           | Alice Bobson |
         | Role           | Administrator|
         | Active         | True         |
