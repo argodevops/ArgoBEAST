@@ -56,16 +56,21 @@ def build_lab():
         return
     if not os.path.exists("features/environment.py"):
         warn("It looks like you haven't initialised a new ArgoBEAST project yet.")
-        warn("Please initiate a new ArgoBEAST project with `argobeast init` before building the lab.")
+        warn(
+            "Please initiate a new ArgoBEAST project with `argobeast init` before building the lab."
+        )
         return
-    
+
     ensure_dir("argobeast_lab")
     if os.path.exists("argobeast_lab/argobeast.dockerfile"):
         warn("The ArgoBEAST lab already exists")
     else:
         ok("⚠️  PREVIEW FEATURE ACTIVE: Beast Lab is an experimental feature.")
         ok("👉 It will not affect your core framework files or external test suites.")
-        ok("📝 We need your feedback! If things break or you have ideas, please email support@argodevops.atlassian.net")
+        ok(
+            "📝 We need your feedback! If things break or you have ideas, " \
+            "please email support@argodevops.atlassian.net"
+        )
         ok("Adding furniture and equipment...")
         with open("argobeast_lab/argobeast.dockerfile", "w", encoding="utf-8") as f:
             f.write(DOCKERFILE_TEMPLATE)
@@ -112,7 +117,10 @@ def open_lab():
     try:
         subprocess.run(cmd, capture_output=True, text=True, check=True)
         ok("The door to the lab swings open...")
-        ok("You can view your tests running in the Selenium Grid by navigating to http://localhost:7900 in your browser and clicking connect.")
+        ok(
+            "You can view your tests running in the Selenium Grid by navigating to " \
+            "http://localhost:7900 in your browser and clicking connect."
+        )
         try:
             subprocess.run(cmd_enter, check=True)
         except subprocess.CalledProcessError as e:
