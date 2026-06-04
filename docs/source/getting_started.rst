@@ -38,8 +38,6 @@ Once the core functionality has been built, creating new tests becomes quick and
 Installation
 ============
 
-**NOTE: The installation process is currently being updated to allow for installation directly from PyPI. In the meantime, please refer to the tutorial on installing ArgoBEAST for instructions on how to install using the whl file.**
-
 Before you can start a new project, you will need to install ArgoBEAST.
 
 ``pip install argobeast``
@@ -62,6 +60,8 @@ Project Initialisation
 To start a new project run:
 
 ``argobeast init``
+
+**Note:** If using uv, make sure to run ``uv venv`` first to create a virtual environment, and then run ``argobeast init`` within that environment.
 
 This will create the directories and files you will need to get started. 
 You will be asked during initiation if you'd like example files to get you started. 

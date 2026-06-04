@@ -79,12 +79,21 @@ Stop wrestling with `webdriver` initializations and messy `environment.py` hooks
 
 ---
 
+## Experimental Feature: The ArgoBEAST Lab
+
+The **ArgoBEAST Lab** is a containerised testing environment that includes a Selenium Grid and a dedicated ArgoBEAST Runner. It provides a consistent execution space for your tests, eliminating environment-related issues and allowing you to see your tests in action via a NoVNC connection.
+
+Please report any issues or feedback to support@argodevops.atlassian.net
+
+---
+
 ## Roadmap
 
 ArgoBEAST is built for the future of professional QA:
-- **V2: Dockerized Execution:** Standardized containers for Selenium Grid and headless execution.
-- **V2: Reporting Enhancements:** Native, deep integration for Allure reports.
+- **V2: No Browser Launch Option:** Adding logic for running tests without launching a browser, ideal for API testing. 
+- **V2: Magic Hook Expansion:** Enhancing the magic hook system to support arguments and more complex setup/teardown scenarios.
 - **V3: Mobile Support:** Expanding the DriverFactory to support native Appium integration.
+
 
 ---
 
