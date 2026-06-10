@@ -98,7 +98,11 @@ def init():
     ]
     examples = ["page", "actions", "feature", "steps"]
     accepted_response = ["y", "yes", "n", "no"]
-
+    ok("Thank you for using ArgoBEAST! Let's get your project set up...")
+    ok(
+        "If you have any issues, feedback, suggestions, or just want to say hi 👋, " \
+        "please email: support@argodevops.atlassian.net"
+    )
     user_input = False
     while not user_input:
         include_examples = input(

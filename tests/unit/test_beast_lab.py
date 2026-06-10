@@ -9,14 +9,21 @@ from argo_beast.cli.beast_lab import (
 )
 from argo_beast.cli.templates import DOCKERFILE_TEMPLATE
 
+@patch("argo_beast.cli.beast_lab.warn")
+def test_build_lab_blocked_by_no_init(mock_warn):
+    build_lab()
+    mock_warn.assert_called_with(
+        "Please initiate a new ArgoBEAST project with `argobeast init` before building the lab."
+    )
 
 ## 1. Test Building the Lab
 @patch("os.path.exists")
 @patch("argo_beast.cli.beast_lab.ensure_dir")
 @patch("builtins.open", new_callable=mock_open)
 def test_build_lab_creates_files(mock_file, mock_ensure_dir, mock_exists):
-    # Setup: Files don't exist yet
-    mock_exists.return_value = False
+    # Setup: only environment.py exists so initial check passes
+    mock_exists.side_effect = lambda path: path == "features/environment.py"
+    
 
     build_lab()
 

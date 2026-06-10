@@ -269,7 +269,6 @@ class BasePage:
 
         target_element = None
 
-        # Strategy A: Text Match
         try:
             target_element = container.find_element(
                 By.XPATH, f".//label[contains(normalize-space(), '{value}')]"
@@ -277,7 +276,6 @@ class BasePage:
         except:  # pylint: disable=bare-except  # noqa: E722
             pass
 
-        # Strategy B: Value Match
         if not target_element:
             try:
                 target_element = container.find_element(
@@ -292,15 +290,15 @@ class BasePage:
         else:
             raise ValueError(f"Radio option '{value}' not found in group {locator}")
 
-    # --- THE DISPATCHER ---
-
     def populate_form_field(self, locator, value, input_type="text"):
         """
         Routes the population request to the specific atomic method.
         """
         if input_type == "text":
-            # FIX: Added 'value' argument
             self.type_text(locator, value)
+
+        elif input_type == "int":
+            self.type_text(locator, str(value), clear_first=False)
 
         elif input_type == "select":
             self.populate_dropdown(locator, value)
