@@ -75,7 +75,7 @@ Now, in your real tests, you can trigger this macro using the prefixes ``@setup:
 
     Feature: Product Management
 
-      @setup:login_admin
+      @setup:login_admin # Note the hook must sit above the scenario, not the feature.
       Scenario: Create a new product
         Given I am on the products page
         When I click "New Product"

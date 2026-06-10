@@ -155,6 +155,8 @@ ENV PS1="[argobeast lab]: " \
 DOCKER_COMPOSE_TEMPLATE = """
 services:
   selenium-grid:
+    environment:
+      - SE_VNC_NO_PASSWORD=true
     image: selenium/standalone-chrome:latest
     ports:
       - "4444:4444"
