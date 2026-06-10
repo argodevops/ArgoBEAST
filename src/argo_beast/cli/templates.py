@@ -28,7 +28,7 @@ Feature: {Name}
 
   Scenario: Example {Name} scenario
     Given I am on the {Name} page
-    When I perform an action
+    When I perform an example action on the {Name} page
     Then I should see an expected result
 """
 
@@ -63,8 +63,6 @@ CONFIG_TEMPLATE = """
 browser: chrome
 headless: true
 window_size: "1920,1080"
-remote_url: ""
-
 # Webdriver Constants
 
 implicit_wait: 5
@@ -73,7 +71,7 @@ page_load_timeout: 30
 
 # Application Settings
 
-base_url: "http://localhost:8501"
+base_url: "http://localhost:3000"
 default_route: "/"
 
 # Framework Behaviour
@@ -121,7 +119,7 @@ COMMON_FEATURE_EXAMPLE = """
 #  3. To run it AFTER a test, tag your test with @teardown:login_admin
 # ==============================================================================
 
-Feature: Authentication Hooks
+Feature: Authentication Hooks Example
 
   @login_admin
   Scenario: Login as Administrator
