@@ -28,7 +28,7 @@ Feature: {Name}
 
   Scenario: Example {Name} scenario
     Given I am on the {Name} page
-    When I perform an an example action on the {Name} page
+    When I perform an example action on the {Name} page
     Then I should see an expected result
 """
 

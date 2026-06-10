@@ -13,7 +13,7 @@ page_load_timeout: 30
 
 # Application Settings
 
-base_url: "http://localhost:8501"
+base_url: "http://localhost:3000"
 default_route: "/"
 
 # Framework Behaviour
