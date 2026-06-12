@@ -79,6 +79,7 @@ default_route: "/"
 screenshot_on_failure: true
 output_directory: "test_output"
 retry_failed_scenarios: false
+run_magic_setup_for_api: true # If false, @api scenarios skip @setup:* magic hooks
 # max_retries: 2 # Optional: Number of retries for failed scenarios (requires retry_failed_scenarios: true)
 
 # Optional: Add any extra flags here.

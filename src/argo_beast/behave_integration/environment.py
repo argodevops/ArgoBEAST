@@ -22,6 +22,22 @@ USER_CONFIG_PATH = "config/driver.yml"
 load_dotenv()
 
 
+def _as_bool(value, default=False):
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "yes", "on"}
+    return bool(value)
+
+
+def _should_run_magic_setup(context, is_api):
+    if not is_api:
+        return True
+    return _as_bool(context.beast_config.get("run_magic_setup_for_api", True), True)
+
+
 def _patch_with_driver_healing(scenario, context):
     original_run = scenario.run
     max_retries = context.beast_config.get("max_retries", 2)
@@ -32,6 +48,8 @@ def _patch_with_driver_healing(scenario, context):
 
         if scenario.status != Status.failed:
             return
+
+        is_api = "api" in scenario.effective_tags
 
         for attempt in range(max_retries):
             if getattr(ctx, "driver", None):
@@ -46,16 +64,23 @@ def _patch_with_driver_healing(scenario, context):
             for step in scenario.steps:
                 step.status = Status.untested
 
-            # 3. Fresh Start
             try:
-                ctx.driver = ctx.factory.create_driver()
-                context.driver = ctx.driver  # Update main context reference as well
-                base_url = context.beast_config.get("base_url")
-                if base_url:
-                    ctx.driver.get(base_url)
-                run_common_features(scenario, context, "setup", fail_hard=True)
+                if is_api:
+                    ctx.driver = None
+                    ctx.app = None
+                    context.driver = None
+                    context.app = None
+                else:
+                    ctx.driver = ctx.factory.create_driver()
+                    ctx.app = BaseStepContext(ctx.driver, ctx.beast_config)
+                    context.driver = ctx.driver
+                    context.app = ctx.app
+                    base_url = context.beast_config.get("base_url")
+                    if base_url:
+                        ctx.driver.get(base_url)
+                if _should_run_magic_setup(context, is_api):
+                    run_common_features(scenario, context, "setup", fail_hard=True)
 
-                # 4. Execute
                 original_run(runner)
 
                 if scenario.status != Status.failed:
@@ -103,29 +128,25 @@ def before_scenario(context, scenario):
     :param scenario: The scenario about to be executed
     """
 
+    is_api = "api" in scenario.effective_tags
+
     if "skip" in scenario.effective_tags:
         scenario.skip("Marked with @skip")
-    # 1. Normalise path
+        return
+
     current_file = scenario.feature.filename.replace("\\", "/")
 
-    # 2. Check if this is a Magic Hook (lives in _common)
-    # We check if "_common" is a distinct part of the path to avoid partial matches
     if "/_common/" in current_file or "_common/" in current_file:
         should_run = False
 
-        # CHECK A: Did the user ask for specific TAGS? (e.g. behave -t @login)
         if context.config.tags:
             should_run = True
-
-        # CHECK B: Did the user explicitly point to this file/folder?
         else:
             user_args = [p.replace("\\", "/") for p in context.config.paths]
             for arg in user_args:
-                # If arg is specific (features/_common/login.feature) -> Run
                 if arg == current_file:
                     should_run = True
                     break
-                # If arg is the _common folder -> Run
                 if "_common" in arg and arg in current_file:
                     should_run = True
                     break
@@ -138,15 +159,20 @@ def before_scenario(context, scenario):
             return
 
     # --- STANDARD STARTUP ---
-    context.driver = context.factory.create_driver()
-    context.app = BaseStepContext(context.driver, context.beast_config)
+    if is_api:
+        context.driver = None
+        context.app = None
+    else:
+        context.driver = context.factory.create_driver()
+        context.app = BaseStepContext(context.driver, context.beast_config)
 
-    base_url = context.beast_config.get("base_url")
-    if base_url:
-        context.driver.get(base_url)
+        base_url = context.beast_config.get("base_url")
+        if base_url:
+            context.driver.get(base_url)
 
     # Run Magic Setup
-    run_common_features(scenario, context, "setup", fail_hard=True)
+    if _should_run_magic_setup(context, is_api):
+        run_common_features(scenario, context, "setup", fail_hard=True)
 
 
 def after_scenario(context, scenario):

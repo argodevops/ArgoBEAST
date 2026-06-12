@@ -71,6 +71,35 @@ def test_before_scenario_runs_common_if_explicitly_targeted(
     mock_context.factory.create_driver.assert_called()
 
 
+def test_before_scenario_api_runs_magic_setup_by_default(mock_context, mock_scenario):
+    """Verify API scenarios still run magic setup unless explicitly disabled."""
+    mock_scenario.effective_tags = ["api", "setup:auth"]
+
+    with patch(
+        "argo_beast.behave_integration.environment.run_common_features"
+    ) as mock_run_common:
+        before_scenario(mock_context, mock_scenario)
+
+    mock_run_common.assert_called_once_with(
+        mock_scenario, mock_context, "setup", fail_hard=True
+    )
+    mock_context.factory.create_driver.assert_not_called()
+
+
+def test_before_scenario_api_can_skip_magic_setup(mock_context, mock_scenario):
+    """Verify API scenarios can opt out of magic setup via config."""
+    mock_scenario.effective_tags = ["api", "setup:auth"]
+    mock_context.beast_config["run_magic_setup_for_api"] = False
+
+    with patch(
+        "argo_beast.behave_integration.environment.run_common_features"
+    ) as mock_run_common:
+        before_scenario(mock_context, mock_scenario)
+
+    mock_run_common.assert_not_called()
+    mock_context.factory.create_driver.assert_not_called()
+
+
 # --- TESTS FOR after_scenario ---
 
 
