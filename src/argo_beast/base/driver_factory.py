@@ -41,18 +41,17 @@ class WebDriverFactory:
                 options.add_argument("--headless=new")
             options.set_capability("pageLoadStrategy", page_load_strategy)
 
-            if self.browser in ["chrome", "edge"] and self.config.get("auto_select_certificates", False):
-                options.add_argument("--ignore-certificate-errors")
-                exp_options = getattr(options, "experimental_options", {})
-                current_prefs = exp_options.get("prefs", {})  
-                cert_filter = {
-                    "pattern": "*", 
-                    "filter": {}
-                }
-                current_prefs["profile.managed_auto_select_certificate_for_urls"] = [
-                    json.dumps(cert_filter)
-                ]
-                options.add_experimental_option("prefs", current_prefs)
+        if self.browser in ["chrome", "edge"] and self.config.get(
+            "auto_select_certificates", False
+        ):
+            options.add_argument("--ignore-certificate-errors")
+            exp_options = getattr(options, "experimental_options", {})
+            current_prefs = exp_options.get("prefs", {})
+            cert_filter = {"pattern": "*", "filter": {}}
+            current_prefs["profile.managed_auto_select_certificate_for_urls"] = [
+                json.dumps(cert_filter)
+            ]
+            options.add_experimental_option("prefs", current_prefs)
 
         # Apply optional custom flags
         custom_flags = self.config.get("browser_args", [])

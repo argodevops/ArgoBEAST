@@ -56,9 +56,6 @@ These settings control the instantiation of the browser session.
      - Sets the initial viewport dimensions.
      - Format: ``"WIDTH,HEIGHT"`` (e.g., ``"1920,1080"``).
        *Note: This works universally across all supported browsers in both Headless and Headful modes.*
-   * - **remote_url**
-     - The URL for a Selenium Grid or Docker container.
-     - Leave empty ``""`` for local execution.
 
 Advanced: Browser Arguments (browser_args)
 ------------------------------------------

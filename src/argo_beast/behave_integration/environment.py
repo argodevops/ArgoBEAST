@@ -128,7 +128,7 @@ def before_scenario(context, scenario):
     :param scenario: The scenario about to be executed
     """
 
-    is_api = "api" in scenario.effective_tags
+    is_no_browser = "nobrowser" in scenario.effective_tags
 
     if "skip" in scenario.effective_tags:
         scenario.skip("Marked with @skip")
@@ -159,7 +159,7 @@ def before_scenario(context, scenario):
             return
 
     # --- STANDARD STARTUP ---
-    if is_api:
+    if is_no_browser:
         context.driver = None
         context.app = None
     else:
@@ -171,7 +171,7 @@ def before_scenario(context, scenario):
             context.driver.get(base_url)
 
     # Run Magic Setup
-    if _should_run_magic_setup(context, is_api):
+    if _should_run_magic_setup(context, is_no_browser):
         run_common_features(scenario, context, "setup", fail_hard=True)
 
 

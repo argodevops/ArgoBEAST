@@ -1,13 +1,14 @@
 import logging
 import os
 from selenium.common.exceptions import TimeoutException, InvalidArgumentException
-from selenium.webdriver import ActionChains
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as ec
+
 
 class BasePage:
     """
@@ -77,13 +78,6 @@ class BasePage:
         )
         self.driver.execute_script(script, element)
 
-    def open_url(self, url: str):
-        """
-        Navigate to a specific URL
-        :param url: URL string
-        """
-        self.driver.get(url)
-
     def find(self, locator):
         """
         Find a single element
@@ -121,7 +115,7 @@ class BasePage:
         except TimeoutException:
             self.logger.warning(f"Unable to click locator {locator}")
             return False
-        
+
     def hover(self, locator):
         """
         Hover over an element to prompt OnHover event
@@ -132,10 +126,11 @@ class BasePage:
             self._wait_for_clickable(locator)
             element = self.find(locator)
             ActionChains(self.driver).move_to_element(element).perform()
+            return True
         except TimeoutException:
-            self.logger.warning(f"Unable to click locator {locator}")
+            self.logger.warning(f"Unable to hover over locator {locator}")
             return False
-        
+
     def type_text(self, locator, text: str, clear_first: bool = True):
         """
         Type text into an input field
