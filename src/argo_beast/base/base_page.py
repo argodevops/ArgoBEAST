@@ -1,13 +1,13 @@
 import logging
 import os
 from selenium.common.exceptions import TimeoutException, InvalidArgumentException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as ec
-
 
 class BasePage:
     """
@@ -121,7 +121,21 @@ class BasePage:
         except TimeoutException:
             self.logger.warning(f"Unable to click locator {locator}")
             return False
-
+        
+    def hover(self, locator):
+        """
+        Hover over an element to prompt OnHover event
+        :param locator: Locator tuple
+        :return: True if hoverable, False if timeout
+        """
+        try:
+            self._wait_for_clickable(locator)
+            element = self.find(locator)
+            ActionChains(self.driver).move_to_element(element).perform()
+        except TimeoutException:
+            self.logger.warning(f"Unable to click locator {locator}")
+            return False
+        
     def type_text(self, locator, text: str, clear_first: bool = True):
         """
         Type text into an input field

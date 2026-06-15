@@ -40,8 +40,8 @@ def _less_than_three_args(args):
     elif args[0] == "hello":
         print(ARGO_BEAST)
         print(
-            "                   ### Welcome to ArgoBEAST! ###"
-            "\n___________________________________________________________________"
+            "                 ### Welcome to ArgoBEAST! ###               "
+            "\n________________________v.2.4.0________________________"
             "\nA Python-based test automation framework for web applications, "
             "\nbuilt on Behave, Selenium, and a clean Page Object Model. "
             "\nGet started by running 'argobeast init' to set up your first project."

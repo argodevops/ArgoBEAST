@@ -32,8 +32,8 @@ def _as_bool(value, default=False):
     return bool(value)
 
 
-def _should_run_magic_setup(context, is_api):
-    if not is_api:
+def _should_run_magic_setup(context, is_no_browser):
+    if not is_no_browser:
         return True
     return _as_bool(context.beast_config.get("run_magic_setup_for_api", True), True)
 
@@ -49,7 +49,7 @@ def _patch_with_driver_healing(scenario, context):
         if scenario.status != Status.failed:
             return
 
-        is_api = "api" in scenario.effective_tags
+        is_no_browser = "nobrowser" in scenario.effective_tags
 
         for attempt in range(max_retries):
             if getattr(ctx, "driver", None):
@@ -65,7 +65,7 @@ def _patch_with_driver_healing(scenario, context):
                 step.status = Status.untested
 
             try:
-                if is_api:
+                if is_no_browser:
                     ctx.driver = None
                     ctx.app = None
                     context.driver = None
@@ -78,7 +78,7 @@ def _patch_with_driver_healing(scenario, context):
                     base_url = context.beast_config.get("base_url")
                     if base_url:
                         ctx.driver.get(base_url)
-                if _should_run_magic_setup(context, is_api):
+                if _should_run_magic_setup(context, is_no_browser):
                     run_common_features(scenario, context, "setup", fail_hard=True)
 
                 original_run(runner)

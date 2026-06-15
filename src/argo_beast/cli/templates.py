@@ -63,6 +63,8 @@ CONFIG_TEMPLATE = """
 browser: chrome
 headless: true
 window_size: "1920,1080"
+auto_select_certificates: false 
+
 # Webdriver Constants
 
 implicit_wait: 5
