@@ -73,7 +73,7 @@ def test_before_scenario_runs_common_if_explicitly_targeted(
 
 def test_before_scenario_api_runs_magic_setup_by_default(mock_context, mock_scenario):
     """Verify API scenarios still run magic setup unless explicitly disabled."""
-    mock_scenario.effective_tags = ["api", "setup:auth"]
+    mock_scenario.effective_tags = ["nobrowser", "setup:auth"]
 
     with patch(
         "argo_beast.behave_integration.environment.run_common_features"
@@ -88,7 +88,7 @@ def test_before_scenario_api_runs_magic_setup_by_default(mock_context, mock_scen
 
 def test_before_scenario_api_can_skip_magic_setup(mock_context, mock_scenario):
     """Verify API scenarios can opt out of magic setup via config."""
-    mock_scenario.effective_tags = ["api", "setup:auth"]
+    mock_scenario.effective_tags = ["nobrowser", "setup:auth"]
     mock_context.beast_config["run_magic_setup_for_api"] = False
 
     with patch(
