@@ -138,7 +138,7 @@ Framework Behaviour
     *(Experimental)* The maximum number of retry attempts for failed scenarios when ``retry_failed_scenarios`` is enabled. Default is ``2``.
 
 * **run_magic_setup_for_api**:
-  If ``true`` (default), ``@api`` scenarios still execute ``@setup:*`` hooks from the Common Library. Set to ``false`` to keep API scenarios lightweight and skip magic setup execution.
+  If ``true`` (default), ``@nobrowser`` scenarios still execute ``@setup:*`` hooks from the Common Library. Set to ``false`` to keep API scenarios lightweight and skip magic setup execution.
 ----------------
 
 ArgoBEAST has built-in integration for Allure, provided you have the ``allure`` command-line tool installed on your machine.

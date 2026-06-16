@@ -78,6 +78,13 @@ class BasePage:
         )
         self.driver.execute_script(script, element)
 
+    def open_url(self, url: str):
+        """
+        Navigate to a specific URL
+        :param url: URL string
+        """
+        self.driver.get(url)
+
     def find(self, locator):
         """
         Find a single element
@@ -123,8 +130,7 @@ class BasePage:
         :return: True if hoverable, False if timeout
         """
         try:
-            self._wait_for_clickable(locator)
-            element = self.find(locator)
+            element = self._wait_for_clickable(locator)
             ActionChains(self.driver).move_to_element(element).perform()
             return True
         except TimeoutException:

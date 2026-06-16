@@ -85,6 +85,10 @@ disable = [
     "W1203", # logging-fstring-interpolation
 ]
 
+[tool.pylint.design]
+# Allow the BasePage to hold more reusable utility methods
+max-public-methods = 35
+
 [tool.pylint.format]
 max-line-length = 120  # More generous than the default 100
 
