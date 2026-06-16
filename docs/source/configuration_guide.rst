@@ -177,9 +177,9 @@ Certificate Management
 -----------------------
 
 * **auto_select_certificates**:
-   If ``true``, ArgoBEAST will configure the browser to automatically select and accept client certificates when prompted. This is particularly useful for testing applications that require client-side SSL authentication, as it eliminates the need for manual intervention during test execution.
-   
-   When enabled, ArgoBEAST sets up the browser's preferences to auto-select certificates based on a defined filter. By default, the filter is configured to match all URLs (using a wildcard pattern ``"*"``) and will automatically select the first valid client certificate found in the browser's certificate store.
+    If ``true`` (Chrome/Edge only), ArgoBEAST will configure Chromium-based browsers to automatically select and accept client certificates when prompted. This is particularly useful for testing applications that require client-side SSL authentication, as it eliminates the need for manual intervention during test execution.
+    
+    When enabled, ArgoBEAST sets the browser preference to auto-select certificates based on a defined filter. By default, the filter is configured to match all URLs (using a wildcard pattern ``"*"``) and will automatically select the first matching client certificate found in the browser's certificate store.
 
 
 

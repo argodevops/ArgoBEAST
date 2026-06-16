@@ -64,7 +64,8 @@ browser: chrome
 headless: true
 window_size: "1920,1080"
 auto_select_certificates: false
-# remote_url: "http://localhost:4444/wd/hub" # Uncomment to use a remote Selenium Grid
+# remote_url: ""  # Leave empty for local execution; set to a Selenium Grid URL for remote runs
+# Example: remote_url: "http://localhost:4444/wd/hub"
 
 # Webdriver Constants
 
