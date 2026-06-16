@@ -56,6 +56,9 @@ These settings control the instantiation of the browser session.
      - Sets the initial viewport dimensions.
      - Format: ``"WIDTH,HEIGHT"`` (e.g., ``"1920,1080"``).
        *Note: This works universally across all supported browsers in both Headless and Headful modes.*
+   * - **remote_url**
+     - The URL for a Selenium Grid or Docker container.
+     - Leave empty ``""`` for local execution.
 
 Advanced: Browser Arguments (browser_args)
 ------------------------------------------
@@ -139,6 +142,8 @@ Framework Behaviour
 
 * **run_magic_setup_for_api**:
   If ``true`` (default), ``@nobrowser`` scenarios still execute ``@setup:*`` hooks from the Common Library. Set to ``false`` to keep API scenarios lightweight and skip magic setup execution.
+
+Allure Reporting
 ----------------
 
 ArgoBEAST has built-in integration for Allure, provided you have the ``allure`` command-line tool installed on your machine.
@@ -174,7 +179,7 @@ Certificate Management
 * **auto_select_certificates**:
    If ``true``, ArgoBEAST will configure the browser to automatically select and accept client certificates when prompted. This is particularly useful for testing applications that require client-side SSL authentication, as it eliminates the need for manual intervention during test execution.
    
-   When enabled, ArgoBEAST sets up the browser's preferences to auto-select certificates based on a defined filter. By default, the filter is configured to match all URLs (using a wildcard pattern "*") and will automatically select the first valid client certificate found in the browser's certificate store.
+   When enabled, ArgoBEAST sets up the browser's preferences to auto-select certificates based on a defined filter. By default, the filter is configured to match all URLs (using a wildcard pattern ``"*"``) and will automatically select the first valid client certificate found in the browser's certificate store.
 
 
 

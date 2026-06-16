@@ -63,7 +63,7 @@ CONFIG_TEMPLATE = """
 browser: chrome
 headless: true
 window_size: "1920,1080"
-auto_select_certificates: false 
+auto_select_certificates: false
 # remote_url: "http://localhost:4444/wd/hub" # Uncomment to use a remote Selenium Grid
 
 # Webdriver Constants
@@ -82,7 +82,7 @@ default_route: "/"
 screenshot_on_failure: true
 output_directory: "test_output"
 retry_failed_scenarios: false
-run_magic_setup_for_api: true # If false, @api scenarios skip @setup:* magic hooks
+run_magic_setup_for_api: true # If false, @nobrowser scenarios skip @setup:* magic hooks
 # max_retries: 2 # Optional: Number of retries for failed scenarios (requires retry_failed_scenarios: true)
 
 # Optional: Add any extra flags here.
