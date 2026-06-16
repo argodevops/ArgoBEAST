@@ -1,9 +1,19 @@
 import sys
 import io
+from importlib.metadata import version, PackageNotFoundError
 from .create import create, create_all, init
 from .helpers import warn, info, ARGO_BEAST
 from .generate_feature_docs import generate_rst_documentation
 from .beast_lab import build_lab, open_lab, close_lab
+
+
+def _get_cli_version():
+    for package_name in ("argo-beast", "argo_beast", "argobeast"):
+        try:
+            return version(package_name)
+        except PackageNotFoundError:
+            continue
+    return "unknown"
 
 
 def fix_windows_encoding():
@@ -38,10 +48,11 @@ def _less_than_three_args(args):
             "  all     - Create all of the above with the given name."
         )
     elif args[0] == "hello":
+        cli_version = _get_cli_version()
         print(ARGO_BEAST)
         print(
-            "                   ### Welcome to ArgoBEAST! ###"
-            "\n___________________________________________________________________"
+            "                 ### Welcome to ArgoBEAST! ###               "
+            f"\n________________________v.{cli_version}________________________"
             "\nA Python-based test automation framework for web applications, "
             "\nbuilt on Behave, Selenium, and a clean Page Object Model. "
             "\nGet started by running 'argobeast init' to set up your first project."
@@ -73,7 +84,7 @@ def main():
             build_lab()
         elif args[0] == "open":
             open_lab()
-        elif args[0] in ["close","stop"]:
+        elif args[0] in ["close", "stop"]:
             close_lab()
         else:
             info(

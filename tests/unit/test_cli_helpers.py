@@ -27,6 +27,7 @@ def test_ensure_dir_creates_path(tmp_path):
         ("user profile", "UserProfile"),
         ("submit order form", "SubmitOrderForm"),
         ("Sidebar", "Sidebar"),
+        ("multi_word_name", "MultiWordName"),
     ],
 )
 def test_get_class_name_converts_correctly(input_name, expected_class):

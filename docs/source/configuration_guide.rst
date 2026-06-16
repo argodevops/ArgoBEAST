@@ -139,6 +139,11 @@ Framework Behaviour
 
 * **max_retries**:
     *(Experimental)* The maximum number of retry attempts for failed scenarios when ``retry_failed_scenarios`` is enabled. Default is ``2``.
+
+* **run_magic_setup_for_api**:
+  If ``true`` (default), ``@nobrowser`` scenarios still execute ``@setup:*`` hooks from the Common Library. Set to ``false`` to keep API scenarios lightweight and skip magic setup execution.
+
+Allure Reporting
 ----------------
 
 ArgoBEAST has built-in integration for Allure, provided you have the ``allure`` command-line tool installed on your machine.
@@ -167,3 +172,14 @@ Logging
   * ``INFO``: Standard execution logs.
   * ``DEBUG``: Detailed logs for framework development/debugging.
   * ``ERROR``: Only show critical failures.
+
+Certificate Management
+-----------------------
+
+* **auto_select_certificates**:
+    If ``true`` (Chrome/Edge only), ArgoBEAST will configure Chromium-based browsers to automatically select and accept client certificates when prompted. This is particularly useful for testing applications that require client-side SSL authentication, as it eliminates the need for manual intervention during test execution.
+    
+    When enabled, ArgoBEAST sets the browser preference to auto-select certificates based on a defined filter. By default, the filter is configured to match all URLs (using a wildcard pattern ``"*"``) and will automatically select the first matching client certificate found in the browser's certificate store.
+
+
+

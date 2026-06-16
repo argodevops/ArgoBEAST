@@ -1,6 +1,6 @@
 [project]
 name = "argobeast"
-version = "2.2.6"
+version = "2.4.0"
 description = "A Python-based test automation framework for Behave with a clean Page Object architecture and CLI scaffolding."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -84,6 +84,10 @@ disable = [
     "W0718",
     "W1203", # logging-fstring-interpolation
 ]
+
+[tool.pylint.design]
+# Allow the BasePage to hold more reusable utility methods
+max-public-methods = 35
 
 [tool.pylint.format]
 max-line-length = 120  # More generous than the default 100

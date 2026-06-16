@@ -61,6 +61,38 @@ def test_click_timeout_returns_false(base_page):
             mock_log.warning.assert_called_with(f"Unable to click locator {locator}")
 
 
+def test_hover_success(base_page):
+    """Verify hover() waits for element and performs ActionChains hover."""
+    locator = (By.ID, "menu-item")
+    mock_element = MagicMock()
+    mock_chain = MagicMock()
+
+    with patch.object(base_page, "_wait_for_clickable", return_value=mock_element):
+        with patch(
+            "argo_beast.base.base_page.ActionChains", return_value=mock_chain
+        ) as mock_actions:
+            result = base_page.hover(locator)
+
+            assert result is True
+            mock_actions.assert_called_once_with(base_page.driver)
+            mock_chain.move_to_element.assert_called_once_with(mock_element)
+            mock_chain.move_to_element.return_value.perform.assert_called_once()
+
+
+def test_hover_timeout_returns_false(base_page):
+    """Verify hover() returns False and logs warning on timeout."""
+    locator = (By.ID, "menu-item")
+
+    with patch.object(base_page, "_wait_for_clickable", side_effect=TimeoutException):
+        with patch.object(base_page, "logger") as mock_log:
+            result = base_page.hover(locator)
+
+            assert result is False
+            mock_log.warning.assert_called_with(
+                f"Unable to hover over locator {locator}"
+            )
+
+
 # --- 3. Testing Form Helpers (The Dispatcher) ---
 
 

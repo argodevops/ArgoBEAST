@@ -1,3 +1,4 @@
+import json
 import pytest
 from unittest.mock import MagicMock, patch
 from argo_beast.base.driver_factory import WebDriverFactory
@@ -59,3 +60,42 @@ def test_window_size_parsing(mock_webdriver):
 
     # Verify the math/parsing worked
     mock_driver.set_window_size.assert_called_once_with(1280, 720)
+
+
+@pytest.mark.parametrize(
+    "browser, options_factory",
+    [("chrome", "ChromeOptions"), ("edge", "EdgeOptions")],
+)
+def test_auto_select_certificates_sets_managed_prefs(
+    mock_webdriver, browser, options_factory
+):
+    """Ensure cert auto-select prefs are added for Chromium-based browsers."""
+    config = {"browser": browser, "auto_select_certificates": True}
+    factory = WebDriverFactory(config)
+
+    mock_options = MagicMock()
+    # Simulate already-present prefs so we verify they are preserved.
+    mock_options.experimental_options = {
+        "prefs": {"download.default_directory": "/tmp"}
+    }
+    getattr(mock_webdriver, options_factory).return_value = mock_options
+
+    mock_driver = MagicMock()
+    if browser == "edge":
+        mock_webdriver.Edge.return_value = mock_driver
+    else:
+        mock_webdriver.Chrome.return_value = mock_driver
+
+    factory.create_driver()
+
+    mock_options.add_argument.assert_any_call("--ignore-certificate-errors")
+
+    expected_prefs = {
+        "download.default_directory": "/tmp",
+        "profile.managed_auto_select_certificate_for_urls": [
+            json.dumps({"pattern": "*", "filter": {}})
+        ],
+    }
+    mock_options.add_experimental_option.assert_called_once_with(
+        "prefs", expected_prefs
+    )

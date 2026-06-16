@@ -11,3 +11,5 @@ build
 .coverage
 src/argo_beast/config/__pycache__*
 src/argobeast.egg-info
+allure-results
+argobeast_lab

@@ -28,7 +28,7 @@ Feature: {Name}
 
   Scenario: Example {Name} scenario
     Given I am on the {Name} page
-    When I perform an action
+    When I perform an example action on the {Name} page
     Then I should see an expected result
 """
 
@@ -63,7 +63,9 @@ CONFIG_TEMPLATE = """
 browser: chrome
 headless: true
 window_size: "1920,1080"
-remote_url: ""
+auto_select_certificates: false
+# remote_url: ""  # Leave empty for local execution; set to a Selenium Grid URL for remote runs
+# Example: remote_url: "http://localhost:4444/wd/hub"
 
 # Webdriver Constants
 
@@ -73,7 +75,7 @@ page_load_timeout: 30
 
 # Application Settings
 
-base_url: "http://localhost:8501"
+base_url: "http://localhost:3000"
 default_route: "/"
 
 # Framework Behaviour
@@ -81,6 +83,7 @@ default_route: "/"
 screenshot_on_failure: true
 output_directory: "test_output"
 retry_failed_scenarios: false
+run_magic_setup_for_api: true # If false, @nobrowser scenarios skip @setup:* magic hooks
 # max_retries: 2 # Optional: Number of retries for failed scenarios (requires retry_failed_scenarios: true)
 
 # Optional: Add any extra flags here.
@@ -121,7 +124,7 @@ COMMON_FEATURE_EXAMPLE = """
 #  3. To run it AFTER a test, tag your test with @teardown:login_admin
 # ==============================================================================
 
-Feature: Authentication Hooks
+Feature: Authentication Hooks Example
 
   @login_admin
   Scenario: Login as Administrator
